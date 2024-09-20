@@ -1,0 +1,126 @@
+<div class="row">
+    <!-- <div class="col-sm-2">
+        <app-navbaar></app-navbaar>
+    </div> -->
+    <div class="col-sm-10">
+        <div class="main">
+            <h1 class="main-heading">Shipment Aggregate Screen</h1>
+            <div class="container">
+                <!-- <div class="black-card"></div> -->
+                <!-- <h4 style="color: white;">Shipment Aggregate Page</h4> -->
+                <div class="second-card">
+                    <div class="row">
+
+                        <div class="col-sm-3 info pt-2">
+                            <h6>{{shipdata[0]?.source.name}} - {{shipdata[0]?.destination.name}} </h6>
+
+                            <label for="">{{shipdata[0]?.freight_type.type}} </label>
+
+                        </div>
+                        <div class="col-sm-7"></div>
+                        <div class="col-sm-2">{{shipment_Date}}</div>
+                    </div>
+
+                </div>
+                <div class="row my-3 mx-1">
+                    <div class="col-sm-3 filter" *ngIf="this.shipdata.length>0">
+                        <div class="filter-sm">
+                            <img src="../../assets/filter.png" alt="" height="20px" width="25px"
+                                style="float: left; margin: 13px;">
+                            <label for="" class="my-2"
+                                style="margin: auto;font-weight: bold;font-size: 15px;">filter</label>
+                            <label for="" class="mx-4 my-2"
+                                style="float: right; color: rgb(113, 141, 194);font-weight: bold;">Clear All</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-9" style="margin: auto;" *ngIf="this.shipdata.length===0">
+                        <h1 style="color: white;">Data not found for selected route and frieght type ....</h1>
+                    </div>
+
+                    <div class="col-sm-6 ">
+                        <div class="center_div  mx-1 my-2" *ngFor="let data of shipdata">
+                            <div class="row">
+                                <div class="col-sm-4 center-logo">
+                                    <img class="logo_images" src="{{data.company.logo}}" alt="" width="100%"
+                                        height="70%">
+                                </div>
+
+                                <div class="col-sm-2 my-3 mx-1">
+                                    <label for="" class="label-center">{{data.source.name}}</label>
+                                </div>
+                                <div class="col-sm-3 col-md-2 center-div-arrow my-1">
+                                    <img src="https://cdn-icons-png.flaticon.com/128/13726/13726822.png" alt=""
+                                        class="img-fluid">
+                                </div>
+                                <div class="col-sm-2 my-3 mx-1">
+                                    <label for="" class="label-center">{{data.destination.name}}</label>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3 companyNameDiv"><b class="company_name">{{data.company.name}}</b>
+                                </div>
+                                <div class="col-sm-3">
+
+                                    <!-- <label for=""></label> -->
+                                    <!-- <span c>Sailing Date</span> -->
+                                    <label for="" class="label-centerdiv-second">Sailing Date :</label>
+                                    <label for="" class="label-centerdiv-data">{{shipment_Date}}</label>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <label for="" class="label-centerdiv-second">Transite Time :</label>
+                                    <label for="" class="label-centerdiv-data">{{data.transit_time.time}} DAYS</label>
+                                </div>
+                                <div class="col-sm-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 ">
+
+                        <div class=" last-div row  my-2" *ngFor="let data of shipdata">
+                            <div *ngIf="currentDate > data.expiration_date" class="col-sm-12 expiredDate">
+                                <marquee behavior="scroll" direction="" style="color: white;"> Date is expired</marquee>
+                                <!-- <label  style="color: white;"> Date is expired</label> -->
+                            </div>
+                            <div class="col-sm-6 ">
+
+                                <label for="" class="label-centerdiv-second">Effective Date :</label>
+                                <label for="" class="label-centerdiv-data"><b>{{data.effective_date}}</b></label>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <label for="" class="label-centerdiv-second">Expiration Date :</label>
+                                <label for="" class="label-centerdiv-data"><b>{{data.expiration_date}}</b></label>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <label for="" class="label-centerdiv-second">Quantity : </label>
+                                <label for="" class="label-centerdiv-data"><b>{{quantity}}</b></label>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <label for="" class="label-centerdiv-second">Rate : </label>
+                                <label for="" class="label-centerdiv-data"><b>{{data.rate}}</b></label>
+                            </div>
+                            <div class="col-sm-6 ">
+
+                            </div>
+                            <button class="btn-create-quote" *ngIf="currentDate < data.expiration_date"
+                                (click)="create_quote(data.id)">Create Quote <i class="fa fa-arrow-right"
+                                    aria-hidden="true"></i></button>
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

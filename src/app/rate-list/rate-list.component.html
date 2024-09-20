@@ -1,0 +1,402 @@
+<div class="tabs cus_container">
+  <div class="tab" [class.active]="selectedTab === 'MANUAL RATE'" (click)="selectTab('MANUAL RATE')">MANUAL RATE</div>
+  <div class="tab" [class.active]="selectedTab === 'BULK'" (click)="selectTab('BULK')">BULK UPLOAD FILE</div>
+</div>
+<div class="cs-tabs-wrapper">
+  <div style="position: relative; height: 100%;">
+    <!-- <div class="overlay"></div> -->
+    <div class="tabCaseUI">
+      <div class="tab-content">
+        <div *ngIf="selectedTab === 'MANUAL RATE'">
+          <div class="container">
+            <div class="row">
+              <!-- FORM START -->
+              <div class="col-12 border layout-wrapper">
+                <div class="custom-scroll cs-hidden-scroll">
+                  <form [formGroup]="formData" class="" action="POST" enctype="multipart/form-data">
+                    <div class="">
+                      <div class="col-6 form-floating mb-3" style="position: relative;">
+                        <input type="text" formControlName="companyName" name="company" class="form-control"
+                          placeholder="Company name" aria-label="Company name" (input)="onInput($event)"
+                          (focus)="showDropdown = true" (blur)="hideDropdown()" (click)="showDropdown = true">
+                        <label for="floatingTextarea2">Select Carrier</label>
+
+                        <div *ngIf="showDropdown && filteredCompanies.length > 0" class="dropdown-menu show"
+                          (mousedown)="$event.preventDefault()"
+                          style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
+                          <button type="button" class="dropdown-item" *ngFor="let company of filteredCompanies"
+                            (click)="selectCompany(company.name)">
+                            {{ company.name }}
+                          </button>
+                        </div>
+
+                        <div *ngIf="filteredCompanies.length === 0 && showDropdown" class="dropdown-menu show">
+                          <button type="button" class="dropdown-item" disabled>Not found</button>
+                        </div>
+
+                        <div
+                          *ngIf="formData.get('companyName')!.invalid && 
+                                               (formData.get('companyName')!.dirty || formData.get('companyName')!.touched)">
+                          <small class="text-danger">Carrier is required</small>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between gap-2 mb-3">
+
+                        <div class="col-sm-6 form-floating" style="position: relative;">
+                          <input type="text" formControlName="source" name="source" class="form-control"
+                            placeholder="Source name" aria-label="Source name" (input)="onSourceInput($event)"
+                            (focus)="showSourceDropdown = true" (blur)="hideSourceDropdown()"
+                            (click)="showSourceDropdown = true">
+                          <label for="floatingTextarea2">Select Origin Port</label>
+
+                          <div *ngIf="showSourceDropdown && filteredSources.length > 0" class="dropdown-menu show"
+                            (mousedown)="$event.preventDefault()"
+                            style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
+                            <button type="button" class="dropdown-item" *ngFor="let source of filteredSources"
+                              (click)="selectSource(source.name)">
+                              {{ source.name }}
+                            </button>
+                          </div>
+
+                          <div *ngIf="filteredSources.length === 0 && showSourceDropdown" class="dropdown-menu show">
+                            <button type="button" class="dropdown-item" disabled>Not found</button>
+                          </div>
+
+                          <div *ngIf="formData.get('source')!.invalid && 
+                                               (formData.get('source')!.dirty || formData.get('source')!.touched)">
+                            <small class="text-danger">Origin port is required</small>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 form-floating" style="position: relative;">
+                          <input type="text" formControlName="destination" name="destination" class="form-control"
+                            placeholder="Destination name" aria-label="Destination name"
+                            (input)="onDestinationInput($event)" (focus)="showDestinationDropdown = true"
+                            (blur)="hideDestinationDropdown()" (click)="showDestinationDropdown = true">
+                          <label for="floatingTextarea2">Select Destination</label>
+
+                          <div *ngIf="showDestinationDropdown && filteredDestination.length > 0"
+                            class="dropdown-menu show" (mousedown)="$event.preventDefault()"
+                            style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
+                            <button type="button" class="dropdown-item" *ngFor="let destination of filteredDestination"
+                              (click)="selectDestination(destination.name)">
+                              {{ destination.name }}
+                            </button>
+                          </div>
+
+                          <div *ngIf="filteredDestination.length === 0 && showDestinationDropdown"
+                            class="dropdown-menu show">
+                            <button type="button" class="dropdown-item" disabled>Not found</button>
+                          </div>
+
+                          <div
+                            *ngIf="formData.get('destination')!.invalid && 
+                                               (formData.get('destination')!.dirty || formData.get('destination')!.touched)">
+                            <small class="text-danger">Destination is required</small>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between gap-2 mb-3">
+                        <div class="col-sm-6 form-floating">
+                          <input type="text" formControlName="rate" class="form-control" placeholder="Rate"
+                            aria-label="Rate">
+                          <label for="floatingTextarea2">Rate</label>
+                          <div
+                            *ngIf="formData.get('rate')!.invalid && (formData.get('rate')!.dirty || formData.get('rate')!.touched)">
+                            <small class="text-danger">Rate is required</small>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 form-floating">
+                          <input type="text" formControlName="cargotype" class="form-control" placeholder="Cargo type"
+                            aria-label="Cargo type">
+                          <label for="floatingTextarea2">Cargo type (Haz or Non Haz)</label>
+                          <div
+                            *ngIf="formData.get('cargotype')!.invalid && (formData.get('cargotype')!.dirty || formData.get('cargotype')!.touched)">
+                            <small class="text-danger">Cargo type is required</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between gap-2 mb-3">
+                        <div class="form-check form-switch d-flex flex-column col-6">
+                          <div class="d-inline">
+                            <label class="form-check-label mb-3" for="flexSwitchCheckDefault">Direct Shipment?</label>
+                          </div>
+                          <input class="form-check-input" type="checkbox" [checked]="isDirectShipment" role="switch"
+                            id="flexSwitchCheckDefault" (change)="onDirectShipmentChange($event)">
+                        </div>
+                        <div class="col-6 form-floating d-flex justify-content-end align-items-end position-relative">
+                          <select [disabled]="isDirectShipment" name="transhipment_add_port" id="floatingInput"
+                            class="form-control border">
+                            <option value="" selected disabled>--Select Transhipment--</option>
+                            <option [value]="source.name" *ngFor="let source of sourceList">{{source.name}}
+                            </option>
+                          </select>
+                          <label class="mx-2" for="floatingInput">Transhipment</label>
+
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between gap-2 mb-3">
+                        <div class="col-6 form-floating">
+                          <input type="text" formControlName="transitTime" class="form-control"
+                            placeholder="Transit time" aria-label="Transit time">
+                          <label for="floatingTextarea2">Transit time</label>
+                          <div
+                            *ngIf="formData.get('transitTime')!.invalid && (formData.get('transitTime')!.dirty || formData.get('transitTime')!.touched)">
+                            <small class="text-danger">Transit time is required</small>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 form-floating">
+                          <select class="form-select" formControlName="freightType" placeholder="Freight type"
+                            aria-label="Default select example">
+                            <option selected disabled>--Select Freight types--</option>
+                            <option [value]="data.type" *ngFor="let data of equipmentsList">{{data.type}}</option>
+                          </select>
+                          <label for="floatingTextarea2">Freight type</label>
+
+                          <div
+                            *ngIf="formData.get('freightType')!.invalid && (formData.get('freightType')!.dirty || formData.get('freightType')!.touched)">
+                            <small class="text-danger">Freight type is required</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between gap-2 mb-3">
+                        <div class="col-sm-6 form-floating">
+                          <input type="date" formControlName="effectiveDate" class="form-control"
+                            placeholder="Effective date" aria-label="Effective date">
+                          <label for="floatingTextarea2">Effective date</label>
+                          <div
+                            *ngIf="formData.get('effectiveDate')!.invalid && (formData.get('effectiveDate')!.dirty || formData.get('effectiveDate')!.touched)">
+                            <small class="text-danger">Effective date is required</small>
+                          </div>
+                        </div>
+                        <div class="col-sm-6 form-floating">
+                          <input type="date" formControlName="expirationDate" class="form-control"
+                            placeholder="Expiration date" aria-label="Expiration date">
+                          <label for="floatingTextarea2">Expiration date</label>
+                          <div
+                            *ngIf="formData.get('expirationDate')!.invalid && (formData.get('expirationDate')!.dirty || formData.get('expirationDate')!.touched)">
+                            <small class="text-danger">Expiration date is required</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <textarea class="form-control gap-2 mb-3" formControlName="remarks"
+                          placeholder="Remarks (Optional)" style="height: 100px"></textarea>
+                      </div>
+                      <div>
+                        <textarea class="form-control gap-2 mb-3" formControlName="terms_condition"
+                          placeholder="Terms and Conditions from forwarder" style="height: 100px"></textarea>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-button-wrapper">
+                  <button (click)="onSubmitHandler()" class="cms_button" [ngClass]="{ 'disabled': formData.invalid }"
+                    [disabled]="formData.invalid">Submit</button>
+                </div>
+              </div>
+              <!-- END -->
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedTab === 'BULK'">
+          <!-- Content for Page 2 -->
+          <div class="col-sm-12">
+            <div class="row" style="background-color: rgba(245, 248, 248, 0.904);">
+              <div class="cms_moo_wrapper">
+                <div class="col-sm-3 my-3 mx-2 cms_rate_inside">
+                  <select name="companySelect" id="companySelect" class="dropdown-box my-0"
+                    (change)="ListDatabyId($event)">
+                    <option selected disabled>--Select Shipping Line--</option>
+                    <option *ngFor="let data of companyList" [value]="data.id">{{data.name}}</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-4 my-3 mx-2">
+                  <input type="search" [(ngModel)]="searchText" class="dropdown-box my-0" placeholder=" Search Here..."
+                    style="width: 60%;">
+
+                  <Span style="float: right;">
+                    <div class='file file--upload btn find-rate-button'>
+                      <label for='input-file'>
+                        <i class="fa fa-cloud-upload" height="22px" width="22px" aria-hidden="true"></i>&nbsp;
+                        Upload
+                      </label>
+                      <input id='input-file' type='file' (change)="onFileSelected($event)" [disabled]="!companyID"
+                        accept={{dataShitForamat}} />
+                    </div>
+
+
+                  </Span>
+                </div>
+              </div>
+              <div class="col-sm-12 my-3 px-2">
+                <span class="spinnerMain" *ngIf="snipperDialoug">
+                  <div class="icon">
+                    <div class="bar" style="background-color: #3498db; margin-left: -60px;"></div>
+                    <div class="bar" style="background-color: #e74c3c; margin-left: -20px;"></div>
+                    <div class="bar" style="background-color: #f1c40f; margin-left: 20px;"></div>
+                    <div class="bar" style="background-color: #2eB869; margin-left: 60px;"></div>
+                  </div>
+                </span>
+                <span class="spinnerMain" *ngIf="manualFilterChooseFromShippingLine ===''">
+                  <div class="shipping-line">
+                    <h2 class="my-5" style="color: rgba(97, 99, 100, 0.767);">Please Select Shipping Line</h2>
+                  </div>
+                </span>
+
+
+                <!-- Loading message -->
+                <div class="col-sm-9 mx-3" style="text-align: left;" *ngIf="isLoading">
+                  <h4>Loading...</h4>
+                </div>
+
+                <div class="col-sm-9" style="text-align: left;" 
+                *ngIf="(manualFilterChooseFromShippingLine !== '' && (!isLoading && currentcompanyListData.length === 0)) ||  
+                       (manualFilterChooseFromShippingLine !== '' && (manualRateLists.length === 0 && !isLoading))">
+                <h4>Data not found for selected option.</h4>
+              </div>
+              
+
+                <!-- CURRENT RATE -->
+                <div *ngIf="(manualFilterChooseFromShippingLine !=='' &&  currentcompanyListData.length > 0 && !isLoading)">
+                  <!-- (manualFilterChooseFromShippingLine !=='' ||  currentcompanyListData.length > 0)-->
+                  <h5 class="mx-3 tableNameLabel">Current Rate List </h5>
+                  <div class="cs-table-wrapper cs-hidden-scroll">
+                    <table style="width:100%" class="table table-hover table-bordered ">
+                      <caption>Current Rate list</caption>
+                      <thead class="position-sticky top-0 start-0">
+                        <tr class="table-primary text-white">
+                          <th>Shipping line</th>
+                          <th>Source</th>
+                          <th>Destination</th>
+                          <th>Transit Time</th>
+                          <th>Freight Type</th>
+                          <th>Rate</th>
+                          <th>Effective Date</th>
+                          <th>Expiration Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let currentData of currentcompanyListData  | searchFilter :searchText">
+                          <td>{{currentData.company.name}}</td>
+                          <td>{{currentData.source.name}}</td>
+                          <td>{{currentData.destination.name}}</td>
+                          <td>{{currentData.transit_time.time}}</td>
+                          <td>{{currentData.freight_type.type}}</td>
+                          <td>{{currentData.rate}}</td>
+                          <td>{{currentData.effective_date}}</td>
+                          <td [ngStyle]="{'color': currentDate > currentData.expiration_date ? 'red' : 'black'}">
+                            {{currentData.expiration_date}}</td>
+                        </tr>
+                        <tr class='text_bold' *ngIf="currentcompanyListData.length === 0">
+                          <td colspan="12">No data available</td>
+                        </tr>
+                        <tr class='text_bold'
+                          *ngIf="(currentcompanyListData | searchFilter: searchText || manualFilterChooseFromShippingLine).length === 0 ">
+                          <td colspan="12">
+                            <div>"{{manualFilterChooseFromShippingLine}}" data not found</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- MANUAL RATE -->
+                <div *ngIf="(manualFilterChooseFromShippingLine !=='' && manualRateLists.length > 0  && !isLoading )">
+                  <h5 class="mx-3 mt-4 tableNameLabel">Manual Rate List </h5>
+                  <div class="cs-table-wrapper cs-hidden-scroll">
+                    <table style="width:100%" class="table table-hover table-bordered ">
+                      <caption>Manual Rate list</caption>
+                      <thead class="position-sticky top-0 start-0">
+                        <tr class="table-primary">
+                          <th>Shipping line</th>
+                          <th>Source</th>
+                          <th>Destination</th>
+                          <th>Transit Time</th>
+                          <th>Freight Type</th>
+                          <th>Rate</th>
+                          <th>Effective Date</th>
+                          <th>Expiration Date</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class='text_bold' *ngIf="manualRateLists.length === 0">
+                          <td colspan="12">No data available</td>
+                        </tr>
+                        <tr
+                          *ngFor="let currentData of manualRateLists  | searchFilter :searchText || manualFilterChooseFromShippingLine">
+                          <td>{{currentData.company.name}}</td>
+                          <td>{{currentData.source.name}}</td>
+                          <td>{{currentData.destination.name}}</td>
+                          <td>{{currentData.transit_time.time}}</td>
+                          <td>{{currentData.freight_type.type}}</td>
+                          <td>{{currentData.rate}}</td>
+                          <td>{{currentData.effective_date}}</td>
+                          <td [ngStyle]="{'color': currentDate > currentData.expiration_date ? 'red' : 'blue'}">
+                            {{currentData.expiration_date}}</td>
+                          <td class="cms_manual_action">
+                        <tr class="cms_manual_edit"
+                          [ngStyle]="{'visibility': currentDate > currentData.expiration_date? 'hidden' : 'visible'}"
+                          title="Edit" (click)="openManualEditModal(currentData)"><i class="fa fa-pencil-square-o"
+                            aria-hidden="true"></i> </tr>
+                        <tr class="cms_manual_edit" (click)="openManualCloneModal(currentData)" title="Clone"><i
+                            class="fa fa-clone" aria-hidden="true"></i> </tr>
+                        <tr class="cms_manual_delete" (click)="openDeleteModal(currentData.id)" data-bs-toggle="modal"
+                          title="Delete" data-bs-target="#deleteModal">
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </tr>
+                        </td>
+                        </tr>
+                        <tr class='text_bold'
+                          *ngIf="(manualRateLists | searchFilter: searchText || manualFilterChooseFromShippingLine).length === 0 ">
+                          <td colspan="12">
+                            <div>"{{manualFilterChooseFromShippingLine}}" data not found</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLONE MANUAL RATE MODAL -->
+<app-clone-manual-rate [formData]="isCloneData" [isCloneVisible]="isCloneModalVisible"
+  (visibilityChange)="handleCloneVisibilityChange($event)" />
+
+<!-- EDIT MANUAL RATES MODAL  (visibilityChange)="handleEditVisibilityChange($event)" -->
+<app-edit-manual-rate [formData]="isEditData" [isEditVisible]="isEditModalVisible"
+  (visibilityChange)="handleEditVisibilityChange($event)">
+</app-edit-manual-rate>
+
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+  data-bs-whatever="@getbootstrap" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Confirmation</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="p-2 m-0 cs_deleteModal">
+        <p> Are you sure? you want to delete</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep it</button>
+        <button type="button" (click)="deleteModalConfirmation()" class="btn btn-primary" data-bs-dismiss=modal>Yes,
+          Sure</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+// Define your SCSS variables
+$clr-facebook-blue: rgba(24, 119, 242, 1);
+$clr-faceboook-blue--hover: rgba(24, 119, 242, 0.9);
+// $clr-green: rgba(80, 168, 94, 1);
+// $clr-green--hover: rgba(80, 168, 94, 0.9);
+$clr-green: rgb(218, 62, 62);
+$clr-green--hover: rgb(238, 30, 30);
+
+// Main styling
+.loginDiv {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: hsl(0 0% 25%);
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.parentdiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    flex-direction: column;
+}
+
+.welcome-message {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-right: 2rem;
+    align-items: center;
+    justify-content: center;
+    font-family: cursive;
+
+    //  text-shadow: 2px 2px 5px black;
+    .welcome {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: $clr-green;
+        margin-bottom: 10px;
+    }
+
+    h3 {
+
+        font-size: 1.8rem;
+        color: $clr-green;
+
+        @media (max-width: 768px) {
+            font-size: 0.4rem;
+            /* Adjust font-size for smaller screens */
+        }
+    }
+}
+
+.login__card--container {
+    width: 100%;
+    max-width: 750px;
+    // background-color: rgba(240, 230, 230, 0.9);
+    background-color: rgba(255, 255, 255, 0.137);
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.925);
+    padding: 30px;
+    box-sizing: border-box;
+
+    @media (max-width: 768px) {
+        max-width: 90%;
+        /* Adjust max-width for responsiveness */
+        padding: 20px;
+        /* Adjust padding for responsiveness */
+    }
+}
+
+.social__login {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .login__heading {
+        font-weight: bold;
+        font-size: 1.5rem;
+        opacity: 0.9;
+        margin-bottom: 15px;
+    }
+}
+
+.manual__login {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .manual__login--form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-bottom: 2px solid $clr-green;
+            font-size: 1.1rem;
+            color: #333;
+            background-color: transparent;
+            transition: border-color 0.3s;
+
+            &::placeholder {
+                color: #666;
+                transition: color 0.3s, transform 0.3s;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: $clr-green;
+
+                &::placeholder {
+                    color: #333;
+                    transform: translateY(-5px);
+                }
+            }
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: $clr-green;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: $clr-green--hover;
+            }
+        }
+    }
+}
+
+.cs-login-btn {
+    background-color: #22338f;
+    color: #ffffff
+}
+
+.separate__line {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+}
+
+.cs-forgot {
+    a {
+        color: #b3b3b3;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+}

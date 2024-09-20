@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+html {
+    overflow-x: hidden;
+}
+
+//whole-bg-color:#ededed
+// header-menu-color:#cccccc
+// heder-menu-active-color: #494949
+// find-rate-button-bg-color:#bbfff2
+
+.layout-wrapper {
+    background-color: #ededed;
+    height: 100%;
+}
+
+.navbar-bg-color {
+    background-color: #ffffff;
+}
+
+.cs-text-color {
+    color: #cccccc
+}
+
+.cs-hidden-scroll {
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.cs-hidden-scroll::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.find-rate-button {
+    background-color: #bbfff2;
+    font-weight: 500;
+  
+    &:hover {
+      background-color: #66eed5;
+      color: #ffffff;
+      font-weight: 500;
+    }
+  }
+

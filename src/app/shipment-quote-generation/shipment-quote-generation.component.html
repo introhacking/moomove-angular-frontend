@@ -1,0 +1,375 @@
+<!-- line-160 --- style="background-image: url('../../assets/ship.jpg'); background-repeat: no-repeat;background-size:cover; height:80.5vh;" -->
+
+<div class="tabs cus_container">
+  <div class="tab" [class.active]="selectedTab === 'FCL'" (click)="selectTab('FCL')">FCL</div>
+  <div class="tab" [class.active]="selectedTab === 'LCL'" (click)="selectTab('LCL')">LCL</div>
+  <div class="tab" [class.active]="selectedTab === 'AIR'" (click)="selectTab('AIR')">AIR</div>
+</div>
+
+
+<div class="cs-tabs-wrapper">
+  <div style="position: relative; height: 100%;">
+    <!-- <div class="overlay"></div> -->
+    <div class="tabCaseUI">
+      <div class="tab-content">
+        <div *ngIf="selectedTab === 'FCL'">
+          <div class="container">
+            <div class="row mb-4">
+              <div class="col form-floating">
+                <select class="form-select border" [(ngModel)]="source1" name="source" id="floatingInput">
+                  <option selected disabled>--Choose source--</option>
+                  <option *ngFor="let data of sourceList" value={{data.id}}>{{data.name}}</option>
+                </select>
+                <label class="mx-2" for="floatingInput">Origin Port</label>
+              </div>
+              <div class="col form-floating">
+                <select [(ngModel)]="destination1" id="floatingInput" class="form-select border">
+                  <option selected disabled>--Select destination--</option>
+                  <option *ngFor="let data of destinationList" value={{data.id}}>{{data.name}}</option>
+                </select>
+                <label class="mx-2" for="floatingInput">Destination Port</label>
+              </div>
+              <div class="col form-floating">
+                <input class="form-control border" [(ngModel)]="shipment_Date1" id="floatingInput" type="date"
+                  min={{todayDate}} placeholder="Date of shipping" />
+                <label class="mx-2" for="floatingInput">Loading of Date</label>
+              </div>
+              <div class="col form-floating">
+                <select [(ngModel)]="equipments1" id="floatingInput" class="form-select border">
+                  <option selected disabled>--Select load types--</option>
+                  <option [value]="data.id" *ngFor="let data of equipmentsList">{{data.type}}</option>
+                </select>
+                <label class="mx-2" for="floatingInput">Equipments</label>
+              </div>
+
+            </div>
+            <div class="row mb-4">
+              <div class="col form-floating">
+                <input type="text" [(ngModel)]="weight1" class="form-control border" id="floatingInput"
+                  placeholder="Container weight">
+                <label class="mx-2" for="floatingInput">Container weight</label>
+              </div>
+              <div class="col form-floating">
+                <input type="number" [(ngModel)]="quantity1" class="form-control border" id="floatingInput"
+                  placeholder="No. of quantity">
+                <label class="mx-2" for="floatingInput">No. of containers</label>
+              </div>
+              <div class="col form-floating d-flex justify-content-end align-items-end position-relative">
+                <select [(ngModel)]="commodity1" id="floatingInput" class="form-control border">
+                  <option value="" selected disabled>--Select commodity--</option>
+                  <option [value]="data.name" *ngFor="let data of comodityList">{{data.name}}</option>
+                </select>
+                <span class="cs-float" data-bs-toggle="modal" title="add commodity" data-bs-target="#exampleModal"><i
+                    class="bi bi-plus-lg"></i>
+                </span>
+                <label class="mx-2" for="floatingInput">Commodity</label>
+              </div>
+              <div class="col form-floating d-flex justify-content-end align-items-end position-relative">
+                <select [(ngModel)]="incoterms1" id="floatingInput" class="form-control border">
+                  <option value="" selected disabled>--Select incoterms--</option>
+                  <option [value]="data.rule" *ngFor="let data of incotermsList">{{data.rule}}</option>
+                </select>
+                <label class="mx-2" for="floatingInput">Incoterms</label>
+                <span class="cs-float" data-bs-toggle="modal" title="add incoterms" data-bs-target="#exampleModal1"><i
+                    class="bi bi-plus-lg"></i>
+                </span>
+              </div>
+
+            </div>
+            <div class="d-grid justify-content-end">
+              <!-- IN BUTTON (  routerLink="/shipmentAggregate" ) -->
+              <button type="button" class="my-4 btn find-rate-button"
+                [disabled]=" !source1||!destination1 || !equipments1 || !shipment_Date1" (click)="findBestRates()">Find
+                Best
+                Rates &nbsp;<i class="fa fa-ship" aria-hidden="true"></i></button>
+              <!-- <i class="fa fa-arrow-right" aria-hidden="true"></i></button> -->
+            </div>
+
+
+            <!-- QUICK RESULT UI -->
+
+            <div class="col-sm-9" style="text-align: left;" *ngIf="this.isLoading">
+              <h4>Loading...</h4> <!-- Loading message -->
+            </div>
+            
+            <div class="col-sm-9" style="text-align: left;" *ngIf="!this.isLoading && this.shipdata.length === 0 && dataChecked">
+              <h4>Data not found for selected route and freight type ....</h4> <!-- No data message -->
+            </div>
+
+
+            <div class="quick-wrapper" *ngIf="this.shipdata.length > 0">
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-column justify-content-between">
+                  <h5> Quick Quotes</h5>
+                  <small class="" style="color:#878787">{{shipdata.length}} result found</small>
+                </div>
+              </div>
+              <div class="row d-flex my-4">
+                <div class="col-3 filter"> <!-- *ngIf="this.shipdata.length>0" -->
+                  <div class="filter-sm">
+                    <img src="../../assets/filter.png" alt="" height="20px" width="25px"
+                      style="float: left; margin: 13px;">
+                    <label for="" class="my-2" style="margin: auto;font-weight: bold;font-size: 15px;">filter</label>
+                    <label for="" class="mx-4 my-2"
+                      style="float: right; color: rgb(113, 141, 194);font-weight: bold;">Clear All</label>
+                  </div>
+                </div>
+                <div class="col-9 px-3 py-2 cs-right-bg-color cs-height cs-hidden-scroll">
+                  <div class="row d-flex justify-content-between gap-1 mb-2" *ngFor="let data of shipdata">
+
+                    <div class="col-2 p-1 bg-white">
+                      <div class="d-flex flex-column justify-content-between align-items-center h-100">
+                        <small class="cs-font-rate">Rate ID P 184936538 T& C</small>
+                        <div class="d-flex flex-column gap-1 cs-font-middle">
+                          <span>MAERSK</span>
+                          <span>CY/ CY AL7</span>
+                          <small><a href="#">SPOT RATE</a></small>
+                        </div>
+                        <small class="cs-font-rate">
+                          <!-- <i class="fa fa-shield" aria-hidden="true"></i> -->
+                          Guaranteed Price & Loading</small>
+                      </div>
+                    </div>
+                    <div class="col-7 d-flex flex-column gap-1 flex-grow-1 bg-white justify-content-between">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <p class="fw-bold">{{data.source.name}}</p>
+                        </div>
+                        <div>
+                          <p class="fw-bold">{{data.company.name}}</p>
+                        </div>
+                        <div>
+                          <p class="fw-bold">{{data.destination.name}}</p>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                          <!-- saling date -->
+                          <label class="cs-font-middle my-1">Saling Date</label>
+                          <label class="cs-font-middle my-1 fw-bold">{{shipment_Date1}}</label>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <!-- trasit time -->
+                          <label class="cs-font-middle my-1">Transit Time</label>
+                          <label class="cs-font-middle my-1 fw-bold">{{formatToFixed(data.transit_time.time)}}
+                            Days</label>
+                        </div>
+                        <span class="cs-font-rate fw-bold">Free Days</span>
+                        <div class="d-flex flex-column">
+                          <!-- forward -->
+                          <label class="cs-font-middle my-1">Rates by Forwarder</label>
+                          <label class="cs-font-middle my-1 fw-bold">XYZ forwarder</label>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-2 p-1 bg-white">
+                      <div class="d-flex justify-content-between flex-column align-items-center h-100">
+                        <div class="d-flex justify-content-between gap-1">
+                          <div class="">
+                            <span class="cs-font-rate cs-text-color">Freight Cost</span>
+                            <label class="fw-bold cs-font-rate">USD {{formatToFixed(data.rate)}}</label>
+                          </div>
+                          <div>
+                            <span class="cs-font-rate cs-text-color">Total cost</span>
+                            <label class="fw-bold cs-font-rate">INR 320654.3 </label>
+                          </div>
+                        </div>
+                        <button (click)="generateQuote(data.id)" data-bs-toggle="modal"
+                          data-bs-target="#choose_customer" type="button"
+                          class="btn find-rate-button cs-font-middle my-1">Create Quote</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedTab === 'LCL'">
+          <!-- Content for Page 2 -->
+          <p>This is content for Page 2.</p>
+        </div>
+        <div *ngIf="selectedTab === 'AIR'">
+          <!-- Content for Page 3 -->
+          <p>This is content for Page 3.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMMODITY MODAL -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    data-bs-whatever="@getbootstrap" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Commodity</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="commodityFormData">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">New Commodity:</label>
+              <input style="border: 2px solid rgb(97, 95, 95);" type="text" placeholder="Enter Commodity"
+                class="form-control" formControlName="name" id="recipient-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss=modal
+            (click)="submitCommodity()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- INCOTERNS MODAL -->
+  <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel1">Add New Incoterms</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="incotermsFormData">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">New Incoterms:</label>
+              <input style="border: 2px solid rgb(97, 95, 95);" type="text" placeholder="Enter Incoterms"
+                class="form-control" formControlName="rule" id="recipient-name">
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss=modal
+            (click)="submitIncoterms()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- CHOOSE CUSTOMER MODAL -->
+  <div class="modal fade" id="choose_customer" tabindex="-1" aria-labelledby="choose_customer_lable" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="choose_customer_lable">Customer lists</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formData">
+            <div class="form-floating mb-3 position-relative">
+              <input type="text" formControlName="customerName" name="customerName" class="form-control border"
+                placeholder="Choose customer name" aria-label="Choose customer name" (input)="onInput($event)"
+                (focus)="showDropdown = true" (blur)="hideDropdown()" (click)="showDropdown = true">
+              <label for="floatingTextarea2">Choose Customer</label>
+
+              <div *ngIf="showDropdown && filteredCustomer.length > 0" class="dropdown-menu show"
+                (mousedown)="$event.preventDefault()"
+                style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
+                <button type="button" class="dropdown-item" *ngFor="let customer of filteredCustomer"
+                  (click)="selectCustomer(customer)">
+                  {{ customer.cust_name }}
+                </button>
+              </div>
+
+              <div *ngIf="filteredCustomer.length === 0 && showDropdown" class="dropdown-menu show">
+                <button type="button" class="dropdown-item" disabled>Not found</button>
+              </div>
+
+              <div *ngIf="formData.get('customerName')!.invalid && 
+                                   (formData.get('customerName')!.dirty || formData.get('customerName')!.touched)">
+                <small class="text-danger">Required customer</small>
+              </div>
+              <span class="cs-float" data-bs-toggle="modal" title="add customer" data-bs-target="#add_customer_modal"><i
+                  class="bi bi-plus-lg"></i>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button (click)="submitCustomer()" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+            [disabled]="!selectedCustomerData">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ADD CUSTOMER MODAL -->
+  <div class="modal fade" id="add_customer_modal" tabindex="-1" aria-labelledby="add_customer_lable" aria-hidden="true">
+    <div class="modal-dialog custom">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="add_customer_lable">Add Customer</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addCustomerFormData">
+            <div class="row g-2 mb-3">
+              <div class="col-md">
+                <div class="form-floating">
+                  <input type="text" (blur)="hideDropdown()" formControlName="customerName" class="form-control border"
+                    id="floatingInputGrid" placeholder="Customer name" value="customerName">
+                  <label for="floatingInputGrid">Customer name</label>
+                </div>
+                <div
+                  *ngIf="addCustomerFormData.get('customerName')!.invalid && 
+                                             (addCustomerFormData.get('customerName')!.dirty || addCustomerFormData.get('customerName')!.touched)">
+                  <small class="text-danger">Customer name is required</small>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating">
+                  <input type="email" (blur)="hideDropdown()" formControlName="customerEmail"
+                    class="form-control border" id="floatingInputGrid" placeholder="johnmalik@gmail.com" value="">
+                  <label for="floatingInputGrid">Customer's email</label>
+                </div>
+                <div
+                  *ngIf="addCustomerFormData.get('customerEmail')!.invalid && 
+                                             (addCustomerFormData.get('customerEmail')!.dirty || addCustomerFormData.get('customerEmail')!.touched)">
+                  <small class="text-danger">Customer email is required</small>
+                </div>
+              </div>
+
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-md">
+                <div class="form-floating">
+                  <input type="number" (blur)="hideDropdown()" formControlName="customerPhone"
+                    class="form-control border" id="floatingInputGrid" placeholder="98562412548" value="">
+                  <label for="floatingInputGrid">Customer's phone</label>
+                </div>
+                <div
+                  *ngIf="addCustomerFormData.get('customerPhone')!.invalid && 
+                                             (addCustomerFormData.get('customerPhone')!.dirty || addCustomerFormData.get('customerPhone')!.touched)">
+                  <small class="text-danger">Customer phone is required</small>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating">
+                  <textarea class="form-control" formControlName="saleRepresent" placeholder=""
+                    id="floatingTextarea"></textarea>
+                  <label for="floatingInputGrid">Sales represent</label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button (click)="addCustomerData()" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+            [disabled]="addCustomerFormData.invalid">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- QUOTATION PAGE MODAL -->
+  <app-quotation-page [formData]="isQuotaData" [isQuotaVisible]="isQuotaModalVisible"
+    (visibilityChange)="handleQuotaVisibilityChange($event)">
+  </app-quotation-page>
+
+
+</div>

@@ -1,0 +1,784 @@
+<!-- <div class="container" >
+
+
+<img src={{quotation.logo_url}} alt="" width="" height="60px" style="float: left;">
+<h1 class="my-3" style="color: rgb(207, 48, 37);">&nbsp; &nbsp; {{quotation.company_name}}</h1>
+<button style="float: right;" class="btn btn-light" (click)="download_pdf()">
+    <img src="../../assets/download1.png" height="" alt=""></button>
+<br><br>
+<hr>
+
+<div class="wrapper">
+  <section class="col">
+    <table>
+      <tbody>
+        <tr>
+          <th class="secondary">Company id</th>
+          <td class="font-sm mute">{{quotation.company_id}}</td>
+        </tr>
+        <tr>
+          <th class="secondary">Company Name</th>
+          <td class="font-sm mute"> {{quotation.company_name}}</td>
+        </tr>
+       
+      </tbody>
+    </table>
+  </section>
+  
+
+</div>
+<div class="sub-header secondary" style="color: aliceblue;">
+  Shipping Details
+</div>
+<div class="wrapper">
+  <table class="data">
+    <thead>
+      <tr>
+        <th class="font-sm primary">Company Id</th>
+        <th class="font-sm primary">Company Name</th>
+        <th class="font-sm primary">POD</th>
+        <th class="font-sm primary"> Rate</th>
+        <th class="font-sm primary">Transite</th>
+       
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="font-sm ">{{quotation.company_id}}</th>
+        <td class="font-sm mute">{{quotation.company_name}}</td>
+        <td class="font-sm mute">{{quotation.pod}}</td>
+        <td class="font-sm mute">{{quotation.rate}}</td>
+        <td class="font-sm mute ">{{quotation.transit}}</td>
+    
+        
+      </tr>
+      
+    </tbody>
+
+  </table>
+  <br>
+  <br>
+  <hr>
+  <table >
+    <tr class="font-md primary number"><b><u>Total Rate</u></b></tr>
+    <td class="font-sm number"><b>{{quotation.rate}}</b></td>
+  </table>
+</div>
+
+</div> -->
+
+
+
+<!-- <div class="col-sm-2">
+    <app-navbaar></app-navbaar>
+</div>      THIS IS INSIDE ROW -->
+
+
+
+
+<!-- <div class="row">
+  <div class="col-sm-10"> 
+
+  <div class="container my-5"  id="quotation">
+    <div class="card" >
+      <div class="card-header">
+        <h3 class="text-center">Quotation</h3>
+       <img src="../../assets/download1.png" (click)="download_pdf()" alt="" style="float: right; background-color: white; border-radius: 4px;">
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="companyData col-md-4">
+           <img class="company_logo" src={{quotation?.company.logo}} height="60px" >
+           <h3 style="color: rgb(47, 125, 177); font-size: 45px;"><u>{{quotation?.company.name}}</u></h3>
+ 
+          </div>
+          <div class="col-md-2">
+            <img src="../../assets/scan_me_qr_code.jpg"  height="160px" width="90%">
+          </div>
+          <div class="col-md-6 text-md-right">
+           
+
+            <table style="width: 100%;">
+              <tr >
+                <th>Offer Num:</th>
+                <td >34526 </td>
+              </tr>
+              <tr>
+                <th>Offer Date:</th>
+                <td >{{shipment_Date}} </td>
+              </tr>
+              <tr>
+                <th>Valid From:</th>
+                <td> {{quotation?.effective_date}} </td>
+              </tr>
+              <tr>
+                <th>Valid To:</th>
+                <td>{{quotation?.expiration_date}} </td>
+              </tr>
+             
+            </table>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+
+
+            
+            <table style="width: 100%;">
+              <tr >
+                <th > Company</th>
+                <td >{{quotation?.company.name}}</td>
+              </tr>
+              <tr>
+                <th>Contact Name:</th>
+                <td>AARTI DALVI</td>
+              </tr>
+              <tr>
+                <th>Email:</th>
+                <td>aarti.dalvi@graceworld.in</td>
+              </tr>
+              <tr>
+                <th>Phone:</th>
+                <td>91.22.61180021</td>
+              </tr>
+ 
+           
+             
+            </table>
+            
+          </div>
+          
+          <div class="col-md-6 text-md-right">
+          
+            <table style="width: 100%;">
+              <tr>
+                <th> Service:</th>
+                <td>Seafreight Export FCL</td>
+              </tr>
+              <tr>
+                <th> Sales Represent:</th>
+                <td>EGLOBE SALES TEAM</td>
+              </tr>
+              <tr>
+                <th>Email:</th>
+                <td>eglobe@gmail.com</td>
+              </tr>
+              <tr>
+                <th>Phone:</th>
+                <td>930 180 003</td>
+              </tr>
+
+           
+            
+             
+            </table>
+           
+            
+          </div>
+          <table style="border-collapse: separate; width: 100%;">
+            
+            <tr >
+              <th style="width: 17%;"> Customer:</th>
+              <td style="width: 32%;">1X20'HD EXW SPAIN - NHAVA SHEVA / PIERO IPARRAGUIRRE</td>
+              <td style="width: 2%;  background-color: white;"></td>
+              <th style="width: 22%;">Created By:</th>
+            
+              <td style="width: 28%;">PIERO IPARRAGUIRRE</td>
+            </tr>
+
+          </table>
+
+
+
+          <table style="border-collapse: separate;">
+         
+            <tr>
+              <th>Description of goods </th>
+              <td> CERAMIC TILES.Gross Weight : {{weight}}</td>
+            </tr>
+          </table>
+          
+        </div>
+        <table>
+      
+      
+        </table>
+        <h5>FULL CONTAINER SEA FREIGHT</h5>
+        <table class="table table-bordered invoicetable">
+          <thead class="thead-dark">
+            <tr>
+              <th>Port Of Origin</th>
+              <th>Port from</th>
+              <th>Freight type</th>
+              <th>Commodity</th>
+              <th>Weight</th>
+              <th>Qty</th>
+              <th>Price</th>
+            
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{quotation?.source.name}}</td>
+              <td>{{quotation?.destination.name}}</td>
+              <td>{{quotation?.freight_type.type}}</td>
+              
+              <td>{{comodity}}</td>
+              <td>{{weight}}</td>
+
+              <td>{{quantity}}</td>
+              <td > {{quotation.rate}} $</td>
+          
+          <td>{{subTotalQuotationRate}} $</td>
+            </tr>
+          </tbody>
+        </table>
+        <h5>FOB Charges</h5>
+        <table class="table table-bordered invoicetable">
+          <thead class="thead-dark">
+            <tr>
+              <th>Invoice Concept</th>
+              <th>Qty</th>
+              <th>Price</th>
+            <th>Amount</th>
+              <th>Subtotal in USD</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AGENT HANDLING FEE</td>
+              <td>1</td>
+              <td>25,00 €</td>
+             
+              <td >25,00 €</td>
+              <td>27,29 $</td>
+            </tr>
+            <tr>
+              <td>FORFAIT FOB CHARGES</td>
+              <td>1</td>
+              <td>355,00 €</td>
+         
+              <td>355,00 €</td>
+              <td>387,52 $</td>
+            </tr>
+            <tr>
+              <td>ORIGIN DOCUMENTS FEE</td>
+              <td>1</td>
+              <td>60,00 €</td>
+     
+              <td>60,00 €</td>
+              <td>65,50 $</td>
+            </tr>
+            <tr>
+              <td>EXPORT CUSTOMS CLEARANCE</td>
+              <td>1</td>
+              <td>35,00 €</td>
+              
+              <td>35,00 €</td>
+              <td>38,21 $</td>
+            </tr>
+            <tr>
+              <td>CTNR DRAYAGE FROM 12200 CASTELLON TO VLC PORT</td>
+              <td>1</td>
+              <td>280,00 €</td>
+            
+              <td>280,00 €</td>
+              <td>305,65 $</td>
+            </tr>
+            <tr >
+              <td></td>
+              <td colspan="3"> <strong>Subtotal In USD</strong></td>
+         
+              <td><strong>824,17 $</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-md-6" >
+
+            <table style="width: 100%;">
+              <tr>
+                <th>Payment Conditions For Services :</th>
+                <td></td>
+              </tr>
+              <tr>
+                <th>For Services: </th>
+                <td> TRANSFER. 30 days due date</td>
+              </tr>
+              <tr>
+                <th>For VAT and Duty: </th>
+                <td> TRANSFER. 30 days due date</td>
+              </tr>
+             
+            </table>
+          
+          </div>
+          <div class="col-md-6 text-md-right">
+
+
+         
+
+            <table style="width: 100%;">
+
+              <tr>
+               <th> <strong>Total</strong></th>
+            <td></td>
+              </tr>
+              <tr>
+                <th>Freight Subtotal:</th>
+                <td>{{subTotalQuotationRate}} $</td>
+              </tr>
+              <tr>
+                <th>Expenses Subtotal:</th>
+                <td>{{expenses_subtotal}} $</td>
+              </tr>
+              <tr>
+                <th style="color: black;"><strong>Total Amount:</strong></th>
+                <td> <strong>{{totalAmount}} $</strong></td>
+              </tr>
+             
+            </table>
+          
+          
+            
+            
+          </div>
+          
+        
+        </div>
+        <h3>Incoterms</h3>
+
+        <h5 class="px-3" style="background-color: rgba(34, 34, 34, 0.849); color: white;">Incoterms : <span>{{incoterms}}</span></h5>
+       
+        <br>
+        <table style="width: 100%;">
+          <tr>
+            <th>Currency</th>
+            <td>From US DOLLER To EURO: 0.9160865 </td>
+           <th>   </th>
+           <td>From EURO To US DOLLER : 1.0916</td>
+          </tr>
+        </table>
+        <br>
+        <h5 >Comments</h5>
+     
+        <ul>
+          <li>EXW TERMS // SSL: MSK</li>
+          <li>EUR-1: €25 (IF REQUESTED)</li>
+          <li>INTERNATIONAL COURIER: €50 (IF REQUESTED)</li>
+          <li>BOOKING CANCELLATION FEE - USD150/CTNR</li>
+          <li>INLAND HAULAGE FUEL SURCHARGE UPDATED MONTHLY, CURRENT PERCENTAGE AT 5% - MARCH (INCLUDED)</li>
+          <li>14 FREE DAYS AT POD</li>
+        </ul>
+        <pre>
+- Unless stated otherwise, the freight rates of this offer are ALL IN including all applicable freight surcharges (BAF, CAF, LSS, PSS, etc.).
+- The cargo and stowage of the goods inside the container are as per account of the shipper who has 2 hours free for this work. Afterwards, 
+an additional fee of €65 / hour will be charged.
+- The transit times indicated are informative and approximate and may vary without prior notice from the shipowner.
+- Not including those concepts not expressed in the offer, such as possible costs generated by customs inspections that the competent authority may require.
+- We remind you of the entry of the SOLAS law, which since last 07/01/2016 obliges to weigh all the containers at the port entrance in order to
+ obtain the required VGM. It is very important to declare the correct gross weight of the merchandise in order to avoid 
+discrepancies that may lead to delays and / or economic repercussions.
+-An additional cost of 25% will be applied on transportation, in case of excess weight with respect to the following information:
+• 20'+ of 26 Tm
+• 40' + 24 Tm
+- In case of issuing request of TELEX RELEASE / SEAWAYBILL after the vessel´s departure, there will be a further cost of EUR 45 x BL
+        </pre>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+</div> -->
+
+
+<!--  CUSTOM QUOTATION PAGE UI -->
+<!-- <img class="company_logo" src="../../assets/download1.png" height="60px"> -->
+
+<div class="modal" [class.show]="isQuotaVisible">
+  <div class="modal-content">
+    <div class="modal-heading-content position-relative">
+      <span (click)="closeModal()" class="close">&times;</span>
+    </div>
+    <div class="modal-inner-content cs-hidden-scroll">
+      <div class="container" id="quotation">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="text-center">Quotation</h3>
+            <img src="../../assets/download1.png" (click)="download_pdf()" alt=""
+              style="float: right; background-color: transparent; cursor: pointer; border-radius: 4px;">
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="companyData col-md-4">
+                <h3 style="color: rgb(47, 125, 177); font-size: 40px;"><u>{{quotation?.company?.name}}</u></h3>
+              </div>
+              <div class="col-md-2">
+                <img src="../../assets/scan_me_qr_code.jpg" height="160px" width="90%">
+              </div>
+              <div class="col-md-6 text-md-right">
+                <table style="width: 100%;">
+                  <tr>
+                    <th>Offer Num:</th>
+                    <td>34526 </td>
+                  </tr>
+                  <tr>
+                    <th>Offer Date:</th>
+                    <td>{{shipment_Date}} </td>
+                  </tr>
+                  <tr>
+                    <th>Valid From:</th>
+                    <td> {{quotation?.effective_date}} </td>
+                  </tr>
+                  <tr>
+                    <th>Valid To:</th>
+                    <td>{{quotation?.expiration_date}} </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <table style="width: 100%;">
+                  <tr>
+                    <th>Shipping line:</th>
+                    <td>{{quotation?.company?.name}}</td>
+                  </tr>
+                  <tr>
+                    <th>Contact Name:</th>
+                    <td>AARTI DALVI</td>
+                  </tr>
+                  <tr>
+                    <th>Email:</th>
+                    <td>aarti.dalvi@graceworld.in</td>
+                  </tr>
+                  <tr>
+                    <th>Phone:</th>
+                    <td>91.22.61180021</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6 text-md-right">
+                <table style="width: 100%;">
+                  <tr>
+                    <th> Service:</th>
+                    <td>{{incoterms}}</td>
+                  </tr>
+                  <tr>
+                    <th> Sales Represent:</th>
+                    <td>{{customerData?.sales_represent}}</td>
+                  </tr>
+                  <tr>
+                    <th>Email:</th>
+                    <td>{{customerData?.cust_email}}</td>
+                  </tr>
+                  <tr>
+                    <th>Phone:</th>
+                    <td>{{customerData?.phone}}</td>
+                  </tr>
+                </table>
+              </div>
+              <table style="border-collapse: separate; width: 100%;">
+                <tr>
+                  <th style="width: 17%;"> Customer:</th>
+                  <td style="width: 32%;">{{customerData?.cust_name}}</td>
+                  <td style="width: 2%;  background-color: white;"></td>
+                  <th style="width: 22%;">Created By:</th>
+                  <td style="width: 28%;">PIERO IPARRAGUIRRE</td>
+                </tr>
+              </table>
+              <table style="border-collapse: separate; width: 100%;">
+                <tr>
+                  <th style="width: 17%;">Description of goods </th>
+                  <td> CERAMIC TILES.Gross Weight : {{weight}}</td>
+                </tr>
+              </table>
+            </div>
+            <table>
+            </table>
+            <h5>FULL CONTAINER SEA FREIGHT</h5>
+            <table class="table table-bordered invoicetable">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Port Of Origin</th>
+                  <th>Port from</th>
+                  <th>Freight type</th>
+                  <th>Commodity</th>
+                  <th>Weight</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{quotation?.source?.name}}</td>
+                  <td>{{quotation?.destination?.name}}</td>
+                  <td>{{quotation?.freight_type?.type}}</td>
+                  <td>{{comodity}}</td>
+                  <td>{{weight}}</td>
+                  <td>{{quantity}}</td>
+                  <td> {{quotation?.rate}} $</td>
+                  <td>{{subTotalQuotationRate}} $</td>
+                </tr>
+              </tbody>
+            </table>
+            <h5>FOB Charges</h5>
+            <table class="table table-bordered invoicetable">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Invoice Concept</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Amount</th>
+                  <th>Subtotal in USD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>AGENT HANDLING FEE</td>
+                  <td>1</td>
+                  <td>25,00 €</td>
+                  <td>25,00 €</td>
+                  <td>27,29 $</td>
+                </tr>
+                <tr>
+                  <td>FORFAIT FOB CHARGES</td>
+                  <td>1</td>
+                  <td>355,00 €</td>
+                  <td>355,00 €</td>
+                  <td>387,52 $</td>
+                </tr>
+                <tr>
+                  <td>ORIGIN DOCUMENTS FEE</td>
+                  <td>1</td>
+                  <td>60,00 €</td>
+                  <td>60,00 €</td>
+                  <td>65,50 $</td>
+                </tr>
+                <tr>
+                  <td>EXPORT CUSTOMS CLEARANCE</td>
+                  <td>1</td>
+                  <td>35,00 €</td>
+                  <td>35,00 €</td>
+                  <td>38,21 $</td>
+                </tr>
+                <tr>
+                  <td>CTNR DRAYAGE FROM 12200 CASTELLON TO VLC PORT</td>
+                  <td>1</td>
+                  <td>280,00 €</td>
+                  <td>280,00 €</td>
+                  <td>305,65 $</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td colspan="3"> <strong>Subtotal In USD</strong></td>
+                  <td><strong>824,17 $</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-md-6">
+
+                <table style="width: 100%;">
+                  <tr>
+                    <th>Payment Conditions For Services :</th>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th>For Services: </th>
+                    <td> TRANSFER. 30 days due date</td>
+                  </tr>
+                  <tr>
+                    <th>For VAT and Duty: </th>
+                    <td> TRANSFER. 30 days due date</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6 text-md-right">
+                <table style="width: 100%;">
+                  <tr>
+                    <th> <strong>Total</strong></th>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th>Freight Subtotal:</th>
+                    <td>{{subTotalQuotationRate}} $</td>
+                  </tr>
+                  <tr>
+                    <th>Expenses Subtotal:</th>
+                    <td>{{expenses_subtotal}} $</td>
+                  </tr>
+                  <tr>
+                    <th style="color: black;"><strong>Total Amount:</strong></th>
+                    <td> <strong>{{totalAmount}} $</strong></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <h3>Incoterms</h3>
+
+            <h5 class="px-3 py-2" style="background-color: rgba(34, 34, 34, 0.849); color: white;">Incoterms :
+              <span>{{incoterms}}</span>
+            </h5>
+            <br>
+            <table style="width: 100%;">
+              <tr>
+                <th>Currency</th>
+                <td>From US DOLLER To EURO: 0.9160865 </td>
+                <th> </th>
+                <td>From EURO To US DOLLER : 1.0916</td>
+              </tr>
+            </table>
+            <br>
+            <h5>Comments</h5>
+            <ul>
+              <li>EXW TERMS // SSL: MSK</li>
+              <li>EUR-1: €25 (IF REQUESTED)</li>
+              <li>INTERNATIONAL COURIER: €50 (IF REQUESTED)</li>
+              <li>BOOKING CANCELLATION FEE - USD150/CTNR</li>
+              <li>INLAND HAULAGE FUEL SURCHARGE UPDATED MONTHLY, CURRENT PERCENTAGE AT 5% - MARCH (INCLUDED)</li>
+              <li>14 FREE DAYS AT POD</li>
+            </ul>
+            <pre>
+        - Unless stated otherwise, the freight rates of this offer are ALL IN including all applicable freight
+        surcharges (BAF, CAF, LSS, PSS, etc.).
+        - The cargo and stowage of the goods inside the container are as per account of the shipper who has 2
+        hours free for this work. Afterwards,
+        an additional fee of €65 / hour will be charged.
+        - The transit times indicated are informative and approximate and may vary without prior notice from the
+        shipowner.
+        - Not including those concepts not expressed in the offer, such as possible costs generated by customs
+        inspections that the competent authority may require.
+        - We remind you of the entry of the SOLAS law, which since last 07/01/2016 obliges to weigh all the
+        containers at the port entrance in order to
+        obtain the required VGM. It is very important to declare the correct gross weight of the merchandise in
+        order to avoid
+        discrepancies that may lead to delays and / or economic repercussions.
+        -An additional cost of 25% will be applied on transportation, in case of excess weight with respect to the
+        following information:
+        • 20'+ of 26 Tm
+        • 40' + 24 Tm
+        - In case of issuing request of TELEX RELEASE / SEAWAYBILL after the vessel´s departure, there will be a
+        further cost of EUR 45 x BL
+              </pre>
+          </div>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class="modal" [class.show]="isQuotaVisible">
+  <div class="modal-content">
+    <div class="modal-heading-content position-relative">
+      <span (click)="closeModal()" class="close">&times;</span>
+    </div>
+    <div class="modal-inner-content cs-hidden-scroll">
+      <div class="container" id="quotation">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="text-center">Quotation</h3>
+            <img src="../../assets/download1.png" (click)="download_pdf()" alt=""
+              style="float: right; background-color: transparent; cursor: pointer; border-radius: 4px;">
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="companyData col-md-4">
+                <h3 style="color: rgb(47, 125, 177); font-size: 45px;"><u>{{quotation?.company?.name}}</u></h3>
+              </div>
+              <div class="col-md-2">
+                <img src="../../assets/scan_me_qr_code.jpg" height="160px" width="90%">
+              </div>
+              <div class="col-md-6 text-md-right">
+                <table style="width: 100%;">
+                  <tr>
+                    <th>Offer Num:</th>
+                    <td>34526</td>
+                  </tr>
+                  <tr>
+                    <th>Offer Date:</th>
+                    <td>{{shipment_Date}}</td>
+                  </tr>
+                  <tr>
+                    <th>Valid From:</th>
+                    <td>{{quotation?.effective_date}}</td>
+                  </tr>
+                  <tr>
+                    <th>Valid To:</th>
+                    <td>{{quotation?.expiration_date}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <table style="width: 100%;">
+                  <tr>
+                    <th> Company</th>
+                    <td>{{quotation?.company?.name}}</td>
+                  </tr>
+                  <tr>
+                    <th>Contact Name:</th>
+                    <td>AARTI DALVI</td>
+                  </tr>
+                  <tr>
+                    <th>Email:</th>
+                    <td>aarti.dalvi@graceworld.in</td>
+                  </tr>
+                  <tr>
+                    <th>Phone:</th>
+                    <td>91.22.61180021</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-md-6 text-md-right">
+                <table style="width: 100%;">
+                  <tr>
+                    <th> Service:</th>
+                    <td>Seafreight Export FCL</td>
+                  </tr>
+                  <tr>
+                    <th> Sales Represent:</th>
+                    <td>EGLOBE SALES TEAM</td>
+                  </tr>
+                  <tr>
+                    <th>Email:</th>
+                    <td>eglobe@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <th>Phone:</th>
+                    <td>930 180 003</td>
+                  </tr>
+                </table>
+              </div>
+              <table style="border-collapse: separate; width: 100%;">
+                <tr>
+                  <th style="width: 17%;"> Customer:</th>
+                  <td style="width: 32%;">1X20'HD EXW SPAIN - NHAVA SHEVA / PIERO IPARRAGUIRRE</td>
+                  <td style="width: 2%;  background-color: white;"></td>
+                  <th style="width: 22%;">Created By:</th>
+                  <td style="width: 28%;">PIERO IPARRAGUIRRE</td>
+                </tr>
+              </table>
+              <table style="border-collapse: separate;">
+                <tr>
+                  <th>Description of goods </th>
+                  <td> CERAMIC TILES.Gross Weight : {{weight}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
