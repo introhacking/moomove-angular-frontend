@@ -11,38 +11,47 @@ import Swal from 'sweetalert2';
   styleUrls: ['./shipment-quote-generation.component.scss']
 })
 export class ShipmentQuoteGenerationComponent {
-  source: any
-  destination: any
-  equipments: any
-  shipment_Date: any
-  quantity: any = 1
+  // source: any
+  // destination: any
+  // equipments: any
+  // shipment_Date: any
+  // quantity: any = 1
   sourceList: any = []
   destinationList: any = []
   equipmentsList: any = []
   comodityList: any = []
   incotermsList: any = []
   todayDate: any
-  commodity: any
-  weight: any
-  incoterms: any
+  // commodity: any
+  // weight: any
+  // incoterms: any
   commodityFormData!: FormGroup
   incotermsFormData!: FormGroup
   addCustomerFormData!: FormGroup
+  addEquipmentsFormData!: FormGroup
   closeDialouge: any;
 
   // RESULT
-  source1: any
-  destination1: any
-  equipments1: any
-  shipment_Date1: any
-  quantity1: any = 1
+  source: any
+  destination: any
+  equipments: any
+  shipment_Date: any
+  quantity: any = 1
   shipdata: any = [];
   currentDate: any;
-  commodity1: any;
-  incoterms1: any;
-  weight1: any;
+  commodity: any;
+  incoterms: any = 'FCA';
+  weight: number = 0;
   isLoading: boolean = false;
   dataChecked: boolean = false;
+  freeDays: any
+  isRateFrozenIdx: any = ''
+
+  modalStatus: boolean | null = false;
+  serverResposeMessage: any = '';
+
+  localStorageUsername: string | null = null;
+  localStorageEmail: string | null = null;
 
   // Quotaton here
   isQuotaData: any = []
@@ -50,9 +59,13 @@ export class ShipmentQuoteGenerationComponent {
   isQuotaModalVisible = false;
 
   formData!: FormGroup;
+  findBestRoute!: FormGroup;
+  // FOR CUSTOMER SEARCH
   showDropdown: boolean = false;
-  customerLists: any[] = []
   filteredCustomer: any[] = [];
+  customerInputValue: string = '';
+
+  customerLists: any[] = []
   showCustomerDropdown: boolean = false;
   selectedCustomerId: number | null = null;
   selectedCustomerData: any;
@@ -102,13 +115,35 @@ export class ShipmentQuoteGenerationComponent {
       customerName: ['', Validators.required],
     })
 
+    this.addEquipmentsFormData = this.fb.group({
+      equipmentName: ['', Validators.required],
+    })
+
     this.addCustomerFormData = this.fb.group({
       customerName: ['', Validators.required],
       customerEmail: ['', Validators.required],
       customerPhone: ['', Validators.required],
-      saleRepresent: [''],
+      terms_condition: ['', Validators.required],
+      saleRepresent: ['', Validators.required],
     })
+
+
+
+    this.findBestRoute = this.fb.group({
+      source: ['', Validators.required],
+      destination: ['', Validators.required],
+      shipment_Date: ['', Validators.required],
+      equipments: ['', Validators.required],
+      commodity: ['', Validators.required],
+      quantity: ['', Validators.required],
+      incoterms: ['', Validators.required],
+      weight: ['', Validators.required],
+
+    });
   }
+
+
+
 
   //  START
 
@@ -137,13 +172,15 @@ export class ShipmentQuoteGenerationComponent {
   }
 
   getshipmentData() {
-    this.apiServiceService.getShipmentData(this.source1, this.destination1, this.equipments1).subscribe(res => {
+    // this.apiServiceService.getShipmentData(this.source, this.destination, this.equipments).subscribe(res => {
+    this.apiServiceService.getShipmentData(this.source, this.destination).subscribe(res => {
       // console.log(">>", res);
       if (res.length > 0 || res.length === 0) {
         this.shipdata = res
         this.isLoading = false
         this.dataChecked = true;
-      } 
+        // console.log(this.shipdata)
+      }
     })
   }
 
@@ -235,16 +272,16 @@ export class ShipmentQuoteGenerationComponent {
     this.isLoading = true
     this.dataChecked = false;
 
-    this.apiServiceService.source = this.source1 || {}
-    this.apiServiceService.destination = this.destination1 || {}
-    this.apiServiceService.equipments = this.equipments1 || {}
-    this.apiServiceService.shipment_Date = this.shipment_Date1 || {}
-    this.apiServiceService.quantity = this.quantity1 || {}
-    this.apiServiceService.comodity = this.commodity1 || {}
-    this.apiServiceService.weight = this.weight1 || {}
-    this.apiServiceService.incoterms = this.incoterms1 || {}
+    this.apiServiceService.source = this.source || {}
+    this.apiServiceService.destination = this.destination || {}
+    this.apiServiceService.equipments = this.equipments || {}
+    this.apiServiceService.shipment_Date = this.shipment_Date || {}
+    this.apiServiceService.quantity = this.quantity || {}
+    this.apiServiceService.comodity = this.commodity || {}
+    this.apiServiceService.weight = this.weight || {}
+    this.apiServiceService.incoterms = this.incoterms || {}
 
-    if (this.source1) {
+    if (this.source) {
       setTimeout(() => {
         this.getshipmentData();
         // this.isLoading=false
@@ -260,18 +297,42 @@ export class ShipmentQuoteGenerationComponent {
       if (ele.id == quoteDataIdx) {
         this.apiServiceService.quotation = ele
         this.modifiedQuotaData = ele
+        this.isRateFrozenIdx = quoteDataIdx
       }
     })
     // this.route.navigate(['quotation_page']);
 
   }
 
-  submitCustomer() {
+  getLoginInfo() {
+    // Retrieve username and email from localStorage
+    this.localStorageUsername = JSON.parse(`${localStorage.getItem('UserData')}`).username;
+    this.localStorageEmail = JSON.parse(`${localStorage.getItem('UserData')}`).email;
+  }
+
+  updatingFrozenRate(forzenIdx: any) {
+    this.apiServiceService.updatingManualRate(`/api/manual-rate/${forzenIdx}/`, { isRateUsed: true }).subscribe(response => {
+      console.log(response)
+    })
+
+  }
+
+
+  submitCustomer(rateFrozenId: any) {
+
     if (this.selectedCustomerData) {
-      this.isQuotaData = { ...this.modifiedQuotaData, customerData: this.selectedCustomerData };
+      this.getLoginInfo()
+      // Log the retrieved values
+      const loginDetails = {
+        username: this.localStorageUsername,
+        email: this.localStorageEmail,
+      }
+      this.isQuotaData = { ...this.modifiedQuotaData, customerData: this.selectedCustomerData, loginDetails: loginDetails };
       this.isQuotaModalVisible = true;
       this.formData.get('customerName')!.reset();
       this.selectedCustomerData = null;
+
+      // this.updatingFrozenRate(rateFrozenId)
     }
     else {
       alert('No customer selected');
@@ -291,11 +352,29 @@ export class ShipmentQuoteGenerationComponent {
   }
 
   onInput(event: any): void {
-    const value = event.target.value.toLowerCase();
-    this.filteredCustomer = this.customerLists.filter((customer: any) =>
-      customer.cust_name.toLowerCase().includes(value)
-    );
+    // const value = event.target.value.toLowerCase();
+    // this.filteredCustomer = this.customerLists.filter((customer: any) =>
+    //   customer.cust_name.toLowerCase().includes(value)
+    // );
+    this.customerInputValue = event.target.value;
+    // Perform filtering based on the input value
+    if (this.customerInputValue.length >= 2) {
+      // Example of filtering logic: Update the filteredCompanies array based on input
+      this.filteredCustomer = this.filterCustomer(this.customerInputValue);
+    } else {
+      // If input length is less than 2, do not show filtered results
+      this.filteredCustomer = [];
+    }
+
   }
+
+  filterCustomer(query: string) {
+    return this.customerLists.filter((customer: any) =>
+      customer.cust_name.toLowerCase().includes(query.toLowerCase())
+    );
+
+  }
+
   selectCustomer(customer: any) {
 
     this.formData.get('customerName')!.setValue(customer.cust_name); // Set the selected customer name in form
@@ -305,7 +384,7 @@ export class ShipmentQuoteGenerationComponent {
   hideDropdown() {
     setTimeout(() => {
       this.showDropdown = false;
-    }, 200); // Delay to allow click event to register before hiding
+    }, 100); // Delay to allow click event to register before hiding
   }
 
   addCustomerData() {
@@ -313,7 +392,8 @@ export class ShipmentQuoteGenerationComponent {
       cust_name: this.addCustomerFormData.value.customerName,
       cust_email: this.addCustomerFormData.value.customerEmail,
       phone: this.addCustomerFormData.value.customerPhone,
-      sales_represent: this.addCustomerFormData.value.saleRepresent
+      sales_represent: this.addCustomerFormData.value.saleRepresent,
+      terms_condition: this.addCustomerFormData.value.terms_condition
     }
     try {
       this.apiServiceService.addManualRate('/api/customer/', preparingPostData).subscribe(response => {
@@ -338,6 +418,49 @@ export class ShipmentQuoteGenerationComponent {
       })
     } catch (err) {
 
+    }
+  }
+
+  submitEquipments() {
+    const preparingPostData = {
+      type: this.addEquipmentsFormData.value.equipmentName
+    }
+    try {
+
+      if (this.addEquipmentsFormData.invalid) {
+        this.addEquipmentsFormData.markAllAsTouched();
+        return;
+      }
+      this.apiServiceService.addManualRate('/api/frighttype/', preparingPostData).subscribe(response => {
+        // console.log(response)
+        if (response.message === 'already exists') {
+          this.serverResposeMessage = 'This equipment already exists'
+          this.modalStatus = false
+          return
+        }
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "success",
+          title: `${this.addEquipmentsFormData.value.equipmentName.toUpperCase()} Added Successfully`
+        });
+        this.addEquipmentsFormData.reset();
+        this.getEquipments()
+        this.modalStatus = true
+        this.serverResposeMessage = ''
+
+      })
+    } catch (error) {
+      // console.log(error)
     }
   }
 }

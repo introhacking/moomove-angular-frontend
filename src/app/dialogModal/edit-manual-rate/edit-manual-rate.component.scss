@@ -53,6 +53,14 @@
   justify-content: flex-end;
   padding: 10px 20px;
 }
+.cs-rate_types {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  .form-check-label {
+    margin-left: 8px;
+  }
+}
 
 // .cms_button {
 //   border: none;
@@ -81,18 +89,19 @@
 .cms_button {
   border: none;
   border-radius: 5px;
-  background-color: #bbfff2;
+  background-color: #22338f;
   display: inline-block;
   font-weight: 500;
   line-height: 1.5;
-  color: #212529;
+  padding: .375rem .75rem;
+  color: #ffffff;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
   cursor: pointer;
 
   &:hover {
-    background-color: #66eed5;
+    background-color: #22338f;
     color: #ffffff;
     font-weight: 500;
   }
@@ -101,13 +110,12 @@
 
 .cms_button.disabled {
   cursor: not-allowed;
-  background-color: #bbfff2;
+  background-color: #22338f;
   opacity: 0.8;
-  // background-color: #bbfff2;
 
   &:hover {
-    background-color: #bbfff2;
-    color: #212529;
+    background-color: #142cb6;
+    color: #ffffff;
   }
 }
 
@@ -122,4 +130,10 @@
   width: 4em !important;
   height: 1.5em !important;
 
+}
+
+/* Styling for the dropdown menu */
+.dropdown-menu {
+  max-height: 200px;
+  overflow-y: auto;
 }

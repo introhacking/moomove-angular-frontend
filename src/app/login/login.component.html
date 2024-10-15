@@ -1,6 +1,6 @@
 <div class="loginDiv">
 
-    <div class="col-7 p-4"> <!--login__card--container-->
+    <div class="col-7 p-4 cs-login-responsive"> <!--login__card--container-->
         <div class="row">
             <div class="col-sm-6 parentdiv">
                 <div class="welcome-message">
@@ -10,21 +10,21 @@
             <div class="col-sm-6 border border-light-subtle">
                 <div class="h-100 cs-login">
                     <div class="w-100">
-                        <h4 class="fw-bold">Welcome Back!</h4>
+                        <h4 class="fw-bold mb-3">Welcome Back!</h4>
                         <!-- Social login buttons can be added here if needed -->
                     </div>
                     <div class="manual__login">
                         <form [formGroup]="loginFormData">
                              <div>
                                 <div class="d-flex flex-column gap-1 mb-3">
-                                    <label for="username">Username</label>
-                                    <input class='px-3 py-2 rounded border' type="text" placeholder="Enter your username" formControlName="username" id="username">
+                                    <!-- <label for="username">Username</label> -->
+                                    <input class='px-3 py-2 rounded border' type="text" placeholder="Username" formControlName="username" id="username">
                                 </div>
                                 <div class="d-flex flex-column gap-1 mb-3">
-                                    <label for="password">Password</label>
-                                    <input class='px-3 py-2 rounded border' type="password" placeholder="Enter your password" formControlName="password" id="password">
+                                    <!-- <label for="password">Password</label> -->
+                                    <input class='px-3 py-2 rounded border' type="password" placeholder="Password" formControlName="password" id="password">
                                 </div>
-                                <button class="btn cs-login-btn border w-100 fw-bold" (click)="login()"> {{ isRedirect ? 'Redirecting...' : 'Log In' }}</button>
+                                <button class="btn cs-login-btn border w-100 fw-bold" (click)="login()"> {{ isRedirect ? 'Redirecting...' : 'LOGIN' }}</button>
                             </div>
                             <div class="d-flex justify-content-end my-1">
                                 <span class="cs-forgot"><small><a href="#">Forgot your password?</a></small></span>

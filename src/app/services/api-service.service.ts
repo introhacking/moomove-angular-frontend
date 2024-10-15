@@ -19,8 +19,9 @@ export class ApiServiceService {
   manualRate: any
   //baseUrl='http://192.168.120.55:8000'
   // baseUrl='http://csm.augtrans.com:4049'
-  baseUrl = 'http://localhost:8000'
+  baseUrl = 'http://localhost:8000'     // LOCALHOST
   // baseUrl = 'http://35.154.191.16:8000' // AWS
+  // baseUrl = 'http://13.234.231.216:8000' // AWS TEST
   accessToken1: any
   refreshToken: any
   parseda: any
@@ -234,12 +235,14 @@ export class ApiServiceService {
 
 
   //
-  getShipmentData(source: any, destination: any, equipments: any) {
-
-    console.log(source,destination,equipments)
+  getShipmentData(source: any, destination: any,) {
 
 
-    let shipmentUrl = this.baseUrl + "/api/rates/" + source + "/" + destination + "/" + equipments + "/"
+    console.log(source,destination)
+
+
+    // let shipmentUrl = this.baseUrl + "/api/rates/" + source + "/" + destination + "/" + equipments + "/"
+    let shipmentUrl = this.baseUrl + "/api/rates/" + source + "/" + destination + "/"
 
 
     const httpOptions = {

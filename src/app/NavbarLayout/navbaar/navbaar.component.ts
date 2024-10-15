@@ -12,7 +12,19 @@ export class NavbaarComponent {
   searchToggle: boolean = false;
   showSignOutBox: boolean = false;
 
+  // Toggle the mobile menu visibility
+  showMobileMenu: boolean = false;
+
   constructor(private router: Router, private apiServiceService: ApiServiceService) { }
+
+  // Toggle the mobile menu
+  toggleMobileMenu() {
+    this.showMobileMenu = true;
+  }
+  toggleMobileMenuClose() {
+    this.showMobileMenu = false;
+  }
+
 
   toggleSignOutBox() {
     this.showSignOutBox = !this.showSignOutBox; // Toggle box visibility
@@ -35,13 +47,17 @@ export class NavbaarComponent {
       showCancelButton: true,
       confirmButtonText: "Yes, Logout!",
       cancelButtonText: "No, cancel!",
-      reverseButtons: true
+      reverseButtons: true,
+      allowOutsideClick: false,   // Prevent closing when clicking outside
+      allowEscapeKey: false
     }).then((result) => {
       if (result.isConfirmed) {
         swalWithBootstrapButtons.fire({
           title: "Logout Successfully!",
           text: "You are now logged out..",
           icon: "success",
+          allowOutsideClick: false,   // Prevent closing when clicking outside
+          allowEscapeKey: false       // Prevent closing on pressing Escape
 
         });
         this.apiServiceService.isActivate = false
@@ -57,7 +73,9 @@ export class NavbaarComponent {
         swalWithBootstrapButtons.fire({
           title: "Cancelled",
           text: "Your are now current page:)",
-          icon: "error"
+          icon: "error",
+          allowOutsideClick: false,   // Prevent closing when clicking outside
+          allowEscapeKey: false       // Prevent closing on pressing Escape
         });
       }
     });
@@ -65,7 +83,6 @@ export class NavbaarComponent {
 
   searchEnable = (value: any) => {
     this.searchToggle = value
-
   }
 
 }

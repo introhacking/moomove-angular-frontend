@@ -7,52 +7,29 @@
         <div class="modal-inner-content">
             <form [formGroup]="isEditParamData" action="POST">
                 <div class="">
-                    <div class="col-6 form-floating mb-3 d-flex justify-content-end align-items-end position-relative">
-                        <select formControlName="companyName" name="companyName" id="floatingInput" class="dropdown-menu show" (focus)="showDropdown = true" (blur)="hideDropdown()" (click)="showDropdown = true"
-                            class="form-control border">
-                            <option value="" selected disabled>--Select Carrier--</option>
-                            <option [value]="carrier.name" *ngFor="let carrier of companyList">{{carrier.name}}
-                            </option>
-                        </select>
-                        <label class="mx-2" for="floatingInput">Carrier</label>
-                        <div
-                        *ngIf="isEditParamData.get('companyName')!.invalid && 
-                                         (isEditParamData.get('companyName')!.dirty || isEditParamData.get('companyName')!.touched)">
-                        <small class="text-danger">Carrier is required</small>
-                    </div>
-                    </div>
-                    <!-- <div class="col-6 form-floating mb-3" style="position: relative;">
-                        <input type="text" formControlName="companyName" name="company" class="form-control"
-                            placeholder="Company name" aria-label="Company name" (input)="onInput($event)"
-                            (focus)="showDropdown = true" (blur)="hideDropdown()" (click)="showDropdown = true">
-                        <label for="floatingTextarea2">Select Carrier</label>
-
-                        <div *ngIf="showDropdown && filteredCompanies.length > 0" class="dropdown-menu show"
-                            (mousedown)="$event.preventDefault()"
-                            style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
-                            <button type="button" class="dropdown-item" *ngFor="let company of filteredCompanies"
-                                (click)="selectCompany(company.name)">
-                                {{ company.name }}
-                            </button>
-                        </div>
-
-                        <div *ngIf="filteredCompanies.length === 0 && showDropdown" class="dropdown-menu show">
-                            <button type="button" class="dropdown-item" disabled>Not found</button>
-                        </div>
-
-                        <div
-                            *ngIf="isEditParamData.get('companyName')!.invalid && 
-                                             (isEditParamData.get('companyName')!.dirty || isEditParamData.get('companyName')!.touched)">
-                            <small class="text-danger">Carrier is required</small>
-                        </div>
-                    </div> -->
                     <div class="d-flex justify-content-between gap-2 mb-3">
+                        <div
+                            class="col-6 form-floating mb-3 d-flex justify-content-end align-items-end position-relative">
+                            <select formControlName="companyName" name="companyName" id="floatingInput"
+                                class="dropdown-menu show" (focus)="showDropdown = true" (blur)="hideDropdown()"
+                                (click)="showDropdown = true" class="form-control border">
+                                <option value="" selected disabled>--Select Carrier--</option>
+                                <option [value]="carrier.name" *ngFor="let carrier of companyList">{{carrier.name}}
+                                </option>
+                            </select>
+                            <label class="mx-2" for="floatingInput">Carrier</label>
+                            <div
+                                *ngIf="isEditParamData.get('companyName')!.invalid && 
+                                             (isEditParamData.get('companyName')!.dirty || isEditParamData.get('companyName')!.touched)">
+                                <small class="text-danger">Carrier is required</small>
+                            </div>
+                        </div>
                         <div class="col-sm-6 form-floating" style="position: relative;">
                             <input type="text" formControlName="source" name="source" class="form-control"
                                 placeholder="Source name" aria-label="Source name" (input)="onSourceInput($event)"
                                 (focus)="showSourceDropdown = true" (blur)="hideSourceDropdown()"
                                 (click)="showSourceDropdown = true">
-                            <label for="floatingTextarea2">Select Source</label>
+                            <label for="floatingTextarea2">--Select Source--</label>
 
                             <div *ngIf="showSourceDropdown && filteredSources.length > 0" class="dropdown-menu show"
                                 (mousedown)="$event.preventDefault()"
@@ -66,19 +43,20 @@
                             <div *ngIf="filteredSources.length === 0 && showSourceDropdown" class="dropdown-menu show">
                                 <button type="button" class="dropdown-item" disabled>Not found</button>
                             </div>
-
-                            <div *ngIf="isEditParamData.get('source')!.invalid && 
+                            <div
+                                *ngIf="isEditParamData.get('source')!.invalid && 
                                                  (isEditParamData.get('source')!.dirty || isEditParamData.get('source')!.touched)">
                                 <small class="text-danger">Source is required</small>
                             </div>
                         </div>
+                    </div>
+                    <div class="d-flex justify-content-between gap-2 mb-3">
                         <div class="col-sm-6 form-floating" style="position: relative;">
                             <input type="text" formControlName="destination" name="destination" class="form-control"
                                 placeholder="Destination name" aria-label="Destination name"
                                 (input)="onDestinationInput($event)" (focus)="showDestinationDropdown = true"
                                 (blur)="hideDestinationDropdown()" (click)="showDestinationDropdown = true">
-                            <label for="floatingTextarea2">Select Destination</label>
-
+                            <label for="floatingTextarea2">--Select Destination--</label>
                             <div *ngIf="showDestinationDropdown && filteredDestination.length > 0"
                                 class="dropdown-menu show" (mousedown)="$event.preventDefault()"
                                 style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
@@ -88,23 +66,41 @@
                                     {{ destination.name }}
                                 </button>
                             </div>
-
                             <div *ngIf="filteredDestination.length === 0 && showDestinationDropdown"
                                 class="dropdown-menu show">
                                 <button type="button" class="dropdown-item" disabled>Not found</button>
                             </div>
-
                             <div
                                 *ngIf="isEditParamData.get('destination')!.invalid && 
                                                  (isEditParamData.get('destination')!.dirty || isEditParamData.get('destination')!.touched)">
                                 <small class="text-danger">Destination is required</small>
                             </div>
+                        </div>
+
+                        <div
+                            class="form-check form-switch d-flex align-items-center justify-content-between col-12 col-md-6 mb-2 mb-md-4">
+                            <div class="cs-rate_types">
+                                <label for="rateType">Rate Type:</label>
+                                <div class="">
+                                    <!-- Radio button for 'spot' -->
+                                    <input type="radio" id="spot" formControlName="rateType" name="rateType"
+                                        class="form-check-input" [(ngModel)]="rateType" value="spot" checked>
+                                    <label class="form-check-label" for="spot">Spot</label>
+                                </div>
+                                <div class="">
+                                    <!-- Radio button for 'filed' -->
+                                    <input type="radio" id="filed" formControlName="rateType" name="rateType"
+                                        class="form-check-input" [(ngModel)]="rateType" value="filed">
+                                    <label class="form-check-label" for="filed">Filed</label>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
+
                     <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="col-sm-6 form-floating">
-                            <input type="text" formControlName="rate" class="form-control" placeholder="Rate"
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating">
+                            <input type="number" min="0" formControlName="rate" class="form-control" placeholder="Rate"
                                 aria-label="Rate">
                             <label for="floatingTextarea2">Rate</label>
                             <div
@@ -112,68 +108,159 @@
                                 <small class="text-danger">Rate is required</small>
                             </div>
                         </div>
-                        <div class="col-sm-6 form-floating">
-                            <input type="text" formControlName="cargotype" class="form-control" placeholder="Cargo type"
-                                aria-label="Cargo type">
-                            <label for="floatingTextarea2">Cargo type (Haz or Non Haz)</label>
+                        <div class="col-sm-6 form-floating" style="position: relative;">
+                            <!-- Input field for currency selection -->
+                            <input type="text" class="form-control" placeholder="Currency" formControlName="currency"
+                                (input)="onCurrencyInput($event)" (focus)="showCurrencyDropdown = true"
+                                (blur)="hideCurrencyDropdown()" />
+
+                            <label for="floatingTextarea2">--Select Currency--</label>
+
+                            <!-- Dropdown menu that appears under the input -->
+                            <div *ngIf="showCurrencyDropdown && filteredCurrencies.length > 0"
+                                class="dropdown-menu show"
+                                style="position: absolute; top: 80%; left: 0; width: 100%; z-index: 1000;">
+
+                                <ul class="list-group">
+                                    <li *ngFor="let currency of filteredCurrencies" class="list-group-item"
+                                        (mousedown)="selectCurrency(currency.code)">
+                                        {{ currency.code }} - {{ currency.name }}
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- "Not found" message when no currencies match the input -->
+                            <div *ngIf="filteredCurrencies.length === 0 && showCurrencyDropdown && currencyInputValue.length >= 1"
+                                class="dropdown-menu show"
+                                style="position: absolute; top: 80%; left: 0; width: 100%; z-index: 1000;">
+                                <button type="button" class="dropdown-item" disabled>Not found</button>
+                            </div>
+
+                            <!-- Validation message -->
                             <div
-                                *ngIf="isEditParamData.get('cargotype')!.invalid && (isEditParamData.get('cargotype')!.dirty || isEditParamData.get('cargotype')!.touched)">
-                                <small class="text-danger">Cargo type is required</small>
+                                *ngIf="isEditParamData.get('currency')!.invalid && (isEditParamData.get('currency')!.dirty || isEditParamData.get('currency')!.touched)">
+                                <small class="text-danger">Currency is required</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between gap-2 mb-3">
+                        <div class="d-flex justify-content-between col-12 col-md-6 mb-2 mb-md-4">
+                            <div class="form-check form-switch d-flex align-items-center col-5 gap-3">
+                                <div class="d-inline">
+                                    <label class="form-check-label" for="flexSwitchCheckDefaultHaz">Haz</label>
+                                </div>
+                                <input class="form-check-input" formControlName="hazActiveStatus"
+                                    [checked]="hazActiveStatus" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefaultHaz" (change)="onHazCheckboxStatusChange($event)">
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="input-group flex-nowrap form-floating col-sm-10">
+                                    <span class="input-group-text" id="addon-wrapping">UN</span>
+                                    <div class="form-floating col-sm-10">
+                                        <input type="text" formControlName="hazValue" class="form-control"
+                                            placeholder="Haz" aria-label="Haz" id="hazValueInput">
+                                        <label for="hazValueInput" class="cs-container-label">{{hazActiveStatus?'Enter
+                                            valid
+                                            4-digit UN number':'Haz'}}</label>
+                                        <div
+                                            *ngIf="isEditParamData.get('hazValue')!.invalid && (isEditParamData.get('hazValue')!.dirty || isEditParamData.get('hazValue')!.touched)">
+                                            <small class="text-danger"
+                                                *ngIf="isEditParamData.get('hazValue')?.errors?.['required']">Haz
+                                                value is required.</small>
+                                            <small class="text-danger"
+                                                *ngIf="isEditParamData.get('hazValue')?.errors?.['pattern']">Must
+                                                be a
+                                                4-digit number.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating">
+                            <div class="form-floating">
+                                <input type="text" formControlName="cargotype" class="form-control"
+                                    placeholder="Commodity" aria-label="Commodity">
+                                <label for="floatingTextarea2">Commodity</label>
+                                <div
+                                    *ngIf="isEditParamData.get('cargotype')!.invalid && (isEditParamData.get('cargotype')!.dirty || isEditParamData.get('cargotype')!.touched)">
+                                    <small class="text-danger">Commodity is required</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="form-check form-switch d-flex flex-column col-6">
-                            <div class="d-inline">
-                                <label class="form-check-label mb-3" for="flexSwitchCheckDefault">Direct
-                                    Shipment?</label>
+                        <div class="d-flex align-items-center col-6 justify-content-between">
+                            <div class="form-check form-switch d-flex flex-column col-4">
+                                <div class="d-inline">
+                                    <label class="form-check-label mb-3" for="flexSwitchCheckDefault">Direct
+                                        Shipment?</label>
+                                </div>
+                                <input class="form-check-input" type="checkbox" formControlName="isDirectShipment"
+                                    [checked]="isDirectShipment" role="switch" id="flexSwitchCheckDefault"
+                                    (change)="onDirectShipmentChange($event)">
                             </div>
-                            <input class="form-check-input" formControlName="isDirectShipment" type="checkbox" [checked]="isDirectShipment" role="switch"
-                                id="flexSwitchCheckDefault" (change)="onDirectShipmentChange($event)">
-                        </div>
-                        <div class="col-6 form-floating d-flex justify-content-end align-items-end position-relative">
-                            <select [disabled]="isDirectShipment" name="transhipment_add_port" id="floatingInput"
-                                class="form-control border">
-                                <option value="" selected disabled>--Select Transhipment--</option>
-                                <option [value]="source.name" *ngFor="let source of sourceList">{{source.name}}
-                                </option>
-                            </select>
-                            <label class="mx-2" for="floatingInput">Transhipment</label>
+                            <div
+                                class="col-7 form-floating d-flex justify-content-end align-items-end position-relative">
+                                <select formControlName="transhipment_add_port" id="floatingInput"
+                                    class="form-control border">
+                                    <option value="" selected disabled>--Select Via--</option>
+                                    <option [value]="source.name" *ngFor="let source of sourceDestinationVia">
+                                        {{source.name}}
+                                    </option>
+                                </select>
+                                <label class="mx-2" for="floatingInput">Via</label>
+                            </div>
                         </div>
 
+                        <div class="d-flex justify-content-between align-items-center col-12 col-md-6">
+                            <div class="col-4 form-floating">
+                                <input type="number" min="1" formControlName="free_days" class="form-control"
+                                    placeholder="Free Days" aria-label="Free Days">
+                                <label for="floatingTextarea2">Free Days</label>
+                                <div
+                                    *ngIf="isEditParamData.get('free_days')!.invalid && (isEditParamData.get('free_days')!.dirty || isEditParamData.get('free_days')!.touched)">
+                                    <small class="text-danger">Free Days is required</small>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <textarea class="form-control gap-2" formControlName='free_days_comment'
+                                    placeholder="Free Comment" style="height: 80px"></textarea>
+                            </div>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-between gap-2 mb-3">
                         <div class="col-6 form-floating">
                             <input type="text" formControlName="transitTime" class="form-control"
-                                placeholder="Transit time" aria-label="Transit time">
-                            <label for="floatingTextarea2">Transit time</label>
+                                placeholder="Transit Days" aria-label="Transit Days">
+                            <label for="floatingTextarea2">Transit Days</label>
                             <div
                                 *ngIf="isEditParamData.get('transitTime')!.invalid && (isEditParamData.get('transitTime')!.dirty || isEditParamData.get('transitTime')!.touched)">
-                                <small class="text-danger">Transit time is required</small>
+                                <small class="text-danger">Transit Days is required</small>
                             </div>
                         </div>
                         <div class="col-sm-6 form-floating">
-                            <select class="form-select" formControlName="freightType" placeholder="Freight type"
+                            <select class="form-select" formControlName="freightType" placeholder="Equipment"
                                 aria-label="Default select example">
-                                <option selected disabled>--Select Freight types--</option>
+                                <option selected disabled>--Select Equipment--</option>
                                 <option [value]="data.type" *ngFor="let data of equipmentsList">{{data.type}}</option>
                             </select>
-                            <label for="floatingTextarea2">Freight type</label>
+                            <label for="floatingTextarea2">Equipment</label>
 
                             <div
                                 *ngIf="isEditParamData.get('freightType')!.invalid && (isEditParamData.get('freightType')!.dirty || isEditParamData.get('freightType')!.touched)">
-                                <small class="text-danger">Freight type is required</small>
+                                <small class="text-danger">Equipment is required</small>
                             </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-between gap-2 mb-3">
                         <div class="col-sm-6 form-floating">
                             <input type="date" formControlName="effectiveDate" class="form-control"
-                                placeholder="Effective date" aria-label="Effective date">
-                            <label for="floatingTextarea2">Effective date</label>
+                                placeholder="Valid data" aria-label="Valid data">
+                            <label for="floatingTextarea2">Valid data</label>
                             <div
                                 *ngIf="isEditParamData.get('effectiveDate')!.invalid && (isEditParamData.get('effectiveDate')!.dirty || isEditParamData.get('effectiveDate')!.touched)">
-                                <small class="text-danger">Effective date is required</small>
+                                <small class="text-danger">Valid data is required</small>
                             </div>
                         </div>
                         <div class="col-sm-6 form-floating">
@@ -191,15 +278,16 @@
                             placeholder="Remarks (Optional)" style="height: 100px"></textarea>
                     </div>
                     <div>
-                        <textarea class="form-control gap-2 mb-3" formControlName="terms_condition" name="terms_condition"
-                            placeholder="Terms and Conditions from forwarder" style="height: 100px"></textarea>
+                        <textarea class="form-control gap-2 mb-3" formControlName="terms_condition"
+                            name="terms_condition" placeholder="Terms and Conditions from forwarder"
+                            style="height: 100px"></textarea>
                     </div>
                 </div>
             </form>
         </div>
         <div class="modal-button-wrapper">
-            <button (click)="updatingFormHandler()" class="cms_button" [ngClass]="{ 'disabled': isEditParamData.invalid }"
-                [disabled]="isEditParamData.invalid">Update</button>
+            <button (click)="updatingFormHandler()" class="cms_button"
+                [ngClass]="{ 'disabled': isEditParamData.invalid }" [disabled]="isEditParamData.invalid">Update</button>
         </div>
         <!-- <ng-content></ng-content> -->
     </div>

@@ -23,8 +23,9 @@ export class AuthenticationService {
    //baseUrl='http://192.168.120.55:8000'
 //  baseUrl='http://csm.augtrans.com:4049'
 
-baseUrl='http://localhost:8000' // localhost
+baseUrl='http://localhost:8000'  // LOCALHOST
 // baseUrl='http://35.154.191.16:8000' // AWS
+// baseUrl='http://13.234.231.216:8000' // AWS TEST
 constructor(private http: HttpClient, private route: Router,private apiservise:ApiServiceService) {
     this.tokenSubject = new BehaviorSubject<string | null>(localStorage.getItem('access_token'));
     this.userSubject = new BehaviorSubject<any>(localStorage.getItem('UserData'));

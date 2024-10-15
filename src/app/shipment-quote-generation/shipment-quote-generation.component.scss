@@ -6,6 +6,7 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .main-heading {
   color: rgb(170, 45, 45);
   padding: 10px;
@@ -277,7 +278,8 @@ input {
 .cs-font-usd {
   font-size: 12px;
 }
-.cs-height{
+
+.cs-height {
   height: 50vh;
   overflow-y: auto;
 }
@@ -298,6 +300,45 @@ input {
   gap: 1px !important;
   font-size: 11px;
 }
-.modal-dialog.custom{
+
+.modal-dialog.custom {
   max-width: 700px;
+}
+.custom-invalid-border {
+  border: 1px solid #dc3545 !important;
+}
+
+.cs-checkbox {
+  width:18px;
+}
+
+.cs-error {
+  background: rgba(241, 6, 6, 0.179);
+  border-radius: 5px;
+
+  h4 {
+    font-weight: 500;
+    color: red;
+    margin: 0;
+    padding: 10px;
+    font-size: 20px;
+
+  }
+}
+
+.expiredDate {
+  background-color: red;
+  height: 22px;
+  font-weight: bold;
+  font-size: 12px;
+  width: 100%;
+}
+
+
+//  ***************************************** MEDIA QUARY ************************************* //
+//  ******************************************************************************************* //
+@media (max-width:991px){
+  .container{
+    max-width: 800px !important;
+  }
 }

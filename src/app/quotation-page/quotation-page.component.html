@@ -450,11 +450,11 @@ discrepancies that may lead to delays and / or economic repercussions.
                   </tr>
                   <tr>
                     <th>Contact Name:</th>
-                    <td>AARTI DALVI</td>
+                    <td>{{loginQuotaUsername}}</td>
                   </tr>
                   <tr>
                     <th>Email:</th>
-                    <td>aarti.dalvi@graceworld.in</td>
+                    <td>{{loginQuotaEmail}}</td>
                   </tr>
                   <tr>
                     <th>Phone:</th>
@@ -488,7 +488,7 @@ discrepancies that may lead to delays and / or economic repercussions.
                   <td style="width: 32%;">{{customerData?.cust_name}}</td>
                   <td style="width: 2%;  background-color: white;"></td>
                   <th style="width: 22%;">Created By:</th>
-                  <td style="width: 28%;">PIERO IPARRAGUIRRE</td>
+                  <td style="width: 28%;">{{loginQuotaUsername}}</td>
                 </tr>
               </table>
               <table style="border-collapse: separate; width: 100%;">
@@ -523,7 +523,7 @@ discrepancies that may lead to delays and / or economic repercussions.
                   <td>{{weight}}</td>
                   <td>{{quantity}}</td>
                   <td> {{quotation?.rate}} $</td>
-                  <td>{{subTotalQuotationRate}} $</td>
+                  <td>{{subTotalQuotationRate}}.00 $</td>
                 </tr>
               </tbody>
             </table>
@@ -577,7 +577,7 @@ discrepancies that may lead to delays and / or economic repercussions.
                 <tr>
                   <td></td>
                   <td colspan="3"> <strong>Subtotal In USD</strong></td>
-                  <td><strong>824,17 $</strong></td>
+                  <td><strong>824,17.00 $</strong></td>
                 </tr>
               </tbody>
             </table>
@@ -615,7 +615,7 @@ discrepancies that may lead to delays and / or economic repercussions.
                   </tr>
                   <tr>
                     <th style="color: black;"><strong>Total Amount:</strong></th>
-                    <td> <strong>{{totalAmount}} $</strong></td>
+                    <td> <strong>{{totalAmount}}.00 $</strong></td>
                   </tr>
                 </table>
               </div>
@@ -644,8 +644,9 @@ discrepancies that may lead to delays and / or economic repercussions.
               <li>INLAND HAULAGE FUEL SURCHARGE UPDATED MONTHLY, CURRENT PERCENTAGE AT 5% - MARCH (INCLUDED)</li>
               <li>14 FREE DAYS AT POD</li>
             </ul>
-            <pre>
-        - Unless stated otherwise, the freight rates of this offer are ALL IN including all applicable freight
+            <p class="cs-quotation_terms_condition">
+              {{customerData?.terms_condition}}
+        <!-- - Unless stated otherwise, the freight rates of this offer are ALL IN including all applicable freight
         surcharges (BAF, CAF, LSS, PSS, etc.).
         - The cargo and stowage of the goods inside the container are as per account of the shipper who has 2
         hours free for this work. Afterwards,
@@ -664,8 +665,8 @@ discrepancies that may lead to delays and / or economic repercussions.
         • 20'+ of 26 Tm
         • 40' + 24 Tm
         - In case of issuing request of TELEX RELEASE / SEAWAYBILL after the vessel´s departure, there will be a
-        further cost of EUR 45 x BL
-              </pre>
+        further cost of EUR 45 x BL -->
+              </p>
           </div>
         </div>
       </div>

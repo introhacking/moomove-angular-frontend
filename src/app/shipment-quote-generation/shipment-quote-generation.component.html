@@ -13,73 +13,140 @@
     <div class="tabCaseUI">
       <div class="tab-content">
         <div *ngIf="selectedTab === 'FCL'">
+
           <div class="container">
-            <div class="row mb-4">
-              <div class="col form-floating">
-                <select class="form-select border" [(ngModel)]="source1" name="source" id="floatingInput">
-                  <option selected disabled>--Choose source--</option>
-                  <option *ngFor="let data of sourceList" value={{data.id}}>{{data.name}}</option>
-                </select>
-                <label class="mx-2" for="floatingInput">Origin Port</label>
-              </div>
-              <div class="col form-floating">
-                <select [(ngModel)]="destination1" id="floatingInput" class="form-select border">
-                  <option selected disabled>--Select destination--</option>
-                  <option *ngFor="let data of destinationList" value={{data.id}}>{{data.name}}</option>
-                </select>
-                <label class="mx-2" for="floatingInput">Destination Port</label>
-              </div>
-              <div class="col form-floating">
-                <input class="form-control border" [(ngModel)]="shipment_Date1" id="floatingInput" type="date"
-                  min={{todayDate}} placeholder="Date of shipping" />
-                <label class="mx-2" for="floatingInput">Loading of Date</label>
-              </div>
-              <div class="col form-floating">
-                <select [(ngModel)]="equipments1" id="floatingInput" class="form-select border">
-                  <option selected disabled>--Select load types--</option>
-                  <option [value]="data.id" *ngFor="let data of equipmentsList">{{data.type}}</option>
-                </select>
-                <label class="mx-2" for="floatingInput">Equipments</label>
-              </div>
+            <form [formGroup]="findBestRoute" action="" enctype="multipart/form-data">
 
-            </div>
-            <div class="row mb-4">
-              <div class="col form-floating">
-                <input type="text" [(ngModel)]="weight1" class="form-control border" id="floatingInput"
-                  placeholder="Container weight">
-                <label class="mx-2" for="floatingInput">Container weight</label>
-              </div>
-              <div class="col form-floating">
-                <input type="number" [(ngModel)]="quantity1" class="form-control border" id="floatingInput"
-                  placeholder="No. of quantity">
-                <label class="mx-2" for="floatingInput">No. of containers</label>
-              </div>
-              <div class="col form-floating d-flex justify-content-end align-items-end position-relative">
-                <select [(ngModel)]="commodity1" id="floatingInput" class="form-control border">
-                  <option value="" selected disabled>--Select commodity--</option>
-                  <option [value]="data.name" *ngFor="let data of comodityList">{{data.name}}</option>
-                </select>
-                <span class="cs-float" data-bs-toggle="modal" title="add commodity" data-bs-target="#exampleModal"><i
-                    class="bi bi-plus-lg"></i>
-                </span>
-                <label class="mx-2" for="floatingInput">Commodity</label>
-              </div>
-              <div class="col form-floating d-flex justify-content-end align-items-end position-relative">
-                <select [(ngModel)]="incoterms1" id="floatingInput" class="form-control border">
-                  <option value="" selected disabled>--Select incoterms--</option>
-                  <option [value]="data.rule" *ngFor="let data of incotermsList">{{data.rule}}</option>
-                </select>
-                <label class="mx-2" for="floatingInput">Incoterms</label>
-                <span class="cs-float" data-bs-toggle="modal" title="add incoterms" data-bs-target="#exampleModal1"><i
-                    class="bi bi-plus-lg"></i>
-                </span>
-              </div>
+              <div class="row">
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                  <select class="form-select border" [(ngModel)]="source" formControlName="source" name="source"
+                    id="floatingInput"
+                    [ngClass]="{'custom-invalid-border': findBestRoute.get('source')!.invalid && (findBestRoute.get('source')!.dirty || findBestRoute.get('source')!.touched)}">
+                    <option selected disabled>--Choose source--</option>
+                    <option *ngFor="let source of sourceList" [value]="source.id">{{source.name}}</option>
+                  </select>
+                  <label class="mx-2" for="floatingInput">Origin Port</label>
 
-            </div>
+                  <div *ngIf="findBestRoute.get('source')!.invalid && 
+                               (findBestRoute.get('source')!.dirty || findBestRoute.get('source')!.touched)">
+                    <small class="text-danger">Origin port is required</small>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                  <select [(ngModel)]="destination" id="floatingInput" formControlName="destination"
+                    class="form-select border" name="destination"
+                    [ngClass]="{'custom-invalid-border': findBestRoute.get('destination')!.invalid && (findBestRoute.get('destination')!.dirty || findBestRoute.get('destination')!.touched)}">
+                    <option selected disabled>--Select destination--</option>
+                    <option *ngFor="let destination of destinationList" value={{destination.id}}>{{destination.name}}
+                    </option>
+                  </select>
+                  <label class="mx-2" for="floatingInput">Destination Port</label>
+                  <div *ngIf="findBestRoute.get('destination')!.invalid && 
+                  (findBestRoute.get('destination')!.dirty || findBestRoute.get('destination')!.touched)">
+                    <small class="text-danger">Destination port is required</small>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                  <input class="form-control border" [(ngModel)]="shipment_Date" name="shipment_Date"
+                    formControlName="shipment_Date" id="floatingInput" type="date" min={{todayDate}}
+                    placeholder="Date of shipping" />
+                  <label class="mx-2" for="floatingInput">Date of Loading</label>
+                  <!-- <div *ngIf="findBestRoute.get('shipment_Date')!.invalid && 
+                  (findBestRoute.get('shipment_Date')!.dirty || findBestRoute.get('shipment_Date')!.touched)">
+                    <small class="text-danger">Data of Loading is required</small>
+                  </div> -->
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating position-relative">
+                  <select [(ngModel)]="equipments" id="floatingInput" formControlName="equipments" name="equipments"
+                    class="form-control border">
+                    <option value="" selected disabled>--Select load types--</option>
+                    <option [value]="data.id" *ngFor="let data of equipmentsList">{{data.type}}</option>
+                  </select>
+                  <span class="cs-float" data-bs-toggle="modal" title="Add Equipments"
+                    data-bs-target="#addEquipmentModal"><i class="bi bi-plus-lg"></i>
+                  </span>
+                  <label class="mx-2" for="floatingInput">Equipment</label>
+                  <!-- <div *ngIf="findBestRoute.get('equipments')!.invalid && 
+                  (findBestRoute.get('equipments')!.dirty || findBestRoute.get('equipments')!.touched)">
+                    <small class="text-danger">Equipments is required</small>
+                  </div> -->
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                  <input type="number" [(ngModel)]="weight" formControlName="weight" class="form-control border"
+                    name="weight" id="floatingInput" placeholder="Container weight" />
+                  <label class="mx-2" for="floatingInput">Cargo weight (In metric
+                    ton)</label>
+                  <!-- <div *ngIf="findBestRoute.get('weight')!.invalid && 
+                  (findBestRoute.get('weight')!.dirty || findBestRoute.get('weight')!.touched)">
+                    <small class="text-danger">Weight is required</small>
+                  </div> -->
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                  <input type="number" [(ngModel)]="quantity" formControlName="quantity" class="form-control border"
+                    name="quantity" id="floatingInput" placeholder="No. of quantity" />
+                  <label class="mx-2" for="floatingInput">No. of containers</label>
+                  <!-- <div *ngIf="findBestRoute.get('quantity')!.invalid && 
+                  (findBestRoute.get('quantity')!.dirty || findBestRoute.get('quantity')!.touched)">
+                    <small class="text-danger">Quantity is required</small>
+                  </div> -->
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                  <select [(ngModel)]="commodity" formControlName="commodity" id="floatingInput" name="commodity"
+                    class="form-control border">
+                    <option value="" selected disabled>--Select commodity--</option>
+                    <option [value]="data.name" *ngFor="let data of comodityList">{{data.name}}</option>
+                  </select>
+                  <span class="cs-float" data-bs-toggle="modal" title="add commodity" data-bs-target="#exampleModal"><i
+                      class="bi bi-plus-lg"></i>
+                  </span>
+                  <label class="mx-2" for="floatingInput">Commodity</label>
+                  <!-- <div *ngIf="findBestRoute.get('commodity')!.invalid && 
+                  (findBestRoute.get('commodity')!.dirty || findBestRoute.get('commodity')!.touched)">
+                    <small class="text-danger">Commodity is required</small>
+                  </div> -->
+                </div>
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating position-relative">
+                  <select [(ngModel)]="incoterms" formControlName="incoterms" id="floatingInput" name="incoterms"
+                    class="form-select border">
+                    <!-- [ngClass]="{'custom-invalid-border': findBestRoute.get('incoterms')!.invalid && (findBestRoute.get('incoterms')!.dirty || findBestRoute.get('incoterms')!.touched)}"-->
+                    <option value="" selected disabled>--Select incoterms--</option>
+                    <option value="FCA">FCA (Free Carrier)</option>
+                    <option value="EXW">EXW (Ex Works)</option>
+                    <option value="CPT">CPT (Carriage Paid To)</option>
+                    <option value="CIP">CIP (Carriage and Insurance Paid To)</option>
+                    <option value="DAP">DAP (Delivered at Place)</option>
+                    <option value="DPU">DPU (Delivered at Place Unloaded)</option>
+                    <option value="DDP">DDP (Delivered Duty Paid)</option>
+                    <option value="FAS">FAS (Free Alongside Ship)</option>
+                    <option value="FOB">FOB (Free on Board)</option>
+                    <option value="CFR">CFR (Cost and Freight)</option>
+                    <option value="CIF">CIF (Cost, Insurance, and Freight)</option>
+                    <!-- <option [value]="data.rule" *ngFor="let data of incotermsList">{{data.rule}}</option> -->
+                  </select>
+                  <label class="mx-2" for="floatingInput">Incoterms</label>
+                  
+                  <!-- <span class="cs-float" data-bs-toggle="modal" title="add incoterms" data-bs-target="#exampleModal1"><i
+                      class="bi bi-plus-lg"></i>
+                  </span> -->
+
+                  <!-- <div *ngIf="findBestRoute.get('incoterms')!.invalid && 
+                  (findBestRoute.get('incoterms')!.dirty || findBestRoute.get('incoterms')!.touched)">
+                    <small class="text-danger">Incoterms is required</small>
+                  </div> -->
+                </div>
+
+              </div>
+            </form>
+
             <div class="d-grid justify-content-end">
               <!-- IN BUTTON (  routerLink="/shipmentAggregate" ) -->
-              <button type="button" class="my-4 btn find-rate-button"
-                [disabled]=" !source1||!destination1 || !equipments1 || !shipment_Date1" (click)="findBestRates()">Find
+              <!-- || !equipments || !shipment_Date || !weight || !incoterms || !commodity || !quantity -->
+              <button type="button" class="my-4 btn find-rate-button" [disabled]=" !source || !destination"
+                (click)="findBestRates()">Find
                 Best
                 Rates &nbsp;<i class="fa fa-ship" aria-hidden="true"></i></button>
               <!-- <i class="fa fa-arrow-right" aria-hidden="true"></i></button> -->
@@ -91,9 +158,10 @@
             <div class="col-sm-9" style="text-align: left;" *ngIf="this.isLoading">
               <h4>Loading...</h4> <!-- Loading message -->
             </div>
-            
-            <div class="col-sm-9" style="text-align: left;" *ngIf="!this.isLoading && this.shipdata.length === 0 && dataChecked">
-              <h4>Data not found for selected route and freight type ....</h4> <!-- No data message -->
+
+            <div class="col-sm-9 cs-error" style="text-align: left;"
+              *ngIf="!this.isLoading && this.shipdata.length === 0 && dataChecked">
+              <h4>Data not found for selected route and freight type</h4> <!-- No data message -->
             </div>
 
 
@@ -117,13 +185,14 @@
                 <div class="col-9 px-3 py-2 cs-right-bg-color cs-height cs-hidden-scroll">
                   <div class="row d-flex justify-content-between gap-1 mb-2" *ngFor="let data of shipdata">
 
+                    <input type="checkbox" [value]="data.id" class="cs-checkbox col-1" />
                     <div class="col-2 p-1 bg-white">
                       <div class="d-flex flex-column justify-content-between align-items-center h-100">
                         <small class="cs-font-rate">Rate ID P 184936538 T& C</small>
                         <div class="d-flex flex-column gap-1 cs-font-middle">
                           <span>MAERSK</span>
                           <span>CY/ CY AL7</span>
-                          <small><a href="#">SPOT RATE</a></small>
+                          <small>{{data.version?.spot_filed | uppercase}} RATE</small>
                         </div>
                         <small class="cs-font-rate">
                           <!-- <i class="fa fa-shield" aria-hidden="true"></i> -->
@@ -146,7 +215,7 @@
                         <div class="d-flex flex-column">
                           <!-- saling date -->
                           <label class="cs-font-middle my-1">Saling Date</label>
-                          <label class="cs-font-middle my-1 fw-bold">{{shipment_Date1}}</label>
+                          <label class="cs-font-middle my-1 fw-bold">{{shipment_Date}}</label>
                         </div>
                         <div class="d-flex flex-column">
                           <!-- trasit time -->
@@ -154,7 +223,12 @@
                           <label class="cs-font-middle my-1 fw-bold">{{formatToFixed(data.transit_time.time)}}
                             Days</label>
                         </div>
-                        <span class="cs-font-rate fw-bold">Free Days</span>
+                        <!-- <span class="cs-font-rate">Free Days</span> -->
+                        <div class="d-flex flex-column">
+                          <label class="cs-font-middle my-1">Free Days</label>
+                          <label class="cs-font-middle my-1 fw-bold">{{data.version?.free_days}}
+                            Days</label>
+                        </div>
                         <div class="d-flex flex-column">
                           <!-- forward -->
                           <label class="cs-font-middle my-1">Rates by Forwarder</label>
@@ -172,12 +246,16 @@
                           </div>
                           <div>
                             <span class="cs-font-rate cs-text-color">Total cost</span>
-                            <label class="fw-bold cs-font-rate">INR 320654.3 </label>
+                            <label class="fw-bold cs-font-rate">INR 320 </label>
                           </div>
                         </div>
                         <button (click)="generateQuote(data.id)" data-bs-toggle="modal"
-                          data-bs-target="#choose_customer" type="button"
+                          *ngIf="currentDate < data.expiration_date" data-bs-target="#choose_customer" type="button"
                           class="btn find-rate-button cs-font-middle my-1">Create Quote</button>
+                        <!-- If currentDate is greater than or equal to expiration_date, show "This is expired" -->
+                        <div *ngIf="currentDate >= data.expiration_date" class="expiredDate">
+                          <marquee behavior="scroll" direction="" style="color: white;"> Rate is expired</marquee>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -199,6 +277,39 @@
     </div>
   </div>
 
+  <!-- ADD EQUIPMENT MODAL -->
+  <div class="modal fade" id="addEquipmentModal" tabindex="-1" aria-labelledby="exampleAddEquipmentModalModalLabel"
+    data-bs-whatever="@getbootstrap" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleAddEquipmentModalModalLabel">Add New Equipments</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="addEquipmentsFormData">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">New Equipments:</label>
+              <input style="border: 2px solid rgb(97, 95, 95);" type="text" placeholder="Enter Equipments"
+                class="form-control" formControlName="equipmentName" id="recipient-name">
+              <!-- Validation messages -->
+              <div *ngIf="addEquipmentsFormData.get('equipmentName')!.invalid && (addEquipmentsFormData.get('equipmentName')!.dirty || 
+                  addEquipmentsFormData.get('equipmentName')!.touched)">
+                <small class="text-danger">Equipment name is required</small>
+              </div>
+              <small class="text-danger" *ngIf="serverResposeMessage !=='' ">{{serverResposeMessage}}</small>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" [attr.data-bs-dismiss]="modalStatus ? 'modal' : null"
+            (click)="submitEquipments()">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- COMMODITY MODAL -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
     data-bs-whatever="@getbootstrap" aria-hidden="true">
@@ -252,11 +363,11 @@
     </div>
   </div>
   <!-- CHOOSE CUSTOMER MODAL -->
-  <div class="modal fade" id="choose_customer" tabindex="-1" aria-labelledby="choose_customer_lable" aria-hidden="true">
+  <div class="modal fade" id="choose_customer" tabindex="-1" aria-labelledby="choose_customer_lable" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="choose_customer_lable">Customer lists</h1>
+          <h1 class="modal-title fs-5" id="choose_customer_lable">Customer</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -276,7 +387,8 @@
                 </button>
               </div>
 
-              <div *ngIf="filteredCustomer.length === 0 && showDropdown" class="dropdown-menu show">
+              <div *ngIf="filteredCustomer.length === 0 && showDropdown && customerInputValue.length >= 2"
+                class="dropdown-menu show">
                 <button type="button" class="dropdown-item" disabled>Not found</button>
               </div>
 
@@ -292,14 +404,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button (click)="submitCustomer()" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+          <button (click)="submitCustomer(isRateFrozenIdx)" type="button" class="btn btn-primary" data-bs-dismiss="modal"
             [disabled]="!selectedCustomerData">Submit</button>
         </div>
       </div>
     </div>
   </div>
   <!-- ADD CUSTOMER MODAL -->
-  <div class="modal fade" id="add_customer_modal" tabindex="-1" aria-labelledby="add_customer_lable" aria-hidden="true">
+  <div class="modal fade" id="add_customer_modal" tabindex="-1" aria-labelledby="add_customer_lable" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog custom">
       <div class="modal-content">
         <div class="modal-header">
@@ -313,7 +425,7 @@
                 <div class="form-floating">
                   <input type="text" (blur)="hideDropdown()" formControlName="customerName" class="form-control border"
                     id="floatingInputGrid" placeholder="Customer name" value="customerName">
-                  <label for="floatingInputGrid">Customer name</label>
+                  <label for="floatingInputGrid">Customer's name</label>
                 </div>
                 <div
                   *ngIf="addCustomerFormData.get('customerName')!.invalid && 
@@ -350,9 +462,28 @@
               </div>
               <div class="col-md">
                 <div class="form-floating">
-                  <textarea class="form-control" formControlName="saleRepresent" placeholder=""
+                  <textarea class="form-control" formControlName="saleRepresent" placeholder="Sales representative"
                     id="floatingTextarea"></textarea>
-                  <label for="floatingInputGrid">Sales represent</label>
+                  <label for="floatingInputGrid">Sales representative</label>
+                </div>
+                <div
+                  *ngIf="addCustomerFormData.get('saleRepresent')!.invalid && 
+                                             (addCustomerFormData.get('saleRepresent')!.dirty || addCustomerFormData.get('saleRepresent')!.touched)">
+                  <small class="text-danger">Customer's sales representative is required</small>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 mb-3">
+              <div class="col-md">
+                <div class="form-floating">
+                  <textarea class="form-control" formControlName="terms_condition"
+                    placeholder="Customer term & condition" style="height: 120px" id="floatingTextarea"></textarea>
+                  <label for="floatingInputGrid">Customer's Terms & Conditions</label>
+                </div>
+                <div
+                  *ngIf="addCustomerFormData.get('terms_condition')!.invalid && 
+                                             (addCustomerFormData.get('terms_condition')!.dirty || addCustomerFormData.get('terms_condition')!.touched)">
+                  <small class="text-danger">Customer's Terms & Conditions are required</small>
                 </div>
               </div>
             </div>

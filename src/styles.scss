@@ -34,13 +34,32 @@ html {
 }
 
 .find-rate-button {
-    background-color: #bbfff2;
+    background-color: #22338f;
     font-weight: 500;
+    color:#ffffff;
   
     &:hover {
-      background-color: #66eed5;
+      background-color: #142cb6;
       color: #ffffff;
       font-weight: 500;
     }
   }
 
+  .form-check-input:checked{
+    background-color: #142cb6;
+    border-color: #142cb6;
+
+  }
+  .form-select:focus, .form-control:focus{
+    // box-shadow: 0 0 0 .25rem #dc354668 !important;
+    // border-color: #dc354668 !important
+    box-shadow: 0 0 0 .25rem #142cb665 !important;
+    border-color: #142cb665 !important
+  }
+  .cs-container-label{
+    font-size:14px
+  }
+  
+
+
+//   *******************************************  LOADING EFFECT ***********************

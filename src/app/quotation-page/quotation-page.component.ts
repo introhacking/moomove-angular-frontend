@@ -28,6 +28,11 @@ export class QuotationPageComponent implements OnInit, OnChanges {
   company: any
   loginEmail:any
   customerData: any = {}
+  loginQuotaUsername:any 
+  loginQuotaEmail:any
+ 
+
+
   constructor(private apiServiceService: ApiServiceService) { }
 
 
@@ -59,7 +64,6 @@ export class QuotationPageComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.populateQuotationData();
     this.getCustomerInfoData()
-    // this.addCustomerInfoData()
   }
 
   ngOnChanges() {
@@ -76,9 +80,12 @@ export class QuotationPageComponent implements OnInit, OnChanges {
       this.incoterms = this.quotation.incoterms || this.apiServiceService.incoterms;
       this.shipment_Date = this.quotation.shipment_Date || this.apiServiceService.shipment_Date;
       this.quantity = this.quotation.quantity || this.apiServiceService.quantity;
-      this.subTotalQuotationRate = this.quantity * this.quotation.rate;
+      this.subTotalQuotationRate =  this.quantity * this.quotation.rate;
       this.totalAmount = +this.subTotalQuotationRate + this.expenses_subtotal;
+      this.loginQuotaUsername = this.quotation.loginDetails?.username;
+      this.loginQuotaEmail = this.quotation.loginDetails?.email;
       console.log('Quotation Data:', this.quotation);
+      // console.log(this.subTotalQuotationRate)
       // POPULATE CUSTOMER DATA HERE
       this.customerData = this.formData.customerData
     } else {

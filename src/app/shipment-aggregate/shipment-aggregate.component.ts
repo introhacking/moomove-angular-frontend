@@ -48,7 +48,8 @@ export class ShipmentAggregateComponent {
   getshipmentData(){
 
 
-    this.apiServiceService.getShipmentData(this.source,this.destination ,this.equipments).subscribe(res=>{
+    // this.apiServiceService.getShipmentData(this.source,this.destination ,this.equipments).subscribe(res=>{
+    this.apiServiceService.getShipmentData(this.source,this.destination).subscribe(res=>{
      console.log(">>",res);
      
       this.shipdata=res
@@ -68,8 +69,6 @@ this.shipdata.map((ele:any)=>{
 
   
 })
-
-
     this.router.navigateByUrl('quotation_page')
 
   }

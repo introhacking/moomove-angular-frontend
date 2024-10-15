@@ -80,10 +80,9 @@
                         </div>
                     </div>
                     <div class="col-sm-3 ">
-
                         <div class=" last-div row  my-2" *ngFor="let data of shipdata">
                             <div *ngIf="currentDate > data.expiration_date" class="col-sm-12 expiredDate">
-                                <marquee behavior="scroll" direction="" style="color: white;"> Date is expired</marquee>
+                                <marquee behavior="scroll" direction="" style="color: white;"> Rate is expired</marquee>
                                 <!-- <label  style="color: white;"> Date is expired</label> -->
                             </div>
                             <div class="col-sm-6 ">
@@ -108,18 +107,11 @@
                             </div>
                             <button class="btn-create-quote" *ngIf="currentDate < data.expiration_date"
                                 (click)="create_quote(data.id)">Create Quote <i class="fa fa-arrow-right"
-                                    aria-hidden="true"></i></button>
-
+                                    aria-hidden="true"></i>
+                            </button>
                         </div>
-
-
-
                     </div>
-
-
                 </div>
-
-
             </div>
         </div>
     </div>

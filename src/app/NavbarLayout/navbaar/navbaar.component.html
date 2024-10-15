@@ -1,8 +1,120 @@
+
+
+<!-- ******************************************************************************************************** -->
 <nav class="navbar container">
-  <div class="container-fluid navbar-nav">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
     <!-- HEADER LOGO -->
-    <!-- <a class="navbar-brand" href="#">Shipment</a> -->
-    <div class="navbar-nav">
+    <a class="navbar-brand d-lg-none">Shipment</a>
+
+    <!-- Desktop Menu -->
+    <div class="navbar-nav cs-desktop-only">
+   <ul class="navbar-nav me-auto mb-2 mb-lg-0 list-hover-slide">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shipmentQuoteGeneration" routerLinkActive="active-link">Quick Quote</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/rate_List" routerLinkActive="active-link">Rates</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="#" routerLinkActive="active-link">Inquiry</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="#" routerLinkActive="active-link">Shipments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="#" routerLinkActive="active-link">My Company</a>
+        </li>
+        <li class="nav-item">
+          <p class="d-inline-flex align-items-center m-0 gap-2 justify-content-center">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+            <a class="nav-link" routerLink="#" routerLinkActive="active-link">More</a>
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Desktop search and profile -->
+    <div class="d-lg-flex justify-content-start align-items-center gap-5 cs-desktop-only">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fa fa-search cursor-pointer" aria-hidden="true" (click)="searchEnable(true)"></i>
+        <div *ngIf="searchToggle" class="d-flex align-items-center border search-input-wrapper">
+          <input class="search-input border-0" placeholder="Search..." />
+          <small (click)="searchEnable(false)" class="cursor-pointer">X</small>
+        </div>
+      </div>
+      <div class="cs_img d-flex justify-content-start align-items-center gap-3 position-relative">
+        <i class="fa fa-bell" aria-hidden="true"></i>
+        <img src="../../../assets/ship.jpg" alt="logo-img" (click)="toggleSignOutBox()">
+        <div class="dropdown-box" *ngIf="showSignOutBox">
+          <ul>
+            <!-- Add any profile links here -->
+          </ul>
+          <button class="btn btn-danger w-100" (click)="logout()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hamburger Icon for Mobile -->
+    <div class="cs-mobile-hamburger d-lg-none">
+      <i class="fa fa-bars" (click)="toggleMobileMenu()"></i>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" *ngIf="showMobileMenu">
+      <div class="d-flex justify-content-end mb-3">
+        <span class="cs-cross-btn" (click)="toggleMobileMenuClose()">X</span>
+      </div>
+      <ul class="">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shipmentQuoteGeneration" routerLinkActive="active-link">Quick Quote</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/rate_List" routerLinkActive="active-link">Rates</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="#" routerLinkActive="active-link">Inquiry</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="#" routerLinkActive="active-link">Shipments</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="#" routerLinkActive="active-link">My Company</a>
+        </li>
+        <li class="nav-item">
+          <p class="d-flex w-100 align-items-center m-0 gap-2 justify-content-center full-width-container">
+            <a class="nav-link display-block" routerLink="#" routerLinkActive="active-link">More</a>
+            <span class="icon-container">
+              <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </span>
+          </p>
+        </li>
+        
+        <li class="nav-item">
+          <button class="btn btn-danger w-100 mt-4" (click)="logout()">Sign Out</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!--  //////////////////////////////////  OLD CODE ///////////////////////////////////////////////// -->
+
+<!-- <nav class="navbar container"></nav>
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <!-- HEADER LOGO
+     <a class="navbar-brand d-lg-none">Shipment</a>
+
+
+    <div class="navbar-nav cs-desktop-only">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 list-hover-slide">
         <li class="nav-item">
           <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link"
@@ -31,7 +143,7 @@
         </li>
       </ul>
     </div>
-    <div class="d-flex justify-content-start align-items-center gap-5">
+    <div class="d-flex justify-content-start align-items-center gap-5 cs-desktop-only">
       <div class="d-flex align-items-center gap-2">
         <div *ngIf="searchToggle" class="d-flex align-items-center border search-input-wrapper">
           <input class="search-input border-0" placeholder="Search..." />
@@ -43,20 +155,37 @@
         <i class="fa fa-bell" aria-hidden="true"></i>
         <img src="../../../assets/ship.jpg" alt="logo-img" (click)="toggleSignOutBox()">
 
-        <!-- Dropdown Box -->
+        <!-- Dropdown Box 
         <div class="dropdown-box" *ngIf="showSignOutBox">
           <ul>
-            <!-- <li><a href="#" class="dropdown-link">Profile</a></li> -->
-            <!-- <li><a href="#" class="dropdown-link">Optimize</a></li> -->
+            <!-- <li><a href="#" class="dropdown-link">Profile</a></li> 
           </ul>
           <button class="btn btn-danger w-100" (click)="logout()">Sign Out</button>
         </div>
       </div>
-
-
-
     </div>
-    <!-- LOGOUT BUTTON -->
+    <!-- LOGOUT BUTTON 
     <!-- <button class="btn btn-outline-danger" (click)="logout()">Logout</button> -->
+
+      <!-- Hamburger Icon for Mobile
+      <div class="cs-mobile-hamburger d-lg-none">
+        <i class="fa fa-bars" (click)="toggleMobileMenu()"></i>
+      </div>
+  
+      <!-- Mobile Menu 
+      <div class="mobile-menu" *ngIf="showMobileMenu">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/shipmentQuoteGeneration" routerLinkActive="active-link">Quick Quote</a>
+          </li>
+          <!-- Add more nav items here 
+          <li class="nav-item">
+            <button class="btn btn-danger w-100 mt-4" (click)="logout()">Sign Out</button>
+          </li>
+        </ul>
+      </div>
   </div>
-</nav>
+</nav> -->
