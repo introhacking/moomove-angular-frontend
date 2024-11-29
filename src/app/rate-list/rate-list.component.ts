@@ -13,6 +13,7 @@ export class RateListComponent {
   selectedFile: File | null = null;
   selectedFileType: string | undefined;
   companyList: any = []
+  templateCompanyList: any = []
   sourceList: any = []
   destinationList: any = []
   fileTypesChooseName: any = []
@@ -30,6 +31,7 @@ export class RateListComponent {
   isEditModalVisible = false;
   isCloneModalVisible = false;
   manualFilterChooseFromShippingLine: string = '';
+  templateFilterChooseFromShippingLine: string = '';
   isDirectShipment: boolean = false;
   commodityFormData!: FormGroup;
 
@@ -50,9 +52,9 @@ export class RateListComponent {
 
   selectedId: any = null
   isLoading: boolean = false;  // Tracks loading state
-  isRateTypeStatus: boolean = true
 
-  rateType: string = 'spot';
+  isRateTypeStatus: boolean = false
+  rateType: string = 'filed';
   hazActiveStatus: boolean = false;
 
   serverResposeMessage: any = ''
@@ -60,11 +62,26 @@ export class RateListComponent {
   sourceDestinationVia: any[] = []
 
   // DATE FORMATING VARIABLE
-  todayDate: any
+  // todayDate: any
+
+  todayDate: string = new Date().toISOString().split('T')[0]; // Current date for validFrom
+  minExpirationDate: string = ''; // Dynamic min expiration date
 
   showCurrencyDropdown: boolean = false;
   filteredCurrencies: any[] = [];
   currencyInputValue: string = '';
+
+  // Via(Combine source and destionation)
+  selectedVia: string[] = [];
+  showViaDropdown: boolean = false;
+  filteredVia: any[] = [];
+  viaInputValue: string = '';
+
+
+  // Haz Class
+  showHazClassDropdown: boolean = false;
+  filteredHazClass: any[] = [];
+  hazClassInputValue: string = '';
 
 
   currencyLists = [
@@ -222,6 +239,121 @@ export class RateListComponent {
     { code: 'ZWL', name: 'Zimbabwean Dollar' },
 
   ]
+
+  packingGp = [
+    { pckgp: 'I' },
+    { pckgp: 'II' },
+    { pckgp: 'III' },
+    { pckgp: 'IV' },
+    { pckgp: 'V' },
+    { pckgp: 'VI' },
+    { pckgp: 'VII' },
+    { pckgp: 'VIII' },
+    { pckgp: 'IX' },
+  ]
+
+  hazClassValue = [
+    { hazClass: '0.1' },
+    { hazClass: '0.2' },
+    { hazClass: '0.3' },
+    { hazClass: '0.4' },
+    { hazClass: '0.5' },
+    { hazClass: '0.6' },
+    { hazClass: '0.7' },
+    { hazClass: '0.8' },
+    { hazClass: '0.9' },
+    { hazClass: '1.0' },
+    { hazClass: '1.1' },
+    { hazClass: '1.2' },
+    { hazClass: '1.3' },
+    { hazClass: '1.4' },
+    { hazClass: '1.5' },
+    { hazClass: '1.6' },
+    { hazClass: '1.7' },
+    { hazClass: '1.8' },
+    { hazClass: '1.9' },
+    { hazClass: '2.0' },
+    { hazClass: '2.1' },
+    { hazClass: '2.2' },
+    { hazClass: '2.3' },
+    { hazClass: '2.4' },
+    { hazClass: '2.5' },
+    { hazClass: '2.6' },
+    { hazClass: '2.7' },
+    { hazClass: '2.8' },
+    { hazClass: '2.9' },
+    { hazClass: '3.0' },
+    { hazClass: '3.1' },
+    { hazClass: '3.2' },
+    { hazClass: '3.3' },
+    { hazClass: '3.4' },
+    { hazClass: '3.5' },
+    { hazClass: '3.6' },
+    { hazClass: '3.7' },
+    { hazClass: '3.8' },
+    { hazClass: '3.9' },
+    { hazClass: '4.0' },
+    { hazClass: '4.1' },
+    { hazClass: '4.2' },
+    { hazClass: '4.3' },
+    { hazClass: '4.4' },
+    { hazClass: '4.5' },
+    { hazClass: '4.6' },
+    { hazClass: '4.7' },
+    { hazClass: '4.8' },
+    { hazClass: '4.9' },
+    { hazClass: '5.0' },
+    { hazClass: '5.1' },
+    { hazClass: '5.2' },
+    { hazClass: '5.3' },
+    { hazClass: '5.4' },
+    { hazClass: '5.5' },
+    { hazClass: '5.6' },
+    { hazClass: '5.7' },
+    { hazClass: '5.8' },
+    { hazClass: '5.9' },
+    { hazClass: '6.0' },
+    { hazClass: '6.1' },
+    { hazClass: '6.2' },
+    { hazClass: '6.3' },
+    { hazClass: '6.4' },
+    { hazClass: '6.5' },
+    { hazClass: '6.6' },
+    { hazClass: '6.7' },
+    { hazClass: '6.8' },
+    { hazClass: '6.9' },
+    { hazClass: '7.0' },
+    { hazClass: '7.1' },
+    { hazClass: '7.2' },
+    { hazClass: '7.3' },
+    { hazClass: '7.4' },
+    { hazClass: '7.5' },
+    { hazClass: '7.6' },
+    { hazClass: '7.7' },
+    { hazClass: '7.8' },
+    { hazClass: '7.9' },
+    { hazClass: '8.0' },
+    { hazClass: '8.1' },
+    { hazClass: '8.2' },
+    { hazClass: '8.3' },
+    { hazClass: '8.4' },
+    { hazClass: '8.5' },
+    { hazClass: '8.6' },
+    { hazClass: '8.7' },
+    { hazClass: '8.8' },
+    { hazClass: '8.9' },
+    { hazClass: '9.0' },
+    { hazClass: '9.1' },
+    { hazClass: '9.2' },
+    { hazClass: '9.3' },
+    { hazClass: '9.4' },
+    { hazClass: '9.5' },
+    { hazClass: '9.6' },
+    { hazClass: '9.7' },
+    { hazClass: '9.8' },
+    { hazClass: '9.9' }
+  ]
+
   // // Search term for filtering
   // searchTerm = '';
   // // Toggle to show or hide the dropdown
@@ -252,17 +384,16 @@ export class RateListComponent {
   ngOnInit() {
     this.getCurrentDateFormatted()
     this.getCompanyList()
+    this.getCompanyListTemplate()
     this.getSource()
     this.getDestination()
     this.getSourceDestinationCombine()
-
     // DATE FORMATING 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-
-    this.todayDate = yyyy + '-' + mm + '-' + dd;
+    // var today = new Date();
+    // var dd = String(today.getDate()).padStart(2, '0');
+    // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    // var yyyy = today.getFullYear();
+    // this.todayDate = yyyy + '-' + mm + '-' + dd;
 
     //  FORM  
 
@@ -270,21 +401,26 @@ export class RateListComponent {
       companyName: ['', Validators.required],
       source: ['', Validators.required],
       destination: ['', Validators.required],
-      cargotype: ['', Validators.required],
+      cargotype: [{ value: '', disabled: false }, Validators.required],
       transitTime: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       freightType: ['', Validators.required],
-      rate: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      rate: ['', [Validators.required, Validators.pattern("^[0-9]+(\\.[0-9]{1,2})?$")]],
       currency: ['', Validators.required],
       effectiveDate: ['', Validators.required],
-      expirationDate: ['', Validators.required],
-      rateType: [''],
+      expirationDate: [{ value: '', disabled: this.isRateTypeStatus }, Validators.required],
+      isRateTypeStatus: [false],
+      vessel_name: [{ value: '', disabled: !this.isRateTypeStatus }, Validators.required],
+      voyage: [{ value: '', disabled: !this.isRateTypeStatus }, Validators.pattern(/^[a-zA-Z0-9]{3,10}$/)],
+      haz_class: [{ value: '', disabled: true }, Validators.required],
+      packing_group: [{ value: '', disabled: true }, Validators.required],
+      rateType: [this.rateType],
       free_days: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       isDirectShipment: [false],
-      transhipment_add_port: [{ value: '', disabled: this.isDirectShipment }],
+      transhipment_add_port: [{ value: '', disabled: this.isDirectShipment }, Validators.required],
       hazValue: [{ value: '', disabled: true }, [Validators.required, Validators.pattern(/^(?!0000)\d{4}$/)]],
-      remarks: [''],
       hazActiveStatus: [false],
       free_days_comment: [''],
+      remarks: [''],
       terms_condition: [''],
     });
 
@@ -297,23 +433,53 @@ export class RateListComponent {
     this.formData.get('hazActiveStatus')?.valueChanges.subscribe(status => {
       if (status) {
         this.formData.get('hazValue')?.enable();
+        this.formData.get('haz_class')?.enable();
+        this.formData.get('packing_group')?.enable();
+        this.formData.get('cargotype')?.disable();
       } else {
         this.formData.get('hazValue')?.disable();
+        this.formData.get('haz_class')?.disable();
+        this.formData.get('packing_group')?.disable();
+        this.formData.get('cargotype')?.enable();
       }
     });
+
+    this.formData.get('rateType')?.setValue(this.rateType);
   }
 
-  // Method to filter currencies based on search term
-  // get filteredCurrencies() {
-  //   return this.currencyLists.filter(currency =>
-  //     currency.code.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-  //     currency.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //   );
-  // }
 
+  // Update the minimum expiration date based on the selected validFrom date
+  onValidFromChange() {
+    const validFromDate = this.formData.get('effectiveDate')?.value;
 
-   // Handles input event and filters currency
-   onCurrencyInput(event: any) {
+    if (validFromDate) {
+      // Update the minimum expiration date to the selected validFrom date
+      this.minExpirationDate = validFromDate;
+
+      // Check if the current expiration date is earlier than the new validFrom date
+      const expirationDate = this.formData.get('expirationDate')?.value;
+      if (expirationDate && expirationDate < validFromDate) {
+        // If expiration date is earlier, clear the expiration date
+        this.formData.get('expirationDate')?.setValue('');
+      }
+    }
+  }
+
+  // Handle when expiration date is changed
+  onExpirationDateChange() {
+    const validFromDate = this.formData.get('effectiveDate')?.value;
+    const expirationDate = this.formData.get('expirationDate')?.value;
+
+    // Ensure the expiration date is not earlier than the validFrom date
+    if (validFromDate && expirationDate < validFromDate) {
+      this.formData.get('expirationDate')?.setErrors({ invalidDate: true });
+    } else {
+      this.formData.get('expirationDate')?.setErrors(null);
+    }
+  }
+
+  // Handles input event and filters currency
+  onCurrencyInput(event: any) {
     this.currencyInputValue = event.target.value;
     if (this.currencyInputValue.length >= 1) {
       this.filteredCurrencies = this.filterCurrency(this.currencyInputValue);
@@ -348,15 +514,120 @@ export class RateListComponent {
     }, 250);// Delay to allow click event to register before hiding
   }
 
-  // // Toggle the dropdown
-  // toggleDropdown() {
-  //   this.dropdownOpen = !this.dropdownOpen;
-  // }
-  // // Close dropdown when selecting a currency
-  // closeDropdown() {
-  //   this.dropdownOpen = false;
-  //   this.searchTerm = ''; // Clear the search term after selection
-  // }
+
+  // Handles input event and filters currency
+  onViaInput(event: any) {
+    const input = event.target.value;
+    this.viaInputValue = input;
+    this.filteredVia = this.filterVia(input);  // Filter the list based on input
+    this.showViaDropdown = true;  // Show the dropdown while typing
+  }
+
+  // Handles the selection of a currency
+  selectVia(viaName: string) {
+    // this.formData.get('transhipment_add_port')!.setValue(viaName);
+    // this.viaInputValue = viaName; // Update the input with the selected value
+    // this.showViaDropdown = false;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // Add the selected option to the selectedVia array
+    if (!this.selectedVia.includes(viaName)) {
+      this.selectedVia.push(viaName);
+    }
+
+    // Clear the input field after selection
+    this.viaInputValue = '';
+    this.showViaDropdown = false;  // Hide the dropdown after selection
+    this.updateFormControl();  // Update the form control with the selected values
+  }
+
+  // Check if an item is already selected
+  isSelected(viaName: string): boolean {
+    return this.selectedVia.includes(viaName);
+  }
+
+  updateFormControl() {
+    // Update the form control with the selected values (as a comma-separated string or array)
+    // this.formData.get('transhipment_add_port')!.setValue(this.selectedVia.join(', '));
+    this.formData.get('transhipment_add_port')!.setValue(this.selectedVia.join(', '));
+    this.viaInputValue = '';
+  }
+
+  // Method to add new via when it's not found in the list
+  addNewVia(via: string) {
+    if (!this.selectedVia.includes(via) && via !== '') {
+      this.selectedVia.push(via);
+      this.formData.controls['transhipment_add_port'].setValue('');
+      this.viaInputValue = '';
+    }
+    this.formData.controls['transhipment_add_port']!.setValue(this.selectedVia.join(', '));
+    this.filteredVia = [];
+    this.showViaDropdown = false;
+  }
+
+  // Remove an option from the selected list
+  removeVia(via: string) {
+    const index = this.selectedVia.indexOf(via);
+    if (index > -1) {
+      this.selectedVia.splice(index, 1);  // Remove the item from selectedVia array
+      this.updateFormControl();  // Update the form control after removal
+    }
+  }
+
+  // Filtering logic
+  filterVia(query: string) {
+    return this.sourceDestinationVia.filter((transhipmentPort: any) =>
+      transhipmentPort.name.toLowerCase().includes(query.toLowerCase())
+      // ||
+      //   transhipmentPort.code.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  hideViaDropdown() {
+    setTimeout(() => {
+      this.showViaDropdown = false;
+    }, 200); // Delay to ensure selection is registered
+
+  }
+
+  // Handles input event and filters currency
+  onHazClassInput(event: any) {
+    this.hazClassInputValue = event.target.value;
+    if (this.hazClassInputValue.length >= 1) {
+      this.filteredHazClass = this.filterHazClass(this.hazClassInputValue);
+    } else {
+      this.filteredHazClass = [];
+    }
+    this.showHazClassDropdown = true;
+  }
+
+  // Handles the selection of a currency
+  selectHazClass(hazValue: string) {
+    this.formData.get('haz_class')!.setValue(hazValue);
+    this.hazClassInputValue = hazValue; // Update the input with the selected value
+    this.showHazClassDropdown = false;
+  }
+  // Filtering logic
+  filterHazClass(query: string) {
+    return this.hazClassValue.filter((hazClass: any) =>
+      hazClass.hazClass.toLowerCase().includes(query.toLowerCase())
+      // ||
+      //   hazClass.code.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  hideHazClassDropdown() {
+    setTimeout(() => {
+      this.showHazClassDropdown = false;
+      // Clear input if no valid hazClass is selected
+      if (!this.hazClassValue.some(hazClass => hazClass.hazClass === this.hazClassInputValue)) {
+        this.formData.get('haz_class')!.setValue('');
+        this.hazClassInputValue = ''; // Clear input if the user hasn't selected a valid currency
+        this.showHazClassDropdown = false;
+      }
+    }, 250);// Delay to allow click event to register before hiding
+  }
+
 
   getCurrentDateFormatted(): any {
     const currentDate: Date = new Date();
@@ -378,6 +649,12 @@ export class RateListComponent {
       this.companyList = res
     })
   }
+  getCompanyListTemplate() {
+    this.apiServiceService.getCompanyList('/api/client-template/').subscribe(res => {
+      this.templateCompanyList = res
+      console.log(res)
+    })
+  }
   getSource() {
     this.apiServiceService.getCompanyList('/api/source/').subscribe(res => {
       this.sourceList = res
@@ -389,20 +666,8 @@ export class RateListComponent {
     })
   }
 
-  // getSourceDestinationCombine() {
-  //   this.sourceDestinationTransshipment = [...this.sourceList, ...this.destinationList]
-  //   console.log(this.sourceDestinationTransshipment)
-  // }
-
   // Toggle radio button value
   onHazCheckboxStatusChange(event: any) {
-    // // this.hazType = event.target.checked;
-    // this.hazActiveStatus = event.target.checked;
-    // if (this.hazActiveStatus) {
-    //   this.formData.get('hazValue')?.enable();
-    // } else {
-    //   this.formData.get('hazValue')?.disable();
-    // }
     this.formData.get('hazActiveStatus')?.setValue(event.target.checked);
     if (event.target.checked) {
       this.hazActiveStatus = true
@@ -418,7 +683,7 @@ export class RateListComponent {
     const selectedIndex = event.target.selectedIndex;
     const selectedOption = event.target.options[selectedIndex];
     const selectedOptionName = selectedOption.textContent || selectedOption.innerText;
-    this.manualFilterChooseFromShippingLine = selectedOptionName
+    this.templateFilterChooseFromShippingLine = selectedOptionName
 
     // console.log('Selected option name:', selectedOptionName);
 
@@ -437,18 +702,26 @@ export class RateListComponent {
     }
 
     this.getcurrentDataList()
-    this.getManualRateData()
-
   }
+  ManualViewListDataById(event: any) {
+    this.isLoading = true;
+    const selectedIndex = event.target.selectedIndex;
+    const selectedManualOption = event.target.options[selectedIndex];
+    const selectedOptionManualName = selectedManualOption.textContent || selectedManualOption.innerText;
+    this.manualFilterChooseFromShippingLine = selectedOptionManualName
+
+    // GET COMPANY ID 
+    this.companyID = event.target.value
+    this.getManualRateData()
+  }
+
+
   getcurrentDataList() {
     this.apiServiceService.complanyListDataById('/api/company-rates/', this.companyID).subscribe(res => {
       this.currentcompanyListData = res
       this.isLoading = false;
-
-      console.log(this.currentcompanyListData)
+      console.log(res)
       // console.log(res, "refresh ssuceessfully");
-
-
     })
   }
 
@@ -504,12 +777,8 @@ export class RateListComponent {
           }),
             (error: any) => {
               console.log(error);
-
             }
-
         }
-
-
 
       }
     }
@@ -526,12 +795,18 @@ export class RateListComponent {
 
 
   getManualRateData() {
-    this.apiServiceService.getCompanyList('/api/manual-rate/').subscribe(res => {
+    this.apiServiceService.complanyListDataById('/api/manual-rate/', this.companyID).subscribe(res => {
       this.manualRateLists = res;
       this.isLoading = false;
-      console.log(res)
+      // console.log(res)
       // this.companyList.push({ name: this.companyList });
     })
+    // this.apiServiceService.getCompanyList('/api/manual-rate/').subscribe(res => {
+    //   this.manualRateLists = res;
+    //   this.isLoading = false;
+    //   console.log(res)
+    //   // this.companyList.push({ name: this.companyList });
+    // })
   }
 
   // EDIT MODAL OPEN HERE
@@ -552,21 +827,13 @@ export class RateListComponent {
     this.selectedTab = tab;
   }
 
-
-  // onInput(event: any): void {
-  //   const value = event.target.value.toLowerCase();
-  //   this.filteredCompanies = this.companyList.filter((company: any) =>
-  //     company.name.toLowerCase().includes(value)
-  //   );
-  // }
-
   // ******************************** COMPANY FUNCTIONALITY ***********************************
   // Example onInput method to filter companies
   onInput(event: any) {
     this.inputValue = event.target.value;
 
     // Perform filtering based on the input value
-    if (this.inputValue.length >= 2) {
+    if (this.inputValue.length >= 1) {
       // Example of filtering logic: Update the filteredCompanies array based on input
       this.filteredCompanies = this.filterCompanies(this.inputValue);
     } else {
@@ -595,16 +862,10 @@ export class RateListComponent {
 
   // ******************************** SOURCE FUNCTIONALITY ***********************************
   onSourceInput(event: any): void {
-    // const value = event.target.value.toLowerCase();
-    // console.log(value)
-    // this.filteredSources = this.sourceList.filter((source: any) =>
-    //   source.name.toLowerCase().includes(value)
-    // );
-
     this.sourceInputValue = event.target.value;
 
     // Perform filtering based on the input value
-    if (this.sourceInputValue.length >= 2) {
+    if (this.sourceInputValue.length >= 1) {
       // Example of filtering logic: Update the filteredCompanies array based on input
       this.filteredSources = this.filterSources(this.sourceInputValue);
     } else {
@@ -640,7 +901,7 @@ export class RateListComponent {
     this.destinationInputValue = event.target.value;
 
     // Perform filtering based on the input value
-    if (this.destinationInputValue.length >= 2) {
+    if (this.destinationInputValue.length >= 1) {
       // Example of filtering logic: Update the filteredCompanies array based on input
       this.filteredDestination = this.filterDestination(this.destinationInputValue);
     } else {
@@ -674,25 +935,27 @@ export class RateListComponent {
   }
 
   onSubmitHandler(): void {
-    // const transhipmentControl = this.formData.get('transhipment_add_port');
-    // if (this.isDirectShipment && transhipmentControl?.disabled) {
-    //   transhipmentControl.enable();
-    // }
+    const cargotypeValue = this.formData.get('cargotype')?.value || null; // Provide default value if needed
     const modifiedData = {
       company: this.formData.value.companyName,
       source: this.formData.value.source,
       destination: this.formData.value.destination,
-      cargotype: this.formData.value.cargotype,
+      cargotype: cargotypeValue || '',
       transit_time: this.formData.value.transitTime,
       freight_type: this.formData.value.freightType,
       direct_shipment: this.isDirectShipment,
-      spot_filed: this.formData.value.rateType,
+      isRateTypeStatus: this.isRateTypeStatus,
+      spot_filed: this.rateType,
       rate: this.formData.value.rate,
       free_days: this.formData.value.free_days,
       free_days_comment: this.formData.value.free_days_comment,
       currency: this.formData.value.currency,
       hazardous: this.formData.value.hazActiveStatus,
       un_number: this.formData.value.hazValue,
+      vessel_name: this.formData.value.vessel_name,
+      voyage: this.formData.value.voyage,
+      haz_class: this.formData.value.haz_class,
+      packing_group: this.formData.value.packing_group,
       terms_condition: this.formData.value.terms_condition,
       transhipment_add_port: this.formData.value?.transhipment_add_port || '',
       effective_date: this.formData.value.effectiveDate,
@@ -702,6 +965,8 @@ export class RateListComponent {
     // console.log(modifiedData)
     if (this.formData.valid) {
       this.apiServiceService.addManualRate('/api/manual-rate/', modifiedData).subscribe(response => {
+        const activity_log = localStorage.getItem('UserData');
+        const parsedData = activity_log ? JSON.parse(activity_log) : {};
         if (response.message === 'already exists') {
           this.serverResposeMessage = 'This Rate is already exists'
           return
@@ -723,14 +988,35 @@ export class RateListComponent {
         });
         this.formData.reset();
         this.isDirectShipment = false
-        this.rateType = 'spot'
-        this.getCompanyList()
-        this.getManualRateData()
+        this.rateType = 'filed'
+        this.selectedVia = []
+        // this.getCompanyList()
+        // this.getManualRateData()
+        this.refreshData()
+
+        const log = {
+          userId: parsedData.userId,
+          action_type: 'Create Manual Rate',
+          description: `Creating Manual Rate : ${modifiedData.company}`
+        }
+
+        this.apiServiceService.activityLogCreation('/api/activity-log/', log).subscribe((res) => {
+          console.log(res)
+        })
+
       })
     } else {
       // Mark all controls as touched to trigger validation errors
       this.formData.markAllAsTouched();
     }
+  }
+
+  // Method to refresh the data from API
+  refreshData() {
+    // Call your API to fetch updated data
+    this.getManualRateData()
+    this.getcurrentDataList()
+    this.getCompanyList()
   }
 
   onDirectShipmentChange(event: any): void {
@@ -764,7 +1050,8 @@ export class RateListComponent {
           icon: "success",
           title: `Deleted Successfully`
         });
-        this.getCompanyList()
+        // this.getCompanyList()
+        this.refreshData()
       })
     }
     else {
@@ -772,8 +1059,21 @@ export class RateListComponent {
     }
   }
 
-  toggleRateType(event: any): void {
+  onRateCheckboxStatusChange(event: any): void {
     this.isRateTypeStatus = event.target.checked;
+    if (this.isRateTypeStatus) {
+      this.formData.get('vessel_name')?.enable();
+      this.formData.get('voyage')?.enable();
+      this.formData.get('expirationDate')?.disable();
+      this.rateType = 'spot'
+    } else {
+      this.formData.get('vessel_name')?.disable();
+      this.formData.get('voyage')?.disable();
+      this.formData.get('expirationDate')?.enable();
+      this.rateType = 'filed'
+
+    }
+    this.formData.get('spot_filed')?.setValue(this.rateType);
   }
 
 }

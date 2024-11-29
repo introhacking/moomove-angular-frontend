@@ -15,12 +15,12 @@ export class LoginComponent {
   res: any;
   userData: any;
   responseData: any;
-  isRedirect:boolean=false;
+  isRedirect: boolean = false;
 
   constructor(private route: Router,
-              private fb: FormBuilder,
-              private apiServiceService: ApiServiceService,
-              private authenticationService: AuthenticationService) {}
+    private fb: FormBuilder,
+    private apiServiceService: ApiServiceService,
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.loginFormData = this.fb.group({
@@ -29,6 +29,7 @@ export class LoginComponent {
     });
   }
 
+
   login() {
 
     let match = this.loginFormData.value;
@@ -36,15 +37,15 @@ export class LoginComponent {
     if (match !== this.loginFormData.value) {
       this.isRedirect = true;
     }
-    
+
     // this.route.navigate(['shipmentQuoteGeneration']);      // yeh delete hoga sirf , then auth.guard.ts file mei !accessToken change to accessToken
-    
+
     this.authenticationService.proceedLogin(match).subscribe(
       (res: any) => {
         this.isRedirect = true
         if (res) {
           // console.log("Login successful", res);
-          
+
           this.responseData = res;
           localStorage.setItem('UserData', JSON.stringify(this.responseData));
           setTimeout(() => {
@@ -58,8 +59,25 @@ export class LoginComponent {
               showConfirmButton: false // Hide the "OK" button
             });
           }, 1000);
-          // this.isRedirect = true
           
+          const activity_log = localStorage.getItem('UserData');
+          const parsedData = activity_log ? JSON.parse(activity_log) : {};
+
+          const log = {
+            userId: parsedData.userId,
+            action_type: 'Login',
+            action_status: true,
+            description: 'User logged into the system',
+            source_id: null,
+            destination_id: null,
+          }
+
+          this.apiServiceService.activityLogCreation('/api/activity-log/', log).subscribe((res) => {
+            console.log(res)
+          })
+
+          // this.isRedirect = true
+
           // this.isRedirect = true
         } else {
           this.route.navigate(['login']);
@@ -68,26 +86,37 @@ export class LoginComponent {
             icon: "error",
             title: "Oops...",
             text: "Username or password is incorrect.",
-           
+
           });
+
+          // const log = {
+          //   userId: parsedData.userId,
+          //   action_type: 'Login',
+          //   action_status: false,
+          //   description: 'User failed during logged into the system',
+          // }
+
+          // this.apiServiceService.activityLogCreation('/api/activity-log/', log).subscribe((res) => {
+          //   console.log(res)
+          // })
         }
       },
       (error: any) => {
         console.error(error);
-        if(error.status == 401 ){
+        if (error.status == 401) {
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Username or password is incorrect.",
-           
+
           });
           this.isRedirect = false
-        }else{
+        } else {
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Username and password is required",
-           
+
           });
           this.isRedirect = false
         }

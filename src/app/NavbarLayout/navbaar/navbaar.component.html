@@ -48,7 +48,7 @@
       </div>
       <div class="cs_img d-flex justify-content-start align-items-center gap-3 position-relative">
         <i class="fa fa-bell" aria-hidden="true"></i>
-        <img src="../../../assets/ship.jpg" alt="logo-img" (click)="toggleSignOutBox()">
+        <img src="../../../assets/ship.jpg" alt="logo-img" (click)="toggleSignOutBox($event)">
         <div class="dropdown-box" *ngIf="showSignOutBox">
           <ul>
             <!-- Add any profile links here -->

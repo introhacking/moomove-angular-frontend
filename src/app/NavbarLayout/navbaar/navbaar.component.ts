@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import Swal from 'sweetalert2';
@@ -25,9 +25,17 @@ export class NavbaarComponent {
     this.showMobileMenu = false;
   }
 
-
-  toggleSignOutBox() {
+  toggleSignOutBox(event: MouseEvent) {
+    event.stopPropagation(); // Prevent event propagation to document click
     this.showSignOutBox = !this.showSignOutBox; // Toggle box visibility
+  }
+
+  // Hides the sign-out dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+  onOutsideClick(event: MouseEvent) {
+    if (this.showSignOutBox) {
+      this.showSignOutBox = false;
+    }
   }
 
   logout() {
@@ -42,7 +50,7 @@ export class NavbaarComponent {
     });
     swalWithBootstrapButtons.fire({
       title: "Are you sure?",
-      text: "You won't be able to logout this!",
+      // text: "You won't be able to logout this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, Logout!",

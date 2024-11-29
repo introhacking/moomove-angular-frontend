@@ -545,7 +545,6 @@ nav ul li:hover:before {
   height: 60vh;
   // overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px 10px 10px 0px;
 }
 
 .form-switch {
@@ -574,6 +573,11 @@ nav ul li:hover:before {
   overflow: auto;
   margin: 0 15px;
 }
+.cs-table-wrapper-manaual {
+  max-height: 43vh;
+  overflow: auto;
+  margin: 0 15px;
+}
 
 
 /* Styling for the dropdown menu */
@@ -588,4 +592,14 @@ nav ul li:hover:before {
 
 .list-group-item:hover {
   background-color: #f8f9fa;
+}
+.cs-addVia{
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  border-radius: 50%;
+  border: 1px solid blue;
+  padding: 5px;
+  background-color: blue;
+  color: #ffffff;
 }

@@ -1,6 +1,6 @@
 <div class="modal" [class.show]="isCloneVisible">
     <div class="modal-content">
-        <div class="modal-heading-content-wrapper">
+        <div class="modal-heading-content-wrapper shadow-sm">
             <div class="modal-heading-content">
                 <h4>Add Manual Rates</h4>
                 <span class="close" (click)="closeModal()">&times;</span>
@@ -9,14 +9,19 @@
         </div>
         <div class="modal-inner-content">
             <form [formGroup]="isCloneParamData" action="POST">
-                <div class="">
-                    <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="col-6 form-floating mb-3" style="position: relative;">
-                            <input type="text" formControlName="companyName" class="form-control"
+                <div class="cs-padding">
+                    <div class="d-flex justify-content-between gap-2 mb-2">
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating" style="position: relative;">
+                            <input
+                                [ngClass]="{'custom-invalid-border':isCloneParamData.get('companyName')!.invalid && 
+                            (isCloneParamData.get('companyName')!.dirty || isCloneParamData.get('companyName')!.touched)}"
+                                type="text" formControlName="companyName" class="form-control"
                                 placeholder="Company name" aria-label="Company name" (input)="onInput($event)"
                                 (focus)="showDropdown = true" (blur)="hideDropdown()" (click)="showDropdown = true">
-                            <label for="floatingTextarea2">--Select Carrier--</label>
-
+                            <label
+                                [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('companyName')!.invalid && 
+                            (isCloneParamData.get('companyName')!.dirty || isCloneParamData.get('companyName')!.touched)}"
+                                for="floatingTextarea2">--Select Carrier--</label>
                             <div *ngIf="showDropdown && filteredCompanies.length > 0" class="dropdown-menu show"
                                 (mousedown)="$event.preventDefault()"
                                 style="position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;">
@@ -30,18 +35,25 @@
                                 <button type="button" class="dropdown-item" disabled>Not found</button>
                             </div>
 
-                            <div
+                            <div class="position-absolute"
                                 *ngIf="isCloneParamData.get('companyName')!.invalid && 
                                              (isCloneParamData.get('companyName')!.dirty || isCloneParamData.get('companyName')!.touched)">
                                 <small class="text-danger">Carrier is required</small>
                             </div>
                         </div>
-                        <div class="col-sm-6 form-floating" style="position: relative;">
-                            <input type="text" formControlName="source" class="form-control" placeholder="Source name"
+                    </div>
+
+                    <div class="d-flex justify-content-between gap-2 mb-2">
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating" style="position: relative;">
+                            <input [ngClass]="{'custom-invalid-border':isCloneParamData.get('source')!.invalid && 
+                            (isCloneParamData.get('source')!.dirty || isCloneParamData.get('source')!.touched)}"
+                                type="text" formControlName="source" class="form-control" placeholder="Source name"
                                 aria-label="Source name" (input)="onSourceInput($event)"
                                 (focus)="showSourceDropdown = true" (blur)="hideSourceDropdown()"
                                 (click)="showSourceDropdown = true">
-                            <label for="floatingTextarea2">--Select Source--</label>
+                            <label [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('source')!.invalid && 
+                            (isCloneParamData.get('source')!.dirty || isCloneParamData.get('source')!.touched)}"
+                                for="floatingTextarea2">--Select Source--</label>
 
                             <div *ngIf="showSourceDropdown && filteredSources.length > 0" class="dropdown-menu show"
                                 (mousedown)="$event.preventDefault()"
@@ -62,16 +74,19 @@
                                 <small class="text-danger">Source is required</small>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-between gap-2 mb-3">
-
-                        <div class="col-sm-6 form-floating" style="position: relative;">
-                            <input type="text" formControlName="destination" class="form-control"
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating" style="position: relative;">
+                            <input
+                                [ngClass]="{'custom-invalid-border':isCloneParamData.get('destination')!.invalid && 
+                            (isCloneParamData.get('destination')!.dirty || isCloneParamData.get('destination')!.touched)}"
+                                type="text" formControlName="destination" class="form-control"
                                 placeholder="Destination name" aria-label="Destination name"
                                 (input)="onDestinationInput($event)" (focus)="showDestinationDropdown = true"
                                 (blur)="hideDestinationDropdown()" (click)="showDestinationDropdown = true">
-                            <label for="floatingTextarea2">--Select Destination--</label>
+                            <label
+                                [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('destination')!.invalid && 
+                            (isCloneParamData.get('destination')!.dirty || isCloneParamData.get('destination')!.touched)}"
+                                for="floatingTextarea2">--Select Destination--</label>
 
                             <div *ngIf="showDestinationDropdown && filteredDestination.length > 0"
                                 class="dropdown-menu show" (mousedown)="$event.preventDefault()"
@@ -93,62 +108,301 @@
                                 <small class="text-danger">Destination is required</small>
                             </div>
                         </div>
-                        <div
-                            class="form-check form-switch d-flex align-items-center justify-content-between col-12 col-md-6 mb-2 mb-md-4">
-                            <div class="cs-rate_types">
-                                <label for="rateType">Rate Type:</label>
-                                <div class="">
-                                    <!-- Radio button for 'spot' -->
-                                    <input type="radio" id="spot" formControlName="rateType" name="rateType"
-                                        class="form-check-input" [(ngModel)]="rateType" value="spot" checked>
-                                    <label class="form-check-label" for="spot">Spot</label>
-                                </div>
-                                <div class="">
-                                    <!-- Radio button for 'filed' -->
-                                    <input type="radio" id="filed" formControlName="rateType" name="rateType"
-                                        class="form-check-input" [(ngModel)]="rateType" value="filed">
-                                    <label class="form-check-label" for="filed">Filed</label>
-                                </div>
-                            </div>
-                            <!-- <div class="col-4 form-floating">
-                                <input type="number" min="1" formControlName="free_days" class="form-control"
-                                    placeholder="Free Days" aria-label="Free Days">
-                                <label for="floatingTextarea2">Free Days</label>
-                                <div
-                                    *ngIf="isCloneParamData.get('free_days')!.invalid && (isCloneParamData.get('free_days')!.dirty || isCloneParamData.get('free_days')!.touched)">
-                                    <small class="text-danger">Free Days is required</small>
-                                </div>
-                            </div> -->
-                        </div>
                     </div>
-                    <!-- <div class="d-flex justify-content-between gap-2 mb-3"> -->
-                    <!-- <div class="col-sm-6 form-floating">
-                            <input type="text" formControlName="rate" class="form-control" placeholder="Rate"
-                                aria-label="Rate">
-                            <label for="floatingTextarea2">Rate</label>
-                            <div
-                                *ngIf="isCloneParamData.get('rate')!.invalid && (isCloneParamData.get('rate')!.dirty || isCloneParamData.get('rate')!.touched)">
-                                <small class="text-danger">Rate is required</small>
-                            </div>
-                        </div> -->
+
 
                     <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating">
-                            <input type="number" min="0" formControlName="rate" class="form-control" placeholder="Rate"
-                                aria-label="Rate">
-                            <label for="floatingTextarea2">Rate</label>
+                        <div class="d-flex flex-column col-12 col-md-6 mb-2">
                             <div
+                                class="form-check form-switch d-flex flex-column justify-content-between col-5 gap-3 mb-4">
+                                <div class="d-inline">
+                                    <label class="form-check-label"
+                                        for="flexSwitchCheckDefaultRate">{{isRateTypeStatus?'Spot' : 'Filed'}}
+                                        Rate</label>
+                                </div>
+                                <input class="form-check-input" formControlName="isRateTypeStatus" type="checkbox"
+                                    role="switch" id="flexSwitchCheckDefaultRate"
+                                    (change)="onRateCheckboxStatusChange($event)">
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between gap-1 col-12 mb-2">
+                                <div class="col-6 form-floating">
+                                    <input
+                                        [ngClass]="{'custom-invalid-border':isCloneParamData.get('vessel_name')!.invalid && 
+                                    (isCloneParamData.get('vessel_name')!.dirty || isCloneParamData.get('vessel_name')!.touched)}"
+                                        type="text" formControlName="vessel_name" class="form-control"
+                                        placeholder="Vessel name" aria-label="vessel_name">
+                                    <label for="floatingTextarea2">Vessel name</label>
+                                    <div
+                                        *ngIf="isCloneParamData.get('vessel_name')!.invalid && (isCloneParamData.get('vessel_name')!.dirty || isCloneParamData.get('vessel_name')!.touched)">
+                                        <small class="text-danger">Vessel name is required</small>
+                                    </div>
+                                </div>
+
+                                <div class="col-5 form-floating">
+                                    <input type="text" formControlName="voyage" class="form-control"
+                                        placeholder="Voyage" aria-label="voyage">
+                                    <label for="floatingTextarea2">Voyage</label>
+                                    <div
+                                        *ngIf="isCloneParamData.get('voyage')!.invalid && (isCloneParamData.get('voyage')!.dirty || isCloneParamData.get('voyage')!.touched)">
+                                        <small class="text-danger"
+                                            *ngIf="isCloneParamData.get('voyage')?.errors?.['pattern']">Voyage
+                                            is invalid</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column col-12 col-md-6 mb-2">
+                            <!-- <div class="form-check form-switch d-flex flex-column col-4"> -->
+                            <div
+                                class="form-check form-switch d-flex flex-column justify-content-between col-5 gap-3 mb-4">
+                                <div class="d-inline">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Direct
+                                        Shipment?</label>
+                                </div>
+                                <input class="form-check-input" type="checkbox" formControlName="isDirectShipment"
+                                    [checked]="isDirectShipment" role="switch" id="flexSwitchCheckDefault"
+                                    (change)="onDirectShipmentChange($event)">
+                            </div>
+
+                            <div class="col-12 form-floating" style="position: relative;">
+                                <!-- Input field for currency selection -->
+                                <input
+                                    [ngClass]="{'custom-invalid-border':isCloneParamData.get('transhipment_add_port')!.invalid && 
+                                (isCloneParamData.get('transhipment_add_port')!.dirty || isCloneParamData.get('transhipment_add_port')!.touched)}"
+                                    type="text" class="form-control" placeholder="Via"
+                                    formControlName="transhipment_add_port" [value]="viaInputValue"
+                                    (input)="onViaInput($event)" (focus)="showViaDropdown = true"
+                                    (blur)="hideViaDropdown()" />
+
+                                <i *ngIf="filteredVia.length === 0 && showViaDropdown && viaInputValue.length >= 1"
+                                    class="fa fa-plus cs-addVia" (click)="addNewVia(viaInputValue)" height="22px"
+                                    width="22px" aria-hidden="true"></i>
+
+                                <label
+                                    [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('transhipment_add_port')!.invalid && 
+                                (isCloneParamData.get('transhipment_add_port')!.dirty || isCloneParamData.get('transhipment_add_port')!.touched)}"
+                                    for="floatingTextarea2">--Select Via--</label>
+
+                                <!-- Display selected items with remove option -->
+                                <div *ngIf="selectedVia.length > 0" class="selected-via-list mt-2">
+                                    <span *ngFor="let via of selectedVia" class="badge bg-primary me-1">
+                                        {{ via }}
+                                        <button type="button" class="btn-close btn-close-white ms-1" aria-label="Close"
+                                            (click)="removeVia(via)"></button>
+                                    </span>
+                                </div>
+
+                                <!-- Dropdown menu that appears under the input -->
+                                <div *ngIf="showViaDropdown && filteredVia.length > 0" class="dropdown-menu show"
+                                    style="position: absolute; top: 80%; left: 0; width: 100%; z-index: 1000;">
+
+                                    <ul class="list-group">
+                                        <li *ngFor="let viaName of filteredVia" class="list-group-item"
+                                            (mousedown)="selectVia(viaName.name)">
+                                            {{ viaName.name }}
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- "Not found" message when no currencies match the input -->
+                                <div *ngIf="filteredVia.length === 0 && showViaDropdown && viaInputValue.length >= 1"
+                                    class="dropdown-menu show"
+                                    style="position: absolute; top: 80%; left: 0; width: 100%; z-index: 1000;">
+                                    <button type="button" class="dropdown-item" disabled>Not found</button>
+                                </div>
+
+                                <!-- Validation message -->
+                                <div
+                                    *ngIf="isCloneParamData.get('transhipment_add_port')!.invalid && (isCloneParamData.get('transhipment_add_port')!.dirty || isCloneParamData.get('transhipment_add_port')!.touched)">
+                                    <small class="text-danger">Via is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- new structure -->
+                    <div class="d-flex justify-content-between flex-column gap-2 mb-2">
+                        <div class="form-check form-switch d-flex flex-column justify-content-between col-5 gap-3 mb-4">
+                            <div class="d-inline">
+                                <label class="form-check-label"
+                                    for="flexSwitchCheckDefaultHaz">{{hazActiveStatus?'Hazardous':'Non-Hazardous'}}</label>
+                            </div>
+                            <input class="form-check-input" formControlName="hazActiveStatus"
+                                [checked]="hazActiveStatus" type="checkbox" role="switch" id="flexSwitchCheckDefaultHaz"
+                                (change)="onHazCheckboxStatusChange($event)">
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-between align-items-center gap-2 mb-4">
+                            <div class="col-6 d-flex justify-content-between align-items-center gap-3">
+                                <div class="col-5 form-floating position-relative">
+                                    <input
+                                        [ngClass]="{'custom-invalid-border':isCloneParamData.get('cargotype')!.invalid && 
+                              (isCloneParamData.get('cargotype')!.dirty || isCloneParamData.get('cargotype')!.touched)}"
+                                        type="text" [disabled]="isCloneParamData.get('hazActiveStatus')?.value"
+                                        formControlName="cargotype" class="form-control" placeholder="Commodity"
+                                        aria-label="Commodity">
+                                    <label
+                                        [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('cargotype')!.invalid && 
+                              (isCloneParamData.get('cargotype')!.dirty || isCloneParamData.get('cargotype')!.touched)}"
+                                        for="floatingTextarea2">Commodity</label>
+                                    <div style="position: absolute;"
+                                        *ngIf="isCloneParamData.get('cargotype')!.invalid && (isCloneParamData.get('cargotype')!.dirty || isCloneParamData.get('cargotype')!.touched)">
+                                        <small class="text-danger">Commodity is required</small>
+                                    </div>
+                                </div>
+                                <div class="input-group d-flex justify-content-end flex-nowrap form-floating">
+                                    <span class="input-group-text" id="addon-wrapping">UN</span>
+                                    <!-- <input type="number" formControlName="hazValue" class="form-control" placeholder="Haz" aria-label="Haz" aria-describedby="addon-wrapping"  id="hazValueInput"> -->
+                                    <div class="form-floating col-9">
+                                        <input
+                                            [ngClass]="{'custom-invalid-border':isCloneParamData.get('hazValue')!.invalid && 
+                                (isCloneParamData.get('hazValue')!.dirty || isCloneParamData.get('hazValue')!.touched)}"
+                                            type="text" formControlName="hazValue" class="form-control"
+                                            placeholder="Haz" aria-label="Haz" id="hazValueInput">
+                                        <label
+                                            [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('hazValue')!.invalid && 
+                                (isCloneParamData.get('hazValue')!.dirty || isCloneParamData.get('hazValue')!.touched)}"
+                                            for="hazValueInput" class="cs-container-label">{{hazActiveStatus?'Enter
+                                            valid
+                                            4-digit UN number':'Haz'}}</label>
+                                        <div style="position: absolute;"
+                                            *ngIf="isCloneParamData.get('hazValue')!.invalid && (isCloneParamData.get('hazValue')!.dirty || isCloneParamData.get('hazValue')!.touched)">
+                                            <small class="text-danger"
+                                                *ngIf="isCloneParamData.get('hazValue')?.errors?.['required']">Haz
+                                                value is required.</small>
+                                            <small class="text-danger"
+                                                *ngIf="isCloneParamData.get('hazValue')?.errors?.['pattern']">Must
+                                                be a
+                                                4-digit number.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 d-flex justify-content-between align-items-center gap-3">
+                                <div class="col-6 form-floating">
+                                    <input
+                                        [ngClass]="{'custom-invalid-border':isCloneParamData.get('haz_class')!.invalid && 
+                              (isCloneParamData.get('haz_class')!.dirty || isCloneParamData.get('haz_class')!.touched)}"
+                                        type="number" formControlName="haz_class" class="form-control"
+                                        placeholder="Haz class" aria-label="haz_class" (input)="onHazClassInput($event)"
+                                        (focus)="showHazClassDropdown = true" (blur)="hideHazClassDropdown()">
+                                    <label
+                                        [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('haz_class')!.invalid && 
+                              (isCloneParamData.get('haz_class')!.dirty || isCloneParamData.get('haz_class')!.touched)}"
+                                        for="floatingTextarea2">--Select Haz Class--</label>
+
+                                    <!-- Dropdown menu that appears under the input -->
+                                    <div *ngIf="showHazClassDropdown && filteredHazClass.length > 0"
+                                        class="dropdown-menu show"
+                                        style="position: absolute; top: 80%; left: 0; width: 100%; z-index: 1000;">
+
+                                        <ul class="list-group">
+                                            <li *ngFor="let hazValue of filteredHazClass" class="list-group-item"
+                                                (mousedown)="selectHazClass(hazValue.hazClass)">
+                                                {{ hazValue.hazClass }}
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- "Not found" message when no currencies match the input -->
+                                    <div *ngIf="filteredHazClass.length === 0 && showHazClassDropdown && hazClassInputValue.length >= 1"
+                                        class="dropdown-menu show"
+                                        style="position: absolute; top: 80%; left: 0; width: 100%; z-index: 1000;">
+                                        <button type="button" class="dropdown-item" disabled>Not found</button>
+                                    </div>
+                                    <!-- Validation message -->
+                                    <div style="position: absolute;"
+                                        *ngIf="isCloneParamData.get('haz_class')!.invalid && (isCloneParamData.get('haz_class')!.dirty || isCloneParamData.get('haz_class')!.touched)">
+                                        <small class="text-danger">Haz Class is required</small>
+                                    </div>
+                                </div>
+                                <div class="col-5 form-floating">
+                                    <select
+                                        [ngClass]="{'custom-invalid-border':isCloneParamData.get('packing_group')!.invalid && 
+                              (isCloneParamData.get('packing_group')!.dirty || isCloneParamData.get('packing_group')!.touched)}"
+                                        formControlName="packing_group" id="floatingInput" class="form-control border">
+                                        <!-- <option value="" selected disabled>--Select Packing Group--</option> -->
+                                        <option [value]="pckgp.pckgp" *ngFor="let pckgp of packingGp">
+                                            pckgp-{{pckgp.pckgp}}
+                                        </option>
+                                    </select>
+                                    <label
+                                        [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('packing_group')!.invalid && 
+                              (isCloneParamData.get('packing_group')!.dirty || isCloneParamData.get('packing_group')!.touched)}"
+                                        for="floatingTextarea2">--Select Packing Group--</label>
+                                    <!-- Validation message -->
+                                    <div style="position: absolute;"
+                                        *ngIf="isCloneParamData.get('packing_group')!.invalid && (isCloneParamData.get('packing_group')!.dirty || isCloneParamData.get('packing_group')!.touched)">
+                                        <small class="text-danger">Packing group is required</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between gap-2 mb-2">
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating position-relative">
+                            <input
+                                [ngClass]="{'custom-invalid-border':isCloneParamData.get('effectiveDate')!.invalid && 
+                          (isCloneParamData.get('effectiveDate')!.dirty || isCloneParamData.get('effectiveDate')!.touched)}"
+                                type="date" min={{todayDate}} formControlName="effectiveDate" class="form-control"
+                                placeholder="Valid From" aria-label="Valid From" (change)="onValidFromChange()">
+                            <label
+                                [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('effectiveDate')!.invalid && 
+                          (isCloneParamData.get('effectiveDate')!.dirty || isCloneParamData.get('effectiveDate')!.touched)}"
+                                for="floatingTextarea2">Valid From</label>
+                            <div class="position-absolute"
+                                *ngIf="isCloneParamData.get('effectiveDate')!.invalid && (isCloneParamData.get('effectiveDate')!.dirty || isCloneParamData.get('effectiveDate')!.touched)">
+                                <small class="text-danger">Valid From is required</small>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating position-relative">
+                            <input
+                                [ngClass]="{'custom-invalid-border':isCloneParamData.get('expirationDate')!.invalid && 
+                          (isCloneParamData.get('expirationDate')!.dirty || isCloneParamData.get('expirationDate')!.touched)}"
+                                type="date" [min]="minExpirationDate" formControlName="expirationDate"
+                                class="form-control" placeholder="Expiration date" aria-label="Expiration date"
+                                (change)="onExpirationDateChange()">
+                            <label
+                                [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('expirationDate')!.invalid && 
+                          (isCloneParamData.get('expirationDate')!.dirty || isCloneParamData.get('expirationDate')!.touched)}"
+                                for="floatingTextarea2">Expiration Date</label>
+                            <div class="position-absolute"
+                                *ngIf="isCloneParamData.get('expirationDate')!.invalid && (isCloneParamData.get('expirationDate')!.dirty || isCloneParamData.get('expirationDate')!.touched)">
+                                <small class="text-danger">Expiration date is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between gap-2 mb-2">
+                        <!-- <div class="col-6 d-flex justify-content-between gap-1"> -->
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating position-relative">
+                            <input [ngClass]="{'custom-invalid-border':isCloneParamData.get('rate')!.invalid && 
+                          (isCloneParamData.get('rate')!.dirty || isCloneParamData.get('rate')!.touched)}"
+                                type="number" min="0" formControlName="rate" class="form-control"
+                                placeholder="Basic Ocean Freight (USD) based on equipment type (Yes, 20'/40'/40HQ)"
+                                aria-label="Rate">
+                            <label [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('rate')!.invalid && 
+                          (isCloneParamData.get('rate')!.dirty || isCloneParamData.get('rate')!.touched)}"
+                                for="floatingTextarea2">Rate</label>
+                            <div class="position-absolute"
                                 *ngIf="isCloneParamData.get('rate')!.invalid && (isCloneParamData.get('rate')!.dirty || isCloneParamData.get('rate')!.touched)">
                                 <small class="text-danger">Rate is required</small>
                             </div>
                         </div>
-                        <div class="col-sm-6 form-floating" style="position: relative;">
+                        <!-- </div> -->
+
+                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating position-relative">
                             <!-- Input field for currency selection -->
-                            <input type="text" class="form-control" placeholder="Currency" formControlName="currency"
+                            <input [ngClass]="{'custom-invalid-border':isCloneParamData.get('currency')!.invalid && 
+                          (isCloneParamData.get('currency')!.dirty || isCloneParamData.get('currency')!.touched)}"
+                                type="text" class="form-control" placeholder="Currency" formControlName="currency"
                                 (input)="onCurrencyInput($event)" (focus)="showCurrencyDropdown = true"
                                 (blur)="hideCurrencyDropdown()" />
 
-                            <label for="floatingTextarea2">--Select Currency--</label>
+                            <label [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('currency')!.invalid && 
+                          (isCloneParamData.get('currency')!.dirty || isCloneParamData.get('currency')!.touched)}"
+                                for="floatingTextarea2">--Select Currency--</label>
 
                             <!-- Dropdown menu that appears under the input -->
                             <div *ngIf="showCurrencyDropdown && filteredCurrencies.length > 0"
@@ -171,241 +425,88 @@
                             </div>
 
                             <!-- Validation message -->
-                            <div
+                            <div class="position-absolute"
                                 *ngIf="isCloneParamData.get('currency')!.invalid && (isCloneParamData.get('currency')!.dirty || isCloneParamData.get('currency')!.touched)">
                                 <small class="text-danger">Currency is required</small>
                             </div>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="d-flex justify-content-between col-12 col-md-6 mb-2 mb-md-4">
-                            <div class="form-check form-switch d-flex align-items-center col-5 gap-3">
-                                <div class="d-inline">
-                                    <label class="form-check-label" for="flexSwitchCheckDefaultHaz">Haz</label>
-                                </div>
-                                <input class="form-check-input" formControlName="hazActiveStatus"
-                                    [checked]="hazActiveStatus" type="checkbox" role="switch"
-                                    id="flexSwitchCheckDefaultHaz" (change)="onHazCheckboxStatusChange($event)">
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="input-group flex-nowrap form-floating col-sm-10">
-                                    <span class="input-group-text" id="addon-wrapping">UN</span>
-                                    <div class="form-floating col-sm-10">
-                                        <input type="text" formControlName="hazValue" class="form-control"
-                                            placeholder="Haz" aria-label="Haz" id="hazValueInput">
-                                        <label for="hazValueInput" class="cs-container-label">{{hazActiveStatus?'Enter
-                                            valid
-                                            4-digit UN number':'Haz'}}</label>
-                                        <div
-                                            *ngIf="isCloneParamData.get('hazValue')!.invalid && (isCloneParamData.get('hazValue')!.dirty || isCloneParamData.get('hazValue')!.touched)">
-                                            <small class="text-danger"
-                                                *ngIf="isCloneParamData.get('hazValue')?.errors?.['required']">Haz
-                                                value is required.</small>
-                                            <small class="text-danger"
-                                                *ngIf="isCloneParamData.get('hazValue')?.errors?.['pattern']">Must
-                                                be a
-                                                4-digit number.</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating">
-                            <div class="form-floating">
-                                <input type="text" formControlName="cargotype" class="form-control"
-                                    placeholder="Commodity" aria-label="Commodity">
-                                <label for="floatingTextarea2">Commodity</label>
-                                <div
-                                    *ngIf="isCloneParamData.get('cargotype')!.invalid && (isCloneParamData.get('cargotype')!.dirty || isCloneParamData.get('cargotype')!.touched)">
-                                    <small class="text-danger">Commodity is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- <div class="col-6 d-flex justify-content-between gap-1">
-                            <div class="col-8 form-floating">
-                                <input type="text" formControlName="rate" class="form-control" placeholder="Rate"
-                                    aria-label="Rate">
-                                <label for="floatingTextarea2">Rate</label>
-                                <div
-                                    *ngIf="isCloneParamData.get('rate')!.invalid && (isCloneParamData.get('rate')!.dirty || isCloneParamData.get('rate')!.touched)">
-                                    <small class="text-danger">Rate is required</small>
-                                </div>
-                            </div>
-                            <div class="col-4 form-floating position-relative">
-                                <select id="floatingInput" class="form-control border" formControlName="currency">
-                                    <option value="" selected disabled>Currency</option>
-                                    <option value="DOLLAR">Dollar</option>
-                                    <option value="INR">INR</option>
-                                    <option value="USD">USD</option>
-                                    <option value="EUR">EUR</option>
-                                </select>
-                                <label class="mx-2" for="floatingInput">Currency</label>
-                                <div
-                                    *ngIf="isCloneParamData.get('currency')!.invalid && (isCloneParamData.get('currency')!.dirty || isCloneParamData.get('currency')!.touched)">
-                                    <small class="text-danger">Currency is required</small>
-                                </div>
-                            </div>
-                        </div> -->
-                    <!-- <div class="col-6 d-flex justify-content-between gap-1">
-                            <div class="col-sm-10 form-floating">
-                                <input type="text" formControlName="cargotype" class="form-control"
-                                    placeholder="Commodity" aria-label="Commodity">
-                                <label for="floatingTextarea2">Commodity</label>
-                                <div
-                                    *ngIf="isCloneParamData.get('cargotype')!.invalid && (isCloneParamData.get('cargotype')!.dirty || isCloneParamData.get('cargotype')!.touched)">
-                                    <small class="text-danger">Commodity is required</small>
-                                </div>
-                            </div>
-                            <div class="form-check col-2">
-                                <input type="checkbox" id="haz" name="hazType" formControlName="hazType"
-                                    class="form-check-input cs-checkbox" [(ngModel)]="hazType"
-                                    (change)="onCheckboxChange($event)">
-                                <label class="form-check-label" for="haz">Haz</label>
-                            </div>
-                        </div> -->
-                    <!-- </div> -->
-                    <!-- <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="form-check form-switch d-flex flex-column col-6">
-                            <div class="d-inline">
-                                <label class="form-check-label mb-3" for="flexSwitchCheckDefault">Direct
-                                    Shipment?</label>
-                            </div>
-                            <input class="form-check-input" type="checkbox" formControlName="isDirectShipment" [checked]="isDirectShipment" role="switch"
-                                id="flexSwitchCheckDefault" (change)="onDirectShipmentChange($event)">
-                        </div>
-                        <div class="col-6 form-floating d-flex justify-content-end align-items-end position-relative">
-                            <select [disabled]="isDirectShipment" formControlName="transhipment_add_port" id="floatingInput"
-                                class="form-control border">
-                                <option value="" selected disabled>--Select Transhipment--</option>
-                                <option [value]="source.name" *ngFor="let source of sourceList">{{source.name}}
-                                </option>
-                            </select>
-                            <label class="mx-2" for="floatingInput">Transhipment</label>
-                        </div>
-
-                    </div> -->
-                    <!-- <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="form-check form-switch d-flex flex-column col-6">
-                            <div class="d-inline">
-                                <label class="form-check-label mb-3" for="flexSwitchCheckDefault">Direct
-                                    Shipment?</label>
-                            </div>
-                            <input class="form-check-input" type="checkbox" formControlName="isDirectShipment"
-                                [checked]="isDirectShipment" role="switch" id="flexSwitchCheckDefault"
-                                (change)="onDirectShipmentChange($event)">
-                        </div>
-                        <div class="col-6 form-floating d-flex justify-content-end align-items-end position-relative">
-                            <select formControlName="transhipment_add_port" id="floatingInput"
-                                class="form-control border">
-                                <option value="" selected disabled>--Select Via--</option>
-                                <option [value]="source.name" *ngFor="let source of sourceDestinationVia">{{ source.name
-                                    }}</option>
-                            </select>
-                            <label class="mx-2" for="floatingInput">Via</label>
-                        </div>
-                    </div> -->
-                    <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="d-flex align-items-center col-6 justify-content-between">
-                            <div class="form-check form-switch d-flex flex-column col-4">
-                                <div class="d-inline">
-                                    <label class="form-check-label mb-3" for="flexSwitchCheckDefault">Direct
-                                        Shipment?</label>
-                                </div>
-                                <input class="form-check-input" type="checkbox" formControlName="isDirectShipment"
-                                    [checked]="isDirectShipment" role="switch" id="flexSwitchCheckDefault"
-                                    (change)="onDirectShipmentChange($event)">
-                            </div>
-                            <div
-                                class="col-7 form-floating d-flex justify-content-end align-items-end position-relative">
-                                <select formControlName="transhipment_add_port" id="floatingInput"
-                                    class="form-control border">
-                                    <option value="" selected disabled>--Select Via--</option>
-                                    <option [value]="source.name" *ngFor="let source of sourceDestinationVia">
-                                        {{source.name}}
+                    <div class="d-flex justify-content-between align-items-end gap-2 mb-2">
+                        <div class="d-flex align-items-center justify-content-between col-12 gap-2 col-md-6">
+                            <div class="col-12 col-md-6 mb-2 mb-md-4 form-floating position-relative">
+                                <select
+                                    [ngClass]="{'custom-invalid-border':isCloneParamData.get('freightType')!.invalid && 
+                            (isCloneParamData.get('freightType')!.dirty || isCloneParamData.get('freightType')!.touched)}"
+                                    class="form-select" formControlName="freightType" placeholder="Equipment type"
+                                    aria-label="Default select example">
+                                    <option selected disabled>--Select Equipment types--</option>
+                                    <option [value]="data.type" *ngFor="let data of equipmentsList">{{data.type}}
                                     </option>
                                 </select>
-                                <label class="mx-2" for="floatingInput">Via</label>
+                                <label
+                                    [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('freightType')!.invalid && 
+                            (isCloneParamData.get('freightType')!.dirty || isCloneParamData.get('freightType')!.touched)}"
+                                    for="floatingTextarea2">Equipment Type</label>
+
+                                <div class="position-absolute"
+                                    *ngIf="isCloneParamData.get('freightType')!.invalid && (isCloneParamData.get('freightType')!.dirty || isCloneParamData.get('freightType')!.touched)">
+                                    <small class="text-danger">Equipment type is required</small>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5 mb-2 mb-md-4 form-floating position-relative">
+                                <input
+                                    [ngClass]="{'custom-invalid-border':isCloneParamData.get('transitTime')!.invalid && 
+                            (isCloneParamData.get('transitTime')!.dirty || isCloneParamData.get('transitTime')!.touched)}"
+                                    type="number" min="0" formControlName="transitTime" class="form-control"
+                                    placeholder="Transit Days" aria-label="Transit time">
+                                <label
+                                    [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('transitTime')!.invalid && 
+                            (isCloneParamData.get('transitTime')!.dirty || isCloneParamData.get('transitTime')!.touched)}"
+                                    for="floatingTextarea2">Transit Days</label>
+                                <div class="position-absolute"
+                                    *ngIf="isCloneParamData.get('transitTime')!.invalid && (isCloneParamData.get('transitTime')!.dirty || isCloneParamData.get('transitTime')!.touched)">
+                                    <small class="text-danger">Transit Days is required</small>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between align-items-center col-12 col-md-6">
-                            <div class="col-4 form-floating">
-                                <input type="number" min="1" formControlName="free_days" class="form-control"
+                        <div class="d-flex justify-content-between align-items-end col-12 col-md-6 gap-2">
+                            <div class="col-12 col-md-4 mb-2 mb-md-4 form-floating position-relative">
+                                <input [ngClass]="{'custom-invalid-border':isCloneParamData.get('free_days')!.invalid && 
+                            (isCloneParamData.get('free_days')!.dirty || isCloneParamData.get('free_days')!.touched)}"
+                                    type="number" min="1" formControlName="free_days" class="form-control"
                                     placeholder="Free Days" aria-label="Free Days">
-                                <label for="floatingTextarea2">Free Days</label>
-                                <div
+                                <label [ngClass]="{'custom-invalid-text-color':isCloneParamData.get('free_days')!.invalid && 
+                            (isCloneParamData.get('free_days')!.dirty || isCloneParamData.get('free_days')!.touched)}"
+                                    for="floatingTextarea2">Free Days</label>
+                                <div class="position-absolute"
                                     *ngIf="isCloneParamData.get('free_days')!.invalid && (isCloneParamData.get('free_days')!.dirty || isCloneParamData.get('free_days')!.touched)">
                                     <small class="text-danger">Free Days is required</small>
                                 </div>
                             </div>
-                            <div class="col-7">
+                            <div class="col-12 col-md-7 mb-2 mb-md-4 position-relative">
+                                <!-- formControlName="free_days_comments" -->
                                 <textarea class="form-control gap-2" formControlName='free_days_comment'
-                                    placeholder="Free Comment" style="height: 80px"></textarea>
+                                    placeholder="Additional Comment" style="height: 80px"></textarea>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="col-6 form-floating">
-                            <input type="text" formControlName="transitTime" class="form-control"
-                                placeholder="Transit Days" aria-label="Transit Days">
-                            <label for="floatingTextarea2">Transit Days</label>
-                            <div
-                                *ngIf="isCloneParamData.get('transitTime')!.invalid && (isCloneParamData.get('transitTime')!.dirty || isCloneParamData.get('transitTime')!.touched)">
-                                <small class="text-danger">Transit Days is required</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 form-floating">
-                            <select class="form-select" formControlName="freightType" placeholder="Equipment"
-                                aria-label="Default select example">
-                                <option selected disabled>--Select Equipment--</option>
-                                <option [value]="data.type" *ngFor="let data of equipmentsList">{{data.type}}</option>
-                            </select>
-                            <label for="floatingTextarea2">Equipment</label>
-
-                            <div
-                                *ngIf="isCloneParamData.get('freightType')!.invalid && (isCloneParamData.get('freightType')!.dirty || isCloneParamData.get('freightType')!.touched)">
-                                <small class="text-danger">Equipment is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-between gap-2 mb-3">
-                        <div class="col-sm-6 form-floating">
-                            <input type="date" formControlName="effectiveDate" class="form-control"
-                                placeholder="Valid Date" aria-label="Valid Date">
-                            <label for="floatingTextarea2">Valid Date</label>
-                            <div
-                                *ngIf="isCloneParamData.get('effectiveDate')!.invalid && (isCloneParamData.get('effectiveDate')!.dirty || isCloneParamData.get('effectiveDate')!.touched)">
-                                <small class="text-danger">Valid Date is required</small>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 form-floating">
-                            <input type="date" formControlName="expirationDate" class="form-control"
-                                placeholder="Expiration date" aria-label="Expiration date">
-                            <label for="floatingTextarea2">Expiration date</label>
-                            <div
-                                *ngIf="isCloneParamData.get('expirationDate')!.invalid && (isCloneParamData.get('expirationDate')!.dirty || isCloneParamData.get('expirationDate')!.touched)">
-                                <small class="text-danger">Expiration date is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <textarea class="form-control gap-2 mb-3" formControlName="remarks"
-                            placeholder="Remarks (Optional)" style="height: 100px"></textarea>
-                    </div>
-                    <div>
-                        <textarea class="form-control gap-2 mb-3" formControlName="terms_condition"
-                            placeholder="Terms and Conditions from forwarder" style="height: 100px"></textarea>
-                    </div>
+                </div>
+                <div class="mb-md-4">
+                    <textarea class="form-control gap-2 mb-3" formControlName="remarks" placeholder="Remarks (Optional)"
+                        style="height: 100px"></textarea>
+                </div>
+                <div>
+                    <textarea class="form-control gap-2 mb-3" formControlName="terms_condition"
+                        placeholder="Terms and Conditions from forwarder" style="height: 100px"></textarea>
                 </div>
             </form>
         </div>
         <div class="modal-button-wrapper">
-            <button (click)="addingNewFormHandler()" class="cms_button"
-                [ngClass]="{ 'disabled': isCloneParamData.invalid }" [disabled]="isCloneParamData.invalid">Save</button>
+            <!-- <button (click)="addingNewFormHandler()" class="cms_button"
+                [ngClass]="{ 'disabled': isCloneParamData.invalid }" [disabled]="isCloneParamData.invalid">Save</button> -->
+            <button (click)="addingNewFormHandler()" class="cms_button">Save</button>
         </div>
-        <!-- <ng-content></ng-content> -->
     </div>
 </div>

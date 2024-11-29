@@ -238,7 +238,7 @@ export class ApiServiceService {
   getShipmentData(source: any, destination: any,) {
 
 
-    console.log(source,destination)
+    // console.log(source,destination)
 
 
     // let shipmentUrl = this.baseUrl + "/api/rates/" + source + "/" + destination + "/" + equipments + "/"
@@ -323,5 +323,20 @@ export class ApiServiceService {
   }
 
 
+  // ACTIVITY LOG CREATION
+  activityLogCreation(endpoint: any, activityLog: any): Observable<any> {
+    const accessT = (localStorage.getItem('token'))
+    if (accessT) {
+      this.parseda = JSON.parse(accessT);
+    }
+    // Construct the HTTP headers with the Bearer token
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.parseda}`
+      })
+    };
+    return this.http.post<any>(this.baseUrl + endpoint, activityLog, httpOptions);
+  }
 
 }

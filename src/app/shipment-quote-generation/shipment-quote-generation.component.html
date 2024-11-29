@@ -18,36 +18,42 @@
             <form [formGroup]="findBestRoute" action="" enctype="multipart/form-data">
 
               <div class="row">
-                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-5 form-floating">
                   <select class="form-select border" [(ngModel)]="source" formControlName="source" name="source"
                     id="floatingInput"
                     [ngClass]="{'custom-invalid-border': findBestRoute.get('source')!.invalid && (findBestRoute.get('source')!.dirty || findBestRoute.get('source')!.touched)}">
-                    <option selected disabled>--Choose source--</option>
-                    <option *ngFor="let source of sourceList" [value]="source.id">{{source.name}}</option>
+                    <option selected disabled>--Select source--</option>
+                    <option *ngFor="let source of sourceList" [value]="source.id">{{source.name | uppercase}}</option>
                   </select>
-                  <label class="mx-2" for="floatingInput">Origin Port</label>
+                  <label [ngClass]="{'custom-invalid-text-color':findBestRoute.get('source')!.invalid && 
+                  (findBestRoute.get('source')!.dirty || findBestRoute.get('source')!.touched)}" class="mx-2"
+                    for="floatingInput">Origin Port</label>
 
-                  <div *ngIf="findBestRoute.get('source')!.invalid && 
+                  <div class="position-absolute" *ngIf="findBestRoute.get('source')!.invalid && 
                                (findBestRoute.get('source')!.dirty || findBestRoute.get('source')!.touched)">
                     <small class="text-danger">Origin port is required</small>
                   </div>
                 </div>
 
-                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-5 form-floating">
                   <select [(ngModel)]="destination" id="floatingInput" formControlName="destination"
                     class="form-select border" name="destination"
                     [ngClass]="{'custom-invalid-border': findBestRoute.get('destination')!.invalid && (findBestRoute.get('destination')!.dirty || findBestRoute.get('destination')!.touched)}">
                     <option selected disabled>--Select destination--</option>
-                    <option *ngFor="let destination of destinationList" value={{destination.id}}>{{destination.name}}
+                    <option *ngFor="let destination of destinationList" value={{destination.id}}>{{destination.name |
+                      uppercase}}
                     </option>
                   </select>
-                  <label class="mx-2" for="floatingInput">Destination Port</label>
-                  <div *ngIf="findBestRoute.get('destination')!.invalid && 
+                  <label [ngClass]="{'custom-invalid-text-color':findBestRoute.get('destination')!.invalid && 
+                  (findBestRoute.get('destination')!.dirty || findBestRoute.get('destination')!.touched)}" class="mx-2"
+                    for="floatingInput">Destination Port</label>
+
+                  <div class="position-absolute" *ngIf="findBestRoute.get('destination')!.invalid && 
                   (findBestRoute.get('destination')!.dirty || findBestRoute.get('destination')!.touched)">
                     <small class="text-danger">Destination port is required</small>
                   </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-5 form-floating">
                   <input class="form-control border" [(ngModel)]="shipment_Date" name="shipment_Date"
                     formControlName="shipment_Date" id="floatingInput" type="date" min={{todayDate}}
                     placeholder="Date of shipping" />
@@ -57,7 +63,7 @@
                     <small class="text-danger">Data of Loading is required</small>
                   </div> -->
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating position-relative">
+                <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-5 form-floating position-relative">
                   <select [(ngModel)]="equipments" id="floatingInput" formControlName="equipments" name="equipments"
                     class="form-control border">
                     <option value="" selected disabled>--Select load types--</option>
@@ -72,7 +78,6 @@
                     <small class="text-danger">Equipments is required</small>
                   </div> -->
                 </div>
-
               </div>
               <div class="row">
                 <div class="col-12 col-md-6 col-lg-3 mb-2 mb-md-4 form-floating">
@@ -128,7 +133,7 @@
                     <!-- <option [value]="data.rule" *ngFor="let data of incotermsList">{{data.rule}}</option> -->
                   </select>
                   <label class="mx-2" for="floatingInput">Incoterms</label>
-                  
+
                   <!-- <span class="cs-float" data-bs-toggle="modal" title="add incoterms" data-bs-target="#exampleModal1"><i
                       class="bi bi-plus-lg"></i>
                   </span> -->
@@ -155,11 +160,15 @@
 
             <!-- QUICK RESULT UI -->
 
-            <div class="col-sm-9" style="text-align: left;" *ngIf="this.isLoading">
-              <h4>Loading...</h4> <!-- Loading message -->
+            <div class="col-sm-12 d-flex justify-content-center align-items-center" style="text-align: center;"
+              *ngIf="this.isLoading">
+              <!-- <h4>Loading...</h4> Loading message -->
+              <div class="d-flex gap-3 align-items-center">
+                <div class="loader"></div><span><small> Finding...</small></span>
+              </div>
             </div>
 
-            <div class="col-sm-9 cs-error" style="text-align: left;"
+            <div class="col-sm-12 cs-error" style="text-align: center;"
               *ngIf="!this.isLoading && this.shipdata.length === 0 && dataChecked">
               <h4>Data not found for selected route and freight type</h4> <!-- No data message -->
             </div>
@@ -171,6 +180,10 @@
                   <h5> Quick Quotes</h5>
                   <small class="" style="color:#878787">{{shipdata.length}} result found</small>
                 </div>
+                <button type="button" (click)="bulkGenerateQuote()" [disabled]="bulkQuotationGeneration.length <= 0"
+                  data-bs-toggle="modal" data-bs-target="#choose_customer" class="my-4 btn find-rate-button"
+                  [ngStyle]="{'visibility':bulkQuotationGeneration.length <= 0 ? 'hidden': 'visible'}">Bulk
+                  Quotation</button>
               </div>
               <div class="row d-flex my-4">
                 <div class="col-3 filter"> <!-- *ngIf="this.shipdata.length>0" -->
@@ -184,31 +197,36 @@
                 </div>
                 <div class="col-9 px-3 py-2 cs-right-bg-color cs-height cs-hidden-scroll">
                   <div class="row d-flex justify-content-between gap-1 mb-2" *ngFor="let data of shipdata">
-
-                    <input type="checkbox" [value]="data.id" class="cs-checkbox col-1" />
+                    <input type="checkbox" [value]="data.id" class="cs-checkbox col-1"
+                      (change)="toggleBulkQuotation($event, data)" />
                     <div class="col-2 p-1 bg-white">
                       <div class="d-flex flex-column justify-content-between align-items-center h-100">
                         <small class="cs-font-rate">Rate ID P 184936538 T& C</small>
                         <div class="d-flex flex-column gap-1 cs-font-middle">
-                          <span>MAERSK</span>
+                          <span>{{data.company_name}}</span>
                           <span>CY/ CY AL7</span>
-                          <small>{{data.version?.spot_filed | uppercase}} RATE</small>
+                          <small>{{data.spot_filed | uppercase}} RATE</small>
                         </div>
                         <small class="cs-font-rate">
                           <!-- <i class="fa fa-shield" aria-hidden="true"></i> -->
+                          <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px"
+                            fill="green">
+                            <path
+                              d="m438-339 220-221-51-51-169 170-85-85-51 51 136 136Zm42 243q-135-33-223.5-152.84Q168-368.69 168-515v-229l312-120 312 120v229q0 146.31-88.5 266.16Q615-129 480-96Zm0-75q104-32.25 172-129t68-215v-180l-240-92-240 92v180q0 118.25 68 215t172 129Zm0-308Z" />
+                          </svg>
                           Guaranteed Price & Loading</small>
                       </div>
                     </div>
                     <div class="col-7 d-flex flex-column gap-1 flex-grow-1 bg-white justify-content-between">
                       <div class="d-flex justify-content-between align-items-center">
                         <div>
-                          <p class="fw-bold">{{data.source.name}}</p>
+                          <p class="fw-bold">{{data.source_name}}</p>
                         </div>
                         <div>
-                          <p class="fw-bold">{{data.company.name}}</p>
+                          <p class="fw-bold">{{data.company_name}}</p>
                         </div>
                         <div>
-                          <p class="fw-bold">{{data.destination.name}}</p>
+                          <p class="fw-bold">{{data.destination_name}}</p>
                         </div>
                       </div>
                       <div class="d-flex justify-content-between">
@@ -220,13 +238,17 @@
                         <div class="d-flex flex-column">
                           <!-- trasit time -->
                           <label class="cs-font-middle my-1">Transit Time</label>
-                          <label class="cs-font-middle my-1 fw-bold">{{formatToFixed(data.transit_time.time)}}
+                          <!-- <label class="cs-font-middle my-1 fw-bold">{{formatToFixed(data.transit_time)}}
+                            Days</label> -->
+                          <label class="cs-font-middle my-1 fw-bold">{{formatToFixed(data.transit_time)}}
                             Days</label>
                         </div>
                         <!-- <span class="cs-font-rate">Free Days</span> -->
                         <div class="d-flex flex-column">
                           <label class="cs-font-middle my-1">Free Days</label>
-                          <label class="cs-font-middle my-1 fw-bold">{{data.version?.free_days}}
+                          <!-- <label class="cs-font-middle my-1 fw-bold">{{data.version?.free_days}}
+                            Days</label> -->
+                          <label class="cs-font-middle my-1 fw-bold">{{formatToFixed(data.free_days)}}
                             Days</label>
                         </div>
                         <div class="d-flex flex-column">
@@ -242,18 +264,31 @@
                         <div class="d-flex justify-content-between gap-1">
                           <div class="">
                             <span class="cs-font-rate cs-text-color">Freight Cost</span>
-                            <label class="fw-bold cs-font-rate">USD {{formatToFixed(data.rate)}}</label>
+                            <!-- <label class="fw-bold cs-font-rate">{{data.version?.currency}}
+                              {{formatToFixed(data.rate)}}</label> -->
+                            <label class="fw-bold cs-font-rate">{{data.currency}}
+                              {{formatToFixed(data.rate)}}</label>
                           </div>
                           <div>
                             <span class="cs-font-rate cs-text-color">Total cost</span>
                             <label class="fw-bold cs-font-rate">INR 320 </label>
                           </div>
                         </div>
-                        <button (click)="generateQuote(data.id)" data-bs-toggle="modal"
+                        <!-- <button (click)="generateQuote(data.id, data.version?.unique_uuid)" data-bs-toggle="modal"
                           *ngIf="currentDate < data.expiration_date" data-bs-target="#choose_customer" type="button"
+                          class="btn find-rate-button cs-font-middle my-1">Create Quote</button> -->
+
+                        <!-- <button (click)="generateQuote(data.id, data.unique_uuid)" data-bs-toggle="modal"
+                          *ngIf="currentDate <= data.expiration_date" data-bs-target="#choose_customer" type="button"
+                          class="btn find-rate-button cs-font-middle my-1">Create Quote</button> -->
+
+                        <button (click)="generateQuote(data.id, data.unique_uuid)" data-bs-toggle="modal"
+                          *ngIf="currentDate > data.expiration_date" data-bs-target="#choose_customer" type="button"
                           class="btn find-rate-button cs-font-middle my-1">Create Quote</button>
+
+
                         <!-- If currentDate is greater than or equal to expiration_date, show "This is expired" -->
-                        <div *ngIf="currentDate >= data.expiration_date" class="expiredDate">
+                        <div *ngIf="currentDate > data.expiration_date" class="expiredDate">
                           <marquee behavior="scroll" direction="" style="color: white;"> Rate is expired</marquee>
                         </div>
                       </div>
@@ -363,7 +398,8 @@
     </div>
   </div>
   <!-- CHOOSE CUSTOMER MODAL -->
-  <div class="modal fade" id="choose_customer" tabindex="-1" aria-labelledby="choose_customer_lable" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal fade" id="choose_customer" tabindex="-1" aria-labelledby="choose_customer_lable" aria-hidden="false"
+    data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -404,96 +440,232 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button (click)="submitCustomer(isRateFrozenIdx)" type="button" class="btn btn-primary" data-bs-dismiss="modal"
-            [disabled]="!selectedCustomerData">Submit</button>
+          <button (click)="submitCustomer(isRateFrozenIdx)" type="button" class="btn btn-primary"
+            data-bs-dismiss="modal" [disabled]="!selectedCustomerData">Submit</button>
         </div>
       </div>
     </div>
   </div>
   <!-- ADD CUSTOMER MODAL -->
-  <div class="modal fade" id="add_customer_modal" tabindex="-1" aria-labelledby="add_customer_lable" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal fade" id="add_customer_modal" tabindex="-1" aria-labelledby="add_customer_lable" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog custom">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="add_customer_lable">Add Customer</h1>
+          <div class="d-flex gap-4">
+            <h1 (click)="addCustomerModeActive()" class="modal-title fs-5 pe-auto" id="add_customer_lable">Add Customer
+            </h1>
+            <button (click)="editModeActive()" type="button" class="btn btn-sm btn-info text-white"
+              id="edit_customer_lable">Edit Customer</button>
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
-          <form [formGroup]="addCustomerFormData">
-            <div class="row g-2 mb-3">
-              <div class="col-md">
+        <div *ngIf="!editModeStatus">
+          <div class="modal-body">
+            <form [formGroup]="addCustomerFormData">
+              <div class="col-md mb-2">
                 <div class="form-floating">
-                  <input type="text" (blur)="hideDropdown()" formControlName="customerName" class="form-control border"
-                    id="floatingInputGrid" placeholder="Customer name" value="customerName">
-                  <label for="floatingInputGrid">Customer's name</label>
+                  <input type="text" (blur)="hideDropdown()" formControlName="companyName" class="form-control border"
+                    id="floatingInputGrid" placeholder="Company name" value="companyName">
+                  <label for="floatingInputGrid">Company's name</label>
                 </div>
                 <div
-                  *ngIf="addCustomerFormData.get('customerName')!.invalid && 
-                                             (addCustomerFormData.get('customerName')!.dirty || addCustomerFormData.get('customerName')!.touched)">
-                  <small class="text-danger">Customer name is required</small>
-                </div>
-              </div>
-              <div class="col-md">
-                <div class="form-floating">
-                  <input type="email" (blur)="hideDropdown()" formControlName="customerEmail"
-                    class="form-control border" id="floatingInputGrid" placeholder="johnmalik@gmail.com" value="">
-                  <label for="floatingInputGrid">Customer's email</label>
-                </div>
-                <div
-                  *ngIf="addCustomerFormData.get('customerEmail')!.invalid && 
-                                             (addCustomerFormData.get('customerEmail')!.dirty || addCustomerFormData.get('customerEmail')!.touched)">
-                  <small class="text-danger">Customer email is required</small>
+                  *ngIf="addCustomerFormData.get('companyName')!.invalid && 
+                                             (addCustomerFormData.get('companyName')!.dirty || addCustomerFormData.get('companyName')!.touched)">
+                  <small class="text-danger">Company name is required</small>
                 </div>
               </div>
 
-            </div>
-            <div class="row g-2 mb-3">
-              <div class="col-md">
-                <div class="form-floating">
-                  <input type="number" (blur)="hideDropdown()" formControlName="customerPhone"
-                    class="form-control border" id="floatingInputGrid" placeholder="98562412548" value="">
-                  <label for="floatingInputGrid">Customer's phone</label>
+              <div class="row g-2">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="text" (blur)="hideDropdown()" formControlName="customerName"
+                      class="form-control border" id="floatingInputGrid" placeholder="Customer name"
+                      value="customerName">
+                    <label for="floatingInputGrid">Customer's name</label>
+                  </div>
+                  <div
+                    *ngIf="addCustomerFormData.get('customerName')!.invalid && 
+                                               (addCustomerFormData.get('customerName')!.dirty || addCustomerFormData.get('customerName')!.touched)">
+                    <small class="text-danger">Customer name is required</small>
+                  </div>
                 </div>
-                <div
-                  *ngIf="addCustomerFormData.get('customerPhone')!.invalid && 
-                                             (addCustomerFormData.get('customerPhone')!.dirty || addCustomerFormData.get('customerPhone')!.touched)">
-                  <small class="text-danger">Customer phone is required</small>
+                <div class="col-md" style="position: relative;">
+                  <!-- Customer Emails (comma-separated) -->
+                  <div class="form-floating mb-3 position-relative">
+                    <input type="text" placeholder="Enter email" class="form-control border" #emailInput>
+                    <label for="customerEmail">Customer Emails</label>
+                    <div *ngIf="isEmailRequired()">
+                      <small *ngIf="addCustomerFormData.get('customerEmail')!.errors?.['required']"
+                        class="text-danger">Email is required</small>
+                    </div>
+                    <i class="fa fa-plus cs-addVia" (click)="addEmail(emailInput)" height="22px" width="22px"
+                      aria-hidden="true"></i>
+                    <small class="text-danger">{{ emailError }}</small>
+                  </div>
+                </div>
+
+
+                <!-- <div class="col-md">
+                  <div class="form-floating">
+                    <input type="email" (blur)="hideDropdown()" formControlName="customerEmail"
+                      class="form-control border" id="floatingInputGrid" placeholder="johnmalik@gmail.com" value="">
+                    <label for="floatingInputGrid">Customer's email</label>
+                  </div>
+                  <div
+                    *ngIf="addCustomerFormData.get('customerEmail')!.invalid && (addCustomerFormData.get('customerEmail')!.dirty || addCustomerFormData.get('customerEmail')!.touched)">
+                    <small *ngIf="addCustomerFormData.get('customerEmail')!.errors?.['required']"
+                      class="text-danger">Email is required</small>
+                    <small *ngIf="addCustomerFormData.get('customerEmail')!.errors?.['email']" class="text-danger">Please
+                      enter a valid email address</small>
+                  </div>
+                </div> -->
+              </div>
+              <!-- Email List Display -->
+              <div *ngIf="emailList.length > 0" class="mb-2">
+                <h6 class="m-0" style="font-size: 12px;">Email List:</h6>
+                <div class="d-flex gap-1 flex-wrap">
+                  <div *ngFor="let email of emailList" class="d-inline-block">
+                    <span class="badge bg-primary">
+                      {{ email }} <span class="ms-2 cursor-pointer text-danger" (click)="removeEmail(email)">x</span>
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div class="col-md">
-                <div class="form-floating">
-                  <textarea class="form-control" formControlName="saleRepresent" placeholder="Sales representative"
-                    id="floatingTextarea"></textarea>
-                  <label for="floatingInputGrid">Sales representative</label>
+              <div class="row g-2 mb-2">
+                <!-- <div class="form-group col-md d-flex align-items-center">
+                  <div class="col-md-3 border">
+                    <select id="countryCode" (change)="updateCountryCode($event)" class="form-select">
+                      <option *ngFor="let code of countryCodeList" [value]="code.code">
+                        {{ code.code }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="form-floating">
+                      <input type="text" (blur)="hideDropdown()" formControlName="customerPhone"
+                        class="form-control border" id="floatingInputGrid" placeholder="e.g., +919856241254" />
+                      <label for="floatingInputGrid">Customer's phone</label>
+                    </div>
+                    <div
+                      *ngIf="addCustomerFormData.get('customerPhone')!.invalid && 
+                              (addCustomerFormData.get('customerPhone')!.dirty || addCustomerFormData.get('customerPhone')!.touched)">
+                      <small *ngIf="addCustomerFormData.get('customerPhone')!.errors?.['required']"
+                        class="text-danger">Customer phone is required</small>
+                      <small *ngIf="addCustomerFormData.get('customerPhone')!.errors?.['pattern']"
+                        class="text-danger">Please enter a valid phone number with country code (e.g., +91XXXXXXXXX,
+                        +001XXXXXXXXX)</small>
+                    </div>
+                  </div>
+                </div> -->
+
+                <div class="col-md">
+                  <div class="form-floating">
+                    <input type="text" (blur)="hideDropdown()" formControlName="customerPhone"
+                      class="form-control border" id="floatingInputGrid" placeholder="e.g., +919856241254" />
+                    <label for="floatingInputGrid">Customer's phone</label>
+                  </div>
+                  <div
+                    *ngIf="addCustomerFormData.get('customerPhone')!.invalid && 
+                            (addCustomerFormData.get('customerPhone')!.dirty || addCustomerFormData.get('customerPhone')!.touched)">
+                    <small *ngIf="addCustomerFormData.get('customerPhone')!.errors?.['required']"
+                      class="text-danger">Customer phone is required</small>
+                    <small *ngIf="addCustomerFormData.get('customerPhone')!.errors?.['pattern']"
+                      class="text-danger">Please enter a valid phone number with country code (e.g. +91XXXXXXXXX ,
+                      +001XXXXXXXXX)</small>
+                  </div>
                 </div>
-                <div
+
+                <div class="col-md">
+                  <div class="form-floating">
+                    <textarea class="form-control" formControlName="saleRepresent" placeholder="Sales representative"
+                      id="floatingTextarea"></textarea>
+                    <label for="floatingInputGrid">Sales representative</label>
+                  </div>
+                  <div
+                    *ngIf="addCustomerFormData.get('saleRepresent')!.invalid && 
+                                               (addCustomerFormData.get('saleRepresent')!.dirty || addCustomerFormData.get('saleRepresent')!.touched)">
+                    <small class="text-danger">Customer's sales representative is required</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md input-group mb-2">
+                <div class="form-floating input-group">
+                  <input type="text" aria-describedby="basic-addon2" class="form-control border"
+                    formControlName="percentageMargin" placeholder="percentageMargin" id="floatingTextarea" />
+                  <label for="floatingInputGrid">Percentage Margin</label>
+                  <span class="input-group-text" id="basic-addon2">%</span>
+                </div>
+                <!-- <div
                   *ngIf="addCustomerFormData.get('saleRepresent')!.invalid && 
                                              (addCustomerFormData.get('saleRepresent')!.dirty || addCustomerFormData.get('saleRepresent')!.touched)">
                   <small class="text-danger">Customer's sales representative is required</small>
+                </div> -->
+              </div>
+              <!-- <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="percentageMargin"
+                  aria-label="percentageMargin" aria-describedby="basic-addon2">
+                <span class="input-group-text" id="basic-addon2">%</span>
+              </div> -->
+
+              <div class="row g-2 mb-2">
+                <div class="col-md">
+                  <div class="form-floating">
+                    <textarea class="form-control" formControlName="terms_condition"
+                      placeholder="Customer term & condition" style="height: 120px" id="floatingTextarea"></textarea>
+                    <label for="floatingInputGrid">Customer's Terms & Conditions</label>
+                  </div>
+                  <div
+                    *ngIf="addCustomerFormData.get('terms_condition')!.invalid && 
+                                               (addCustomerFormData.get('terms_condition')!.dirty || addCustomerFormData.get('terms_condition')!.touched)">
+                    <small class="text-danger">Customer's Terms & Conditions are required</small>
+                  </div>
                 </div>
               </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button (click)="addCustomerData()" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+              [disabled]="addCustomerFormData.invalid || emailList.length === 0">
+              Submit
+            </button>
+
+            <!-- <button (click)="addCustomerData()" type="button" class="btn btn-primary"
+              [attr.data-bs-dismiss]="modalAddCustomerStatus ? 'modal' : null">Submit</button> -->
+          </div>
+        </div>
+
+        <!-- EDIT MODE -->
+        <div class="p-3" style="height: 45vh;" *ngIf="editModeStatus">
+          <form [formGroup]="isEditCustomerData">
+            <div class="form-floating">
+              <select class="form-select border" (change)="getCustomerById($event)" formControlName="edit_customer" name="edit_customer" id="floatingInput"
+                [ngClass]="{'custom-invalid-border': isEditCustomerData.get('edit_customer')!.invalid && (isEditCustomerData.get('edit_customer')!.dirty || isEditCustomerData.get('edit_customer')!.touched)}">
+                <option selected disabled>--Select customer--</option>
+                <option *ngFor="let customer of customerLists" [value]="customer.id">{{customer.cust_name}}</option>
+              </select>
+              <label [ngClass]="{'custom-invalid-text-color': isEditCustomerData.get('edit_customer')!.invalid && 
+            (isEditCustomerData.get('edit_customer')!.dirty || isEditCustomerData.get('edit_customer')!.touched)}"
+                class="mx-2" for="floatingInput">Choose Customer For Edit</label>
             </div>
-            <div class="row g-2 mb-3">
-              <div class="col-md">
-                <div class="form-floating">
-                  <textarea class="form-control" formControlName="terms_condition"
-                    placeholder="Customer term & condition" style="height: 120px" id="floatingTextarea"></textarea>
-                  <label for="floatingInputGrid">Customer's Terms & Conditions</label>
-                </div>
-                <div
-                  *ngIf="addCustomerFormData.get('terms_condition')!.invalid && 
-                                             (addCustomerFormData.get('terms_condition')!.dirty || addCustomerFormData.get('terms_condition')!.touched)">
-                  <small class="text-danger">Customer's Terms & Conditions are required</small>
-                </div>
+
+            <div class="col-md my-2">
+              <div class="form-floating d-flex border rounded">
+                <input type="text" class="form-control"
+                  formControlName="percentage" placeholder="percentageMargin" id="floatingInputGrid" />
+                <label for="floatingInputGrid">Percentage Margin</label>
+                <span class="input-group-text border-0" id="basic-addon2">%</span>
               </div>
             </div>
           </form>
+          <div class="modal-footer" >
+            <button (click)="updateCustomerPercentageMarginById(customerUpdatingId)" type="button" class="btn btn-warning">
+            UPDATE
+          </button>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button (click)="addCustomerData()" type="button" class="btn btn-primary" data-bs-dismiss="modal"
-            [disabled]="addCustomerFormData.invalid">Submit</button>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
   </div>

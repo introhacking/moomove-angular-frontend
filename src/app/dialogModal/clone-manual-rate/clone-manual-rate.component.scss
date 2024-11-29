@@ -36,7 +36,7 @@
   
   .modal-heading-content-wrapper {
     padding: 10px 20px;
-    border-radius: 15px;
+    // border-radius: 15px;
   }
   .modal-heading-content {
     display: flex;
@@ -132,4 +132,14 @@
     width: 4em !important;
     height: 1.5em !important;
   
+  }
+  .cs-addVia{
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    border-radius: 50%;
+    border: 1px solid blue;
+    padding: 5px;
+    background-color: blue;
+    color: #ffffff;
   }

@@ -14,6 +14,8 @@ export class EditManualRateComponent implements OnInit, OnChanges {
   @Input() isEditVisible = false;
   @Output() visibilityChange = new EventEmitter<boolean>();
 
+  @Output() dataUpdated = new EventEmitter<void>(); // New Output for data update
+
 
   isEditParamData!: FormGroup;
   equipmentsList: any = [];
@@ -25,7 +27,6 @@ export class EditManualRateComponent implements OnInit, OnChanges {
   destinationList: any = []
   filteredCompanies: any[] = [];
   isCompanyMatched: boolean = false;
-  // selectedFile: File | null = null;
   showDropdown: boolean = false;
   filteredSources: any[] = [];
   showSourceDropdown: boolean = false;
@@ -34,15 +35,30 @@ export class EditManualRateComponent implements OnInit, OnChanges {
   showDestinationDropdown: boolean = false;
   isDirectShipment: boolean = false;
   updatingIdx: any = ''
-  rateType: string = 'spot';
+
+  isRateTypeStatus: boolean = false
+  rateType: string = 'filed';
 
   sourceDestinationVia: any[] = []
-  // hazType: boolean = false;
+
+  todayDate: string = new Date().toISOString().split('T')[0]; // Current date for validFrom
+  minExpirationDate: string = ''; // Dynamic min expiration date
 
   hazActiveStatus: boolean = false;
   showCurrencyDropdown: boolean = false;
   filteredCurrencies: any[] = [];
   currencyInputValue: string = '';
+
+  // Via(Combine source and destionation)
+  selectedVia: string[] = [];
+  showViaDropdown: boolean = false;
+  filteredVia: any[] = [];
+  viaInputValue: string = '';
+
+  // Haz Class
+  showHazClassDropdown: boolean = false;
+  filteredHazClass: any[] = [];
+  hazClassInputValue: string = '';
 
   currencyLists = [
     { code: 'USD', name: 'United States Dollar' },
@@ -200,6 +216,120 @@ export class EditManualRateComponent implements OnInit, OnChanges {
 
   ]
 
+  packingGp = [
+    { pckgp: 'I' },
+    { pckgp: 'II' },
+    { pckgp: 'III' },
+    { pckgp: 'IV' },
+    { pckgp: 'V' },
+    { pckgp: 'VI' },
+    { pckgp: 'VII' },
+    { pckgp: 'VIII' },
+    { pckgp: 'IX' },
+  ]
+
+  hazClassValue = [
+    { hazClass: '0.1' },
+    { hazClass: '0.2' },
+    { hazClass: '0.3' },
+    { hazClass: '0.4' },
+    { hazClass: '0.5' },
+    { hazClass: '0.6' },
+    { hazClass: '0.7' },
+    { hazClass: '0.8' },
+    { hazClass: '0.9' },
+    { hazClass: '1.0' },
+    { hazClass: '1.1' },
+    { hazClass: '1.2' },
+    { hazClass: '1.3' },
+    { hazClass: '1.4' },
+    { hazClass: '1.5' },
+    { hazClass: '1.6' },
+    { hazClass: '1.7' },
+    { hazClass: '1.8' },
+    { hazClass: '1.9' },
+    { hazClass: '2.0' },
+    { hazClass: '2.1' },
+    { hazClass: '2.2' },
+    { hazClass: '2.3' },
+    { hazClass: '2.4' },
+    { hazClass: '2.5' },
+    { hazClass: '2.6' },
+    { hazClass: '2.7' },
+    { hazClass: '2.8' },
+    { hazClass: '2.9' },
+    { hazClass: '3.0' },
+    { hazClass: '3.1' },
+    { hazClass: '3.2' },
+    { hazClass: '3.3' },
+    { hazClass: '3.4' },
+    { hazClass: '3.5' },
+    { hazClass: '3.6' },
+    { hazClass: '3.7' },
+    { hazClass: '3.8' },
+    { hazClass: '3.9' },
+    { hazClass: '4.0' },
+    { hazClass: '4.1' },
+    { hazClass: '4.2' },
+    { hazClass: '4.3' },
+    { hazClass: '4.4' },
+    { hazClass: '4.5' },
+    { hazClass: '4.6' },
+    { hazClass: '4.7' },
+    { hazClass: '4.8' },
+    { hazClass: '4.9' },
+    { hazClass: '5.0' },
+    { hazClass: '5.1' },
+    { hazClass: '5.2' },
+    { hazClass: '5.3' },
+    { hazClass: '5.4' },
+    { hazClass: '5.5' },
+    { hazClass: '5.6' },
+    { hazClass: '5.7' },
+    { hazClass: '5.8' },
+    { hazClass: '5.9' },
+    { hazClass: '6.0' },
+    { hazClass: '6.1' },
+    { hazClass: '6.2' },
+    { hazClass: '6.3' },
+    { hazClass: '6.4' },
+    { hazClass: '6.5' },
+    { hazClass: '6.6' },
+    { hazClass: '6.7' },
+    { hazClass: '6.8' },
+    { hazClass: '6.9' },
+    { hazClass: '7.0' },
+    { hazClass: '7.1' },
+    { hazClass: '7.2' },
+    { hazClass: '7.3' },
+    { hazClass: '7.4' },
+    { hazClass: '7.5' },
+    { hazClass: '7.6' },
+    { hazClass: '7.7' },
+    { hazClass: '7.8' },
+    { hazClass: '7.9' },
+    { hazClass: '8.0' },
+    { hazClass: '8.1' },
+    { hazClass: '8.2' },
+    { hazClass: '8.3' },
+    { hazClass: '8.4' },
+    { hazClass: '8.5' },
+    { hazClass: '8.6' },
+    { hazClass: '8.7' },
+    { hazClass: '8.8' },
+    { hazClass: '8.9' },
+    { hazClass: '9.0' },
+    { hazClass: '9.1' },
+    { hazClass: '9.2' },
+    { hazClass: '9.3' },
+    { hazClass: '9.4' },
+    { hazClass: '9.5' },
+    { hazClass: '9.6' },
+    { hazClass: '9.7' },
+    { hazClass: '9.8' },
+    { hazClass: '9.9' }
+  ]
+
 
   constructor(private fb: FormBuilder, private apiServiceService: ApiServiceService) { }
 
@@ -208,32 +338,41 @@ export class EditManualRateComponent implements OnInit, OnChanges {
       companyName: ['', Validators.required],
       source: ['', Validators.required],
       destination: ['', Validators.required],
-      cargotype: ['', Validators.required],
+      cargotype: [{ value: '', disabled: false }, Validators.required],
       transitTime: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       freightType: ['', Validators.required],
-      rate: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+      rate: ['', [Validators.required, Validators.pattern("^[0-9]+(\\.[0-9]{1,2})?$")]],
       currency: ['', Validators.required],
       isDirectShipment: [false],
-      transhipment_add_port: [{ value: '', disabled: this.isDirectShipment }],
+      transhipment_add_port: [{ value: '', disabled: this.isDirectShipment }, Validators.required],
       effectiveDate: ['', Validators.required],
       expirationDate: ['', Validators.required],
-      remarks: [''],
-      terms_condition: [''],
-      rateType: [''],
+      isRateTypeStatus: [this.isRateTypeStatus],
+      vessel_name: [{ value: '', disabled: !this.isRateTypeStatus }, Validators.required],
+      voyage: [{ value: '', disabled: !this.isRateTypeStatus }, Validators.pattern(/^[a-zA-Z0-9]{3,10}$/)],
+      haz_class: ['', Validators.required],
+      packing_group: ['', Validators.required],
+      rateType: [this.rateType],
       free_days: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
-      // hazType: [''],
       hazValue: [{ value: '', disabled: this.hazActiveStatus }, [Validators.required, Validators.pattern(/^(?!0000)\d{4}$/)]],
       hazActiveStatus: [false],
       free_days_comment: [''],
+      remarks: [''],
+      terms_condition: [''],
     });
+
+
+    // Set up listener for rate type change
+    this.isEditParamData.get('isRateTypeStatus')?.valueChanges.subscribe(status => {
+      this.onRateCheckboxStatusChange({ target: { checked: status } });
+    })
+
     this.getEquipments();
     this.getCompanyList()
     this.getSource()
     this.getDestionation()
 
     this.getSourceDestinationCombine()
-
-    // console.log(this.isEditData)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -244,13 +383,18 @@ export class EditManualRateComponent implements OnInit, OnChanges {
       transitTime: this.formData.transit_time?.time || '',
       rate: this.formData?.rate || '',
       currency: this.formData?.currency || '',
-      cargotype: this.formData.cargotype || '',
+      cargotype: this.formData?.cargotype || '',
       freightType: this.formData.freight_type?.type || '',
       effectiveDate: this.formData?.effective_date || '',
       expirationDate: this.formData?.expiration_date || '',
+      vessel_name: this.formData?.vessel_name || '',
+      voyage: this.formData?.voyage || '',
+      haz_class: this.formData?.haz_class || '',
+      packing_group: this.formData?.packing_group || '',
       isDirectShipment: this.formData?.direct_shipment || false,
-      rateType: this.formData?.spot_filed,
-      transhipment_add_port: this.formData.transhipment_add_port,
+      isRateTypeStatus: this.formData?.isRateTypeStatus || false,
+      rateType: this.formData?.rateType || 'filed',
+      // transhipment_add_port: this.formData.transhipment_add_port,
       remarks: this.formData?.remarks || '',
       terms_condition: this.formData?.terms_condition || '',
       free_days: this.formData?.free_days || '',
@@ -259,19 +403,35 @@ export class EditManualRateComponent implements OnInit, OnChanges {
       hazValue: this.formData?.un_number,
 
     }
-    if (changes['formData'] && this.formData) {
-      this.isEditParamData?.patchValue(newFormDataModified);
+
+    if (changes['formData'] && this.formData?.transhipment_add_port) {
+      // Split the existing string data into an array and assign it to `selectedVia`
+      this.selectedVia = this.formData.transhipment_add_port.split(',').map((item: any) => item.trim());
+      this.updateFormControl();
     }
 
+    if (changes['formData'] && this.formData) {
+      this.isEditParamData?.patchValue(newFormDataModified);
+      console.log(this.formData)
+    }
+
+    this.hazActiveStatus = this.formData?.hazardous || false;
+    // console.log(this.hazActiveStatus)
+    if (this.hazActiveStatus) {
+      this.isEditParamData?.get('hazValue')?.enable();
+      this.isEditParamData?.get('haz_class')?.enable();
+      this.isEditParamData?.get('packing_group')?.enable();
+      this.isEditParamData?.get('cargotype')?.disable();
+    } else {
+      this.isEditParamData?.get('hazValue')?.disable();
+      this.isEditParamData?.get('haz_class')?.disable();
+      this.isEditParamData?.get('packing_group')?.disable();
+      this.isEditParamData?.get('cargotype')?.enable();
+    }
+
+    this.formData.isRateTypeStatus ? this.isEditParamData?.get('spot_filed')?.disable() : this.isEditParamData?.get('spot_filed')?.enable()
+
     this.formData.direct_shipment ? this.isEditParamData?.get('transhipment_add_port')?.disable() : this.isEditParamData?.get('transhipment_add_port')?.enable()
-    this.formData.hazardous ? this.isEditParamData?.get('hazValue')?.enable() : this.isEditParamData?.get('hazValue')?.disable();
-
-
-    // if (this.formData.direct_shipment === true) {
-    //   this.isEditParamData?.get('transhipment_add_port')?.disable();
-    // } else {
-    //   this.isEditParamData?.get('transhipment_add_port')?.enable();
-    // }
 
     //  ASSIGN ID HERE
     this.updatingIdx = this.formData.unique_uuid
@@ -315,6 +475,110 @@ export class EditManualRateComponent implements OnInit, OnChanges {
     }, 250);// Delay to allow click event to register before hiding
   }
 
+  onViaInput(event: any) {
+    const input = event.target.value;
+    this.viaInputValue = input;
+    this.filteredVia = this.filterVia(input);  // Filter the list based on input
+    this.showViaDropdown = true;  // Show the dropdown while typing
+  }
+
+  // Handles the selection of a currency
+  selectVia(viaName: string) {
+    if (!this.selectedVia.includes(viaName)) {
+      this.selectedVia.push(viaName);
+    }
+
+    // Clear the input field after selection
+    this.viaInputValue = '';
+    this.showViaDropdown = false;  // Hide the dropdown after selection
+    this.updateFormControl();  // Update the form control with the selected values
+  }
+
+
+  // Check if an item is already selected
+  isSelected(viaName: string): boolean {
+    return this.selectedVia.includes(viaName);
+  }
+
+  updateFormControl() {
+    this.isEditParamData?.get('transhipment_add_port')!.setValue(this.selectedVia.join(', '));
+  }
+
+  // Method to add new via when it's not found in the list
+  addNewVia(via: string) {
+    const trimmedVia = via.trim();
+    if (trimmedVia && !this.selectedVia.includes(trimmedVia)) {
+      this.selectedVia.push(trimmedVia);
+      this.updateFormControl(); // Update form control with the new value
+      this.viaInputValue = ''; // Clear the input field after adding the value
+      this.showViaDropdown = false; // Optionally, hide the dropdown after adding
+      this.filteredVia = []; // Clear the filtered results
+    }
+  }
+
+  // Remove an option from the selected list
+  removeVia(via: string) {
+    const index = this.selectedVia.indexOf(via);
+    if (index > -1) {
+      this.selectedVia.splice(index, 1);  // Remove the item from selectedVia array
+      this.updateFormControl();  // Update the form control after removal
+    }
+  }
+
+  filterVia(query: string) {
+    return this.sourceDestinationVia.filter((transhipmentPort: any) =>
+      transhipmentPort.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  hideViaDropdown() {
+    setTimeout(() => {
+      this.showViaDropdown = false;
+    }, 200);
+  }
+
+  
+
+  // Handles input event and filters currency
+  onHazClassInput(event: any) {
+    this.hazClassInputValue = event.target.value;
+    if (this.hazClassInputValue.length >= 1) {
+      this.filteredHazClass = this.filterHazClass(this.hazClassInputValue);
+    } else {
+      this.filteredHazClass = [];
+    }
+    this.showHazClassDropdown = true;
+  }
+
+  // Handles the selection of a currency
+  selectHazClass(hazValue: string) {
+    this.isEditParamData.get('haz_class')!.setValue(hazValue);
+    this.hazClassInputValue = hazValue; // Update the input with the selected value
+    this.showHazClassDropdown = false;
+  }
+  // Filtering logic
+  filterHazClass(query: string) {
+    return this.hazClassValue.filter((hazClass: any) =>
+      hazClass.hazClass.toLowerCase().includes(query.toLowerCase())
+      // ||
+      //   hazClass.code.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  hideHazClassDropdown() {
+    setTimeout(() => {
+      this.showHazClassDropdown = false;
+      // Clear input if no valid hazClass is selected
+      if (!this.hazClassValue.some(hazClass => hazClass.hazClass === this.hazClassInputValue)) {
+        this.isEditParamData.get('haz_class')!.setValue('');
+        this.hazClassInputValue = ''; // Clear input if the user hasn't selected a valid currency
+        this.showHazClassDropdown = false;
+      }
+    }, 250);// Delay to allow click event to register before hiding
+  }
+
+
+
   getSourceDestinationCombine() {
     forkJoin({
       source: this.apiServiceService.getCompanyList('/api/source/'),
@@ -329,11 +593,6 @@ export class EditManualRateComponent implements OnInit, OnChanges {
       // console.log(this.sourceDestinationTransshipment);
     });
   }
-
-  // Toggle radio button value
-  // onCheckboxChange(event: any) {
-  //   this.hazType = event.target.checked;
-  // }
 
   closeModal() {
     this.isEditVisible = false;
@@ -370,6 +629,8 @@ export class EditManualRateComponent implements OnInit, OnChanges {
     if (this.isDirectShipment && transhipmentControl?.disabled) {
       transhipmentControl.enable();
     }
+    const cargotypeValue = this.isEditParamData.get('cargotype')?.value || null; // Provide default value if needed
+
     const modifiedData = {
       company: this.isEditParamData.value.companyName,
       source: this.isEditParamData.value.source,
@@ -378,9 +639,10 @@ export class EditManualRateComponent implements OnInit, OnChanges {
       freight_type: this.isEditParamData.value.freightType,
       rate: this.isEditParamData.value.rate,
       currency: this.isEditParamData.value.currency,
-      cargotype: this.isEditParamData.value.cargotype,
+      cargotype: cargotypeValue || '',
       direct_shipment: this.isEditParamData.value.isDirectShipment,
-      spot_filed: this.isEditParamData.value.rateType,
+      isRateTypeStatus: this.isEditParamData.value.isRateTypeStatus,
+      spot_filed: this.rateType,
       transhipment_add_port: this.isEditParamData.value.transhipment_add_port,
       effective_date: this.isEditParamData.value.effectiveDate,
       expiration_date: this.isEditParamData.value.expirationDate,
@@ -390,12 +652,16 @@ export class EditManualRateComponent implements OnInit, OnChanges {
       free_days_comment: this.isEditParamData.value.free_days_comment,
       hazardous: this.isEditParamData.value.hazActiveStatus,
       un_number: this.isEditParamData.value.hazValue,
+      vessel_name: this.isEditParamData.value.vessel_name,
+      voyage: this.isEditParamData.value.voyage,
+      haz_class: this.isEditParamData.value.haz_class,
+      packing_group: this.isEditParamData.value.packing_group,
     }
     // console.log(modifiedData)
-    
+
     // console.log(this.updatingIdx)
     if (this.isEditParamData.valid) {
-      this.apiServiceService.updatingManualRate(`/api/manual-rate/${this.updatingIdx}/`, modifiedData).subscribe(response => {
+      this.apiServiceService.updatingManualRate(`/api/manual-rate/update/${this.updatingIdx}/`, modifiedData).subscribe(response => {
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -413,12 +679,44 @@ export class EditManualRateComponent implements OnInit, OnChanges {
         });
         this.isEditParamData.reset()
         this.closeModal()
+        this.dataUpdated.emit();
+        // this.getCompanyList()
       })
-      this.getCompanyList()
     }
     else {
       console.log('Form is not valid');
       this.formData.markAllAsTouched();
+    }
+  }
+
+
+  // Update the minimum expiration date based on the selected validFrom date
+  onValidFromChange() {
+    const validFromDate = this.isEditParamData.get('effectiveDate')?.value;
+
+    if (validFromDate) {
+      // Update the minimum expiration date to the selected validFrom date
+      this.minExpirationDate = validFromDate;
+
+      // Check if the current expiration date is earlier than the new validFrom date
+      const expirationDate = this.isEditParamData.get('expirationDate')?.value;
+      if (expirationDate && expirationDate < validFromDate) {
+        // If expiration date is earlier, clear the expiration date
+        this.isEditParamData.get('expirationDate')?.setValue('');
+      }
+    }
+  }
+
+  // Handle when expiration date is changed
+  onExpirationDateChange() {
+    const validFromDate = this.isEditParamData.get('effectiveDate')?.value;
+    const expirationDate = this.isEditParamData.get('expirationDate')?.value;
+
+    // Ensure the expiration date is not earlier than the validFrom date
+    if (validFromDate && expirationDate < validFromDate) {
+      this.isEditParamData.get('expirationDate')?.setErrors({ invalidDate: true });
+    } else {
+      this.isEditParamData.get('expirationDate')?.setErrors(null);
     }
   }
 
@@ -494,15 +792,34 @@ export class EditManualRateComponent implements OnInit, OnChanges {
     this.hazActiveStatus = event.target.checked;
     if (this.hazActiveStatus) {
       this.isEditParamData.get('hazValue')?.enable();
+      this.isEditParamData?.get('haz_class')?.enable();
+      this.isEditParamData?.get('packing_group')?.enable();
+      this.isEditParamData?.get('cargotype')?.disable();
     } else {
       this.isEditParamData.get('hazValue')?.disable();
+      this.isEditParamData?.get('haz_class')?.disable();
+      this.isEditParamData?.get('packing_group')?.disable();
+      this.isEditParamData?.get('cargotype')?.enable();
     }
 
   }
 
-  // toggleRateType(event: any): void {
-  //   this.isRateTypeStatus = event.target.checked;
-  // }
+  onRateCheckboxStatusChange(event: any): void {
+    this.isRateTypeStatus = event.target.checked;
+    if (this.isRateTypeStatus) {
+      this.isEditParamData.get('vessel_name')?.enable();
+      this.isEditParamData.get('voyage')?.enable();
+      this.isEditParamData.get('expirationDate')?.disable();
+      this.rateType = 'spot'
+
+    } else {
+      this.isEditParamData.get('vessel_name')?.disable();
+      this.isEditParamData.get('voyage')?.disable();
+      this.isEditParamData.get('expirationDate')?.enable();
+      this.rateType = 'filed'
+    }
+    this.isEditParamData.get('spot_filed')?.setValue(this.rateType);
+  }
 
 }
 

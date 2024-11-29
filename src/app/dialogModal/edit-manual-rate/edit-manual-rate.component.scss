@@ -39,7 +39,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  border-radius: 15px;
+  // border-radius: 15px;
 }
 
 .modal-inner-content {
@@ -136,4 +136,14 @@
 .dropdown-menu {
   max-height: 200px;
   overflow-y: auto;
+}
+.cs-addVia{
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  border-radius: 50%;
+  border: 1px solid blue;
+  padding: 5px;
+  background-color: blue;
+  color: #ffffff;
 }
